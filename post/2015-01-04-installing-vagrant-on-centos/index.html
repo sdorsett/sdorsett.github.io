@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.52" />
+
+  <title>Installing vagrant and the vagrant-vcenter provider on CentOS 6.5 &middot; Things I find interesting</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://sdorsett.github.io/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://sdorsett.github.io/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="https://sdorsett.github.io/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+ 
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="https://sdorsett.github.ioimg/favicon.ico" type="image/x-icon" />
+
+  
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="https://sdorsett.github.io/"> </a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/post/"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/about/"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/contact/"><i class='fa fa-phone fa-fw'></i>Contact</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/about/">About</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://twitter.com/standorsett" target="_blank"><i class="fa fa-twitter-square fa-fw"></i>Twitter</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://linkedin.com/in/stan-dorsett-53a8827" target="_blank"><i class="fa fa-linkedin-square fa-fw"></i>LinkedIn</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/sdorsett" target="_blank"><i class="fa fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small>&copy; 2018. All rights reserved.</small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Installing vagrant and the vagrant-vcenter provider on CentOS 6.5</h1>
+  <h2></h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>05 Jan 2015, 00:00</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://sdorsett.github.iotags/vagrant">vagrant</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://sdorsett.github.iotags/vagrant-vcenter">vagrant-vcenter</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  
+
+<p>If you followed the steps in one of the two previous posts, you have a ESXi .box template in the vagrant-vmware-ovf format. This format allows for deploying the exact same template to vCenter, vCloud Director or vCloud Air, by simply specifying a different provider in vagrant. This post will cover deploying to vCenter, since that is the most readily available of the three.</p>
+
+<p>In this post we will again talk about the following helpful gosddc project:</p>
+
+<ul>
+<li><a href="https://github.com/gosddc/vagrant-vcenter">gosddc/vagrant-vcenter</a>.
+This repo contains a vagrant plugin (provider) that will deploy a vagrant-vmware-ovf generated .box template to a vcenter instance. This provider allows vagrant to seamlessly deploy to vCenter.</li>
+</ul>
+
+<p>We will need a virtual machine with a minimal install of CentOS 6.5 to install vagrant or you can use the same CentOS virtual machine we used <a href="../2015-01-03-using-packer-on-centos">in the last post</a>. For convenience I will be using the same virtual machine.</p>
+
+<h3 id="1-let-s-get-started-by-installing-the-necessary-dependancies">1. Let&rsquo;s get started by installing the necessary dependancies.</h3>
+
+<ul>
+<li>Run the following command to install the some needed packages:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span><span style="color:#75715e"># yum install -y gcc-c++ glibc-headers openssl-devel readline libyaml-devel readline-devel zlib zlib-devel iconv-devel libxml2 libxml2-devel libxslt libxslt-devel wget git unzip</span></code></pre></div>
+
+<ul>
+<li>Download and install ruby-build:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span><span style="color:#75715e"># git clone https://github.com/sstephenson/ruby-build.git</span>
+Initialized empty Git repository in /root/ruby-build/.git/
+remote: Counting objects: <span style="color:#ae81ff">4212</span>, <span style="color:#66d9ef">done</span>.
+remote: Compressing objects: <span style="color:#ae81ff">100</span>% <span style="color:#f92672">(</span><span style="color:#ae81ff">16</span>/16<span style="color:#f92672">)</span>, <span style="color:#66d9ef">done</span>.
+remote: Total <span style="color:#ae81ff">4212</span> <span style="color:#f92672">(</span>delta <span style="color:#ae81ff">4</span><span style="color:#f92672">)</span>, reused <span style="color:#ae81ff">2</span> <span style="color:#f92672">(</span>delta <span style="color:#ae81ff">0</span><span style="color:#f92672">)</span>
+Receiving objects: <span style="color:#ae81ff">100</span>% <span style="color:#f92672">(</span><span style="color:#ae81ff">4212</span>/4212<span style="color:#f92672">)</span>, <span style="color:#ae81ff">761</span>.14 KiB | <span style="color:#ae81ff">730</span> KiB/s, <span style="color:#66d9ef">done</span>.
+Resolving deltas: <span style="color:#ae81ff">100</span>% <span style="color:#f92672">(</span><span style="color:#ae81ff">2142</span>/2142<span style="color:#f92672">)</span>, <span style="color:#66d9ef">done</span>.
+<span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span><span style="color:#75715e"># cd ruby-build/</span>
+<span style="color:#f92672">[</span>root@vagrant ruby-build<span style="color:#f92672">]</span><span style="color:#75715e"># ./install.sh</span></code></pre></div>
+
+<ul>
+<li>Running the &ldquo;ruby-build &ndash;definitions&rdquo; command will provide an output of the versions of Ruby that ruby-buid supports:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant ruby-build<span style="color:#f92672">]</span><span style="color:#75715e"># ruby-build --definitions</span>
+<span style="color:#ae81ff">1</span>.8.6-p383
+<span style="color:#ae81ff">1</span>.8.6-p420
+<span style="color:#ae81ff">1</span>.8.7-p249
+<span style="color:#ae81ff">1</span>.8.7-p302
+<span style="color:#ae81ff">1</span>.8.7-p334
+<span style="color:#ae81ff">1</span>.8.7-p352
+<span style="color:#ae81ff">1</span>.8.7-p357
+<span style="color:#ae81ff">1</span>.8.7-p358
+<span style="color:#ae81ff">1</span>.8.7-p370
+<span style="color:#ae81ff">1</span>.8.7-p371
+<span style="color:#ae81ff">1</span>.8.7-p374
+<span style="color:#ae81ff">1</span>.8.7-p375
+<span style="color:#ae81ff">1</span>.9.1-p378
+<span style="color:#ae81ff">1</span>.9.1-p430
+<span style="color:#ae81ff">1</span>.9.2-p0
+<span style="color:#ae81ff">1</span>.9.2-p180
+<span style="color:#ae81ff">1</span>.9.2-p290
+<span style="color:#ae81ff">1</span>.9.2-p318
+<span style="color:#ae81ff">1</span>.9.2-p320
+<span style="color:#ae81ff">1</span>.9.2-p326
+<span style="color:#ae81ff">1</span>.9.2-p330
+<span style="color:#ae81ff">1</span>.9.3-dev
+<span style="color:#ae81ff">1</span>.9.3-preview1
+<span style="color:#ae81ff">1</span>.9.3-rc1
+<span style="color:#ae81ff">1</span>.9.3-p0
+<span style="color:#ae81ff">1</span>.9.3-p125
+<span style="color:#ae81ff">1</span>.9.3-p194
+<span style="color:#ae81ff">1</span>.9.3-p286
+<span style="color:#ae81ff">1</span>.9.3-p327
+<span style="color:#ae81ff">1</span>.9.3-p362
+<span style="color:#ae81ff">1</span>.9.3-p374
+<span style="color:#ae81ff">1</span>.9.3-p385
+<span style="color:#ae81ff">1</span>.9.3-p392
+<span style="color:#ae81ff">1</span>.9.3-p429
+<span style="color:#ae81ff">1</span>.9.3-p448
+<span style="color:#ae81ff">1</span>.9.3-p484
+<span style="color:#ae81ff">1</span>.9.3-p545
+<span style="color:#ae81ff">1</span>.9.3-p547
+<span style="color:#ae81ff">1</span>.9.3-p550
+<span style="color:#ae81ff">1</span>.9.3-p551
+<span style="color:#ae81ff">2</span>.0.0-dev
+<span style="color:#ae81ff">2</span>.0.0-preview1
+<span style="color:#ae81ff">2</span>.0.0-preview2
+...</code></pre></div>
+
+<ul>
+<li>Install ruby 1.9.3 build 551 using the following command:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant ruby-build<span style="color:#f92672">]</span><span style="color:#75715e"># ruby-build 1.9.3-p551 /usr/local/</span>
+Downloading yaml-0.1.6.tar.gz...
+-&gt; http://dqw8nmjcqpjn7.cloudfront.net/7da6971b4bd08a986dd2a61353bc422362bd0edcc67d7ebaac68c95f74182749
+Installing yaml-0.1.6...
+Installed yaml-0.1.6 to /usr/local/
+
+Downloading ruby-1.9.3-p551.tar.gz...
+-&gt; http://dqw8nmjcqpjn7.cloudfront.net/bb5be55cd1f49c95bb05b6f587701376b53d310eb1bb7c76fbd445a1c75b51e8
+Installing ruby-1.9.3-p551...
+Installed ruby-1.9.3-p551 to /usr/local/</code></pre></div>
+
+<ul>
+<li>Download and install the latest version of ruby gems. You can always find the URL to the most recent version at <a href="https://rubygems.org/pages/download">rubygems.org</a>.</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant ruby-build<span style="color:#f92672">]</span><span style="color:#75715e"># cd ~/</span>
+<span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span><span style="color:#75715e"># wget http://production.cf.rubygems.org/rubygems/rubygems-2.4.5.tgz</span>
+--2015-01-02 <span style="color:#ae81ff">21</span>:14:39-- http://production.cf.rubygems.org/rubygems/rubygems-2.4.5.tgz
+Resolving production.cf.rubygems.org... <span style="color:#ae81ff">54</span>.230.6.155, <span style="color:#ae81ff">54</span>.230.6.120, <span style="color:#ae81ff">54</span>.230.7.122, ...
+Connecting to production.cf.rubygems.org|<span style="color:#ae81ff">54</span>.230.6.155|:80... connected.
+HTTP request sent, awaiting response... <span style="color:#ae81ff">200</span> OK
+Length: <span style="color:#ae81ff">446665</span> <span style="color:#f92672">(</span>436K<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>application/x-tar<span style="color:#f92672">]</span>
+Saving to: <span style="color:#e6db74">&#34;rubygems-2.4.5.tgz&#34;</span>
+
+<span style="color:#ae81ff">100</span>%<span style="color:#f92672">[==================================================================================================</span>&gt;<span style="color:#f92672">]</span> <span style="color:#ae81ff">446</span>,665 <span style="color:#ae81ff">1</span>.78M/s in <span style="color:#ae81ff">0</span>.2s 
+
+<span style="color:#ae81ff">2015</span>-01-02 <span style="color:#ae81ff">21</span>:14:45 <span style="color:#f92672">(</span><span style="color:#ae81ff">1</span>.78 MB/s<span style="color:#f92672">)</span> - <span style="color:#e6db74">&#34;rubygems-2.4.5.tgz&#34;</span> saved <span style="color:#f92672">[</span><span style="color:#ae81ff">446665</span>/446665<span style="color:#f92672">]</span>
+
+<span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span><span style="color:#75715e"># tar -zxf rubygems-2.4.5.tgz</span>
+<span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span><span style="color:#75715e"># cd rubygems-2.4.5</span>
+<span style="color:#f92672">[</span>root@vagrant rubygems-2.4.5<span style="color:#f92672">]</span><span style="color:#75715e"># ruby setup.rb</span>
+RubyGems <span style="color:#ae81ff">2</span>.4.5 installed
+Installing ri documentation <span style="color:#66d9ef">for</span> rubygems-2.4.5</code></pre></div>
+
+<h3 id="2-create-a-directory-to-keep-our-vagrant-vmware-ovf-box-template-to-and-copy-the-template-we-previously-created-to-it">2. Create a directory to keep our vagrant-vmware-ovf .box template to and copy the template we previously created to it:</h3>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant esxi55<span style="color:#f92672">]</span><span style="color:#75715e"># mkdir ~/box-files/</span>
+<span style="color:#f92672">[</span>root@vagrant esxi55<span style="color:#f92672">]</span><span style="color:#75715e"># cp /root/packer/packer-templates/esxi55/esxi55-vmware_ovf-1.1.box ~/box-files/</span></code></pre></div>
+
+<h3 id="3-the-next-thing-we-need-to-do-is-download-and-install-vagrant-and-the-vagrant-vcenter-provider">3. The next thing we need to do is download and install vagrant and the vagrant-vcenter provider:</h3>
+
+<ul>
+<li>Download and install the latest version of vagrant. You can find the URL to the latest versions of the linux 64bit .rpm at <a href="https://www.vagrantup.com/downloads.html">vagrantup.com</a>.</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant rubygems-2.4.5<span style="color:#f92672">]</span><span style="color:#75715e"># cd ~/</span>
+<span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span><span style="color:#75715e"># wget https://dl.bintray.com/mitchellh/vagrant/vagrant_1.7.1_x86_64.rpm</span>
+--2015-01-03 <span style="color:#ae81ff">16</span>:02:34-- https://dl.bintray.com/mitchellh/vagrant/vagrant_1.7.1_x86_64.rpm
+Resolving dl.bintray.com... <span style="color:#ae81ff">108</span>.168.194.92, <span style="color:#ae81ff">108</span>.168.194.91
+Connecting to dl.bintray.com|<span style="color:#ae81ff">108</span>.168.194.92|:443... connected.
+HTTP request sent, awaiting response... <span style="color:#ae81ff">302</span> 
+Resolving d29vzk4ow07wi7.cloudfront.net... <span style="color:#ae81ff">54</span>.230.7.101, <span style="color:#ae81ff">54</span>.230.5.129, <span style="color:#ae81ff">54</span>.230.6.222, ...
+Connecting to d29vzk4ow07wi7.cloudfront.net|<span style="color:#ae81ff">54</span>.230.7.101|:443... connected.
+HTTP request sent, awaiting response... <span style="color:#ae81ff">200</span> OK
+Length: <span style="color:#ae81ff">65197711</span> <span style="color:#f92672">(</span>62M<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>application/unknown<span style="color:#f92672">]</span>
+Saving to: <span style="color:#e6db74">&#34;vagrant_1.7.1_x86_64.rpm&#34;</span>
+
+<span style="color:#ae81ff">100</span>%<span style="color:#f92672">[==================================================================================================</span>&gt;<span style="color:#f92672">]</span> <span style="color:#ae81ff">65</span>,197,711 <span style="color:#ae81ff">1</span>.92M/s in 33s 
+
+<span style="color:#ae81ff">2015</span>-01-03 <span style="color:#ae81ff">16</span>:03:18 <span style="color:#f92672">(</span><span style="color:#ae81ff">1</span>.87 MB/s<span style="color:#f92672">)</span> - <span style="color:#e6db74">&#34;vagrant_1.7.1_x86_64.rpm&#34;</span> saved <span style="color:#f92672">[</span><span style="color:#ae81ff">65197711</span>/65197711<span style="color:#f92672">]</span>
+
+<span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span><span style="color:#75715e"># rpm -i vagrant_1.7.1_x86_64.rpm</span>
+<span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span><span style="color:#75715e"># vagrant -v</span>
+Vagrant <span style="color:#ae81ff">1</span>.7.1</code></pre></div>
+
+<ul>
+<li>Install the vagrant-vcenter plugin using the following commands:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span><span style="color:#75715e"># vagrant plugin list</span>
+vagrant-share <span style="color:#f92672">(</span><span style="color:#ae81ff">1</span>.1.4, system<span style="color:#f92672">)</span>
+<span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span><span style="color:#75715e"># vagrant plugin install vagrant-vcenter</span>
+Installing the <span style="color:#e6db74">&#39;vagrant-vcenter&#39;</span> plugin. This can take a few minutes...
+Installed the plugin <span style="color:#e6db74">&#39;vagrant-vcenter (0.3.2)&#39;</span>!
+<span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span># </code></pre></div>
+
+<ul>
+<li>Create directory and Vagrantfile for the ESXi virtual machines we will deploy with vagrant:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span><span style="color:#75715e"># mkdir -p ~/vagrant-vms/esxi-test/</span>
+<span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span><span style="color:#75715e"># cd vagrant-vms/esxi-test/</span>
+<span style="color:#f92672">[</span>root@vagrant esxi-test<span style="color:#f92672">]</span><span style="color:#75715e"># vi Vagrantfile</span>
+<span style="color:#f92672">[</span>root@vagrant esxi-test<span style="color:#f92672">]</span><span style="color:#75715e"># cat Vagrantfile</span>
+esxi_box_url <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;/root/box-files/esxi55-vmware_ovf-1.1.box&#39;</span>
+ 
+nodes <span style="color:#f92672">=</span> <span style="color:#f92672">[</span>
+  <span style="color:#f92672">{</span> :hostname <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#39;esx-01a&#39;</span>, :box <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#39;esxi55&#39;</span>, :box_url <span style="color:#f92672">=</span>&gt; esxi_box_url<span style="color:#f92672">}</span>,
+  <span style="color:#f92672">{</span> :hostname <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#39;esx-02a&#39;</span>, :box <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#39;esxi55&#39;</span>, :box_url <span style="color:#f92672">=</span>&gt; esxi_box_url<span style="color:#f92672">}</span>,
+<span style="color:#f92672">]</span>
+ 
+Vagrant.configure<span style="color:#f92672">(</span><span style="color:#e6db74">&#39;2&#39;</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">do</span> |config|
+ 
+  config.vm.provider :vcenter <span style="color:#66d9ef">do</span> |vcenter|
+    vcenter.hostname <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;192.168.1.195&#39;</span>
+    vcenter.username <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;root&#39;</span>
+    vcenter.password <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;mySecretP@ssw0rd&#39;</span>
+    vcenter.folder_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;Vagrant/Deployed&#39;</span>
+    vcenter.datacenter_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;datacenter-01&#39;</span>
+    vcenter.computer_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;cluster-01&#39;</span>
+    vcenter.datastore_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;vsanDatastore&#39;</span>
+    vcenter.template_folder_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;Vagrant/Templates&#39;</span>
+    vcenter.network_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;vlan2&#39;</span>
+    vcenter.linked_clones <span style="color:#f92672">=</span> true
+    vcenter.enable_vm_customization <span style="color:#f92672">=</span> false
+  end
+ 
+  <span style="color:#75715e"># Go through nodes and configure each of them.j</span>
+  nodes.each <span style="color:#66d9ef">do</span> |node|
+    config.vm.define node<span style="color:#f92672">[</span>:hostname<span style="color:#f92672">]</span> <span style="color:#66d9ef">do</span> |node_config|
+ 
+      <span style="color:#66d9ef">if</span> node<span style="color:#f92672">[</span>:hostname<span style="color:#f92672">]</span>.include? <span style="color:#e6db74">&#39;esx-&#39;</span>
+        node_config.ssh.username <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;root&#39;</span>
+        node_config.ssh.shell <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;sh&#39;</span>
+        node_config.ssh.insert_key <span style="color:#f92672">=</span> false
+        node_config.vm.synced_folder <span style="color:#e6db74">&#39;.&#39;</span>, <span style="color:#e6db74">&#39;/vagrant&#39;</span>, disabled: true
+      end
+ 
+      node_config.vm.box <span style="color:#f92672">=</span> node<span style="color:#f92672">[</span>:box<span style="color:#f92672">]</span>
+      node_config.vm.hostname <span style="color:#f92672">=</span> node<span style="color:#f92672">[</span>:hostname<span style="color:#f92672">]</span>
+      node_config.vm.box_url <span style="color:#f92672">=</span> node<span style="color:#f92672">[</span>:box_url<span style="color:#f92672">]</span>
+    end
+  end
+end</code></pre></div>
+
+<p>This Vagrantfile is specifying vagrant to use the vagrant-vcenter profiler to create two virtual machines (esx-01a &amp; esx-02a) from the esx55-vmware_ovf-1.1.box file. You will need update the following properties to reflect your own vCenter configuration:</p>
+
+<ul>
+<li>vcenter.hostname = the IP address of your vCenter server</li>
+<li>vcenter.username = the username used to connect to your vCenter server</li>
+<li>vcenter.password = the password used to connect to your vCenter server</li>
+<li>vcenter.datacenter_name = the vCenter virtual datacenter to use for virtual machine deployment</li>
+<li>vcenter.computer_name = the vCenter host or cluster to use for virtual machine deployment. I&rsquo;ve used the cluster in my example.</li>
+<li>vcenter.datastore_name = the vCenter datastore to use for virtual machine deployment</li>
+<li>vcenter.folder_name = the vm folder that the virtual machines will be deployed to</li>
+<li>vcenter.template_folder_name = the vm folder that the ESXi template will be created in</li>
+<li>vcenter.network_name = the vCenter portgroup to connect the ESXi templates to. There should be a DHCP server on this portgroup to provide IP addresses to the deployed ESXi templates.</li>
+</ul>
+
+<h3 id="4-vagrant-up">4. &ldquo;vagrant up&rdquo;</h3>
+
+<ul>
+<li>Now that we have created a Vagrantfile config file and updated it with our vCenter information we can bring up our virtual machine by running &ldquo;vagrant up&rdquo; in the directory with the Vagrantfile.</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant esxi-test<span style="color:#f92672">]</span><span style="color:#75715e"># vagrant up</span>
+Bringing machine <span style="color:#e6db74">&#39;esx-01a&#39;</span> up with <span style="color:#e6db74">&#39;vcenter&#39;</span> provider...
+Bringing machine <span style="color:#e6db74">&#39;esx-02a&#39;</span> up with <span style="color:#e6db74">&#39;vcenter&#39;</span> provider...
+<span style="color:#f92672">==</span>&gt; esx-01a: Box <span style="color:#e6db74">&#39;esxi55&#39;</span> could not be found. Attempting to find and install...
+ esx-01a: Box Provider: vmware_ovf, vcloud, vcenter
+ esx-01a: Box Version: &gt;<span style="color:#f92672">=</span> 0
+<span style="color:#f92672">==</span>&gt; esx-01a: Adding box <span style="color:#e6db74">&#39;esxi55&#39;</span> <span style="color:#f92672">(</span>v0<span style="color:#f92672">)</span> <span style="color:#66d9ef">for</span> provider: vmware_ovf, vcloud, vcenter
+ esx-01a: Downloading: file:///root/box-files/esxi55-vmware_ovf-1.1.box
+<span style="color:#f92672">==</span>&gt; esx-01a: Successfully added box <span style="color:#e6db74">&#39;esxi55&#39;</span> <span style="color:#f92672">(</span>v0<span style="color:#f92672">)</span> <span style="color:#66d9ef">for</span> <span style="color:#e6db74">&#39;vmware_ovf&#39;</span>!
+<span style="color:#f92672">==</span>&gt; esx-02a: Box <span style="color:#e6db74">&#39;esxi55&#39;</span> could not be found. Attempting to find and install...
+ esx-02a: Box Provider: vmware_ovf, vcloud, vcenter
+ esx-02a: Box Version: &gt;<span style="color:#f92672">=</span> 0
+<span style="color:#f92672">==</span>&gt; esx-02a: Adding box <span style="color:#e6db74">&#39;esxi55&#39;</span> <span style="color:#f92672">(</span>v0<span style="color:#f92672">)</span> <span style="color:#66d9ef">for</span> provider: vmware_ovf, vcloud, vcenter
+<span style="color:#f92672">==</span>&gt; esx-02a: Uploading <span style="color:#f92672">[</span>esxi55<span style="color:#f92672">]</span>...
+<span style="color:#f92672">==</span>&gt; esx-02a: Adding <span style="color:#f92672">[</span>esxi55<span style="color:#f92672">]</span>
+<span style="color:#ae81ff">2015</span>-01-03 <span style="color:#ae81ff">16</span>:28:34 -0600: networks: vlan2 <span style="color:#f92672">=</span> vlan2
+<span style="color:#ae81ff">2015</span>-01-03 <span style="color:#ae81ff">16</span>:28:34 -0600: Uploading OVF to esx02.tyrell.corp...
+<span style="color:#f92672">==</span>&gt; esx-01a: Uploading <span style="color:#f92672">[</span>esxi55<span style="color:#f92672">]</span>...
+<span style="color:#f92672">==</span>&gt; esx-01a: Adding <span style="color:#f92672">[</span>esxi55<span style="color:#f92672">]</span>
+<span style="color:#ae81ff">2015</span>-01-03 <span style="color:#ae81ff">16</span>:28:35 -0600: networks: vlan2 <span style="color:#f92672">=</span> vlan2
+<span style="color:#ae81ff">2015</span>-01-03 <span style="color:#ae81ff">16</span>:28:35 -0600: Uploading OVF to esx01.tyrell.corp...
+DEBUG: Timeout: <span style="color:#ae81ff">300</span>
+Iteration <span style="color:#ae81ff">1</span>: Trying to get host<span style="color:#e6db74">&#39;s IP address ...
+</span><span style="color:#e6db74"> % Total % Received % Xferd Average Speed Time Time Time Current
+</span><span style="color:#e6db74"> Dload Upload Total Spent Left Speed
+</span><span style="color:#e6db74"> 15 473M 15 75.3M 0 0 4554k 0 0:01:46 0:00:16 0:01:30 4552k2015-01-03 16:29:02 -0600: Template already exists, waiting for it to be ready
+</span><span style="color:#e6db74"> 20 473M 20 98.8M 0 0 5122k 0 0:01:34 0:00:19 0:01:15 7489k2015-01-03 16:29:05 -0600: Template VM found
+</span><span style="color:#e6db74">100 473M 100 473M 0 0 9245k 0 0:00:52 0:00:52 --:--:-- 9.9M
+</span><span style="color:#e6db74">Iteration 1: Trying to access nfcLease.info.entity ...
+</span><span style="color:#e6db74">HttpNfcLeaseComplete succeeded
+</span><span style="color:#e6db74">esxi_box_url = &#39;</span>/root/box-files/esxi55-vmware_ovf-1.1.box<span style="color:#960050;background-color:#1e0010">&#39;</span>
+<span style="color:#f92672">==</span>&gt; esx-02a: Creating VM...
+<span style="color:#ae81ff">2015</span>-01-03 <span style="color:#ae81ff">16</span>:29:42 -0600: Template fully prepared and ready to be cloned
+<span style="color:#f92672">==</span>&gt; esx-01a: Creating VM...
+<span style="color:#f92672">==</span>&gt; esx-01a: Powering on VM...
+<span style="color:#f92672">==</span>&gt; esx-02a: Powering on VM...</code></pre></div>
+
+<ul>
+<li>Once the &ldquo;vagrant up&rdquo; command completes, you can check the status of the vms using &ldquo;vagrant status&rdquo;:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant esxi-test<span style="color:#f92672">]</span><span style="color:#75715e"># vagrant status</span>
+Current machine states:
+
+esx-01a running <span style="color:#f92672">(</span>vcenter<span style="color:#f92672">)</span>
+esx-02a running <span style="color:#f92672">(</span>vcenter<span style="color:#f92672">)</span>
+
+This environment represents multiple VMs. The VMs are all listed
+above with their current state. For more information about a specific
+VM, run <span style="color:#e6db74">`</span>vagrant status NAME<span style="color:#e6db74">`</span>.</code></pre></div>
+
+<ul>
+<li>Looking in vCenter you will see the virtual machines that vagrant deployed:</li>
+</ul>
+
+<p><img src="https://sdorsett.github.io/static/01-esx-01a.png" alt="screenshot" /></p>
+
+<ul>
+<li>You can now ssh into either of the ESXi virtual machines using &ldquo;vagrant ssh [vm_name]&rdquo;:</li>
+</ul>
+
+<p>To connect to esx-01a you simply run &ldquo;vagrant ssh esx-01a&rdquo;:</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant esxi-test<span style="color:#f92672">]</span><span style="color:#75715e"># vagrant ssh esx-01a</span>
+<span style="color:#f92672">==</span>&gt; esx-01a: External IP <span style="color:#66d9ef">for</span> esx-01a: <span style="color:#ae81ff">192</span>.168.1.177
+The time and date of this login have been sent to the system logs.
+
+VMware offers supported, powerful system administration tools. Please
+see www.vmware.com/go/sysadmintools <span style="color:#66d9ef">for</span> details.
+
+The ESXi Shell can be disabled by an administrative user. See the
+vSphere Security documentation <span style="color:#66d9ef">for</span> more information.
+
+~ <span style="color:#75715e"># esxcli network ip interface list</span>
+vmk0
+ Name: vmk0
+ MAC Address: <span style="color:#ae81ff">00</span>:50:56:6f:9d:66
+ Enabled: true
+ Portset: vSwitch0
+ Portgroup: Management Network
+ Netstack Instance: defaultTcpipStack
+ VDS Name: N/A
+ VDS UUID: N/A
+ VDS Port: N/A
+ VDS Connection: -1
+ MTU: <span style="color:#ae81ff">1500</span>
+ TSO MSS: <span style="color:#ae81ff">65535</span>
+ Port ID: <span style="color:#ae81ff">33554437</span>
+~ <span style="color:#75715e"># exit</span>
+Connection to <span style="color:#ae81ff">192</span>.168.1.177 closed.
+<span style="color:#f92672">[</span>root@vagrant esxi-test<span style="color:#f92672">]</span>#</code></pre></div>
+
+<p>The same can be done for esx-02a:</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant esxi-test<span style="color:#f92672">]</span><span style="color:#75715e"># vagrant ssh esx-02a</span>
+<span style="color:#f92672">==</span>&gt; esx-02a: External IP <span style="color:#66d9ef">for</span> esx-02a: <span style="color:#ae81ff">192</span>.168.1.178
+The time and date of this login have been sent to the system logs.
+
+VMware offers supported, powerful system administration tools. Please
+see www.vmware.com/go/sysadmintools <span style="color:#66d9ef">for</span> details.
+
+The ESXi Shell can be disabled by an administrative user. See the
+vSphere Security documentation <span style="color:#66d9ef">for</span> more information.
+~ <span style="color:#75715e"># esxcli network ip interface list</span>
+vmk0
+ Name: vmk0
+ MAC Address: <span style="color:#ae81ff">00</span>:50:56:67:d5:b7
+ Enabled: true
+ Portset: vSwitch0
+ Portgroup: Management Network
+ Netstack Instance: defaultTcpipStack
+ VDS Name: N/A
+ VDS UUID: N/A
+ VDS Port: N/A
+ VDS Connection: -1
+ MTU: <span style="color:#ae81ff">1500</span>
+ TSO MSS: <span style="color:#ae81ff">65535</span>
+ Port ID: <span style="color:#ae81ff">33554437</span>
+~ <span style="color:#75715e"># exit</span>
+Connection to <span style="color:#ae81ff">192</span>.168.1.178 closed.
+<span style="color:#f92672">[</span>root@vagrant esxi-test<span style="color:#f92672">]</span>#</code></pre></div>
+
+<ul>
+<li>Once we are done using our virtual machines they can be destroyed with a &ldquo;vagrant destroy&rdquo; command:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant esxi-test<span style="color:#f92672">]</span><span style="color:#75715e"># vagrant destroy</span>
+    esx-02a: Are you sure you want to destroy the <span style="color:#e6db74">&#39;esx-02a&#39;</span> VM? <span style="color:#f92672">[</span>y/N<span style="color:#f92672">]</span> y
+<span style="color:#f92672">==</span>&gt; esx-02a: Powering off VM...
+<span style="color:#f92672">==</span>&gt; esx-02a: Destroying VM...
+    esx-01a: Are you sure you want to destroy the <span style="color:#e6db74">&#39;esx-01a&#39;</span> VM? <span style="color:#f92672">[</span>y/N<span style="color:#f92672">]</span> y
+<span style="color:#f92672">==</span>&gt; esx-01a: Powering off VM...
+<span style="color:#f92672">==</span>&gt; esx-01a: Destroying VM...
+<span style="color:#f92672">[</span>root@vagrant esxi-test<span style="color:#f92672">]</span># </code></pre></div>
+
+<ul>
+<li>If you are ever unsure of the state of the vagrant virtual machines you can run &ldquo;vagrant status&rdquo; to check:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant esxi-test<span style="color:#f92672">]</span><span style="color:#75715e"># vagrant status</span>
+Current machine states:
+
+esx-01a                   not created <span style="color:#f92672">(</span>vcenter<span style="color:#f92672">)</span>
+esx-02a                   not created <span style="color:#f92672">(</span>vcenter<span style="color:#f92672">)</span>
+
+This environment represents multiple VMs. The VMs are all listed
+above with their current state. For more information about a specific
+VM, run <span style="color:#e6db74">`</span>vagrant status NAME<span style="color:#e6db74">`</span>.
+<span style="color:#f92672">[</span>root@vagrant esxi-test<span style="color:#f92672">]</span># </code></pre></div>
+
+<h4 id="that-all-for-this-post-covering-the-basics-of-getting-vagrant-and-the-vagrant-vcenter-provider-installed-configured-on-centos">That all for this post covering the basics of getting vagrant and the vagrant-vcenter provider installed/configured on CentOS.</h4>
+
+<hr />
+
+<h4 id="please-provide-any-feedback-or-suggestions-to-my-twitter-account-located-on-the-about-page">Please provide any feedback or suggestions to my twitter account located on the about page.</h4>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="https://sdorsett.github.io/post/2015-01-03-using-packer-on-centos/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="https://sdorsett.github.io/post/2015-01-03-using-packer-on-centos/">Using packer on CentOS 6.5 to create an ESXi .box template for vagrant deployment</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="next">
+      <a href="https://sdorsett.github.io/post/2015-01-06-creating-vcsa-box-manually/">Creating a vCSA 5.5 .box template on CentOS 6.5 for vagrant deployment</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+    <a href="https://sdorsett.github.io/post/2015-01-06-creating-vcsa-box-manually/"><i class="fa fa-chevron-right"></i></a>
+    
+  </div>
+</div>
+
+
+
+  
+
+</div>
+
+</div>
+</div>
+<script src="https://sdorsett.github.iojs/ui.js"></script>
+<script src="https://sdorsett.github.iojs/menus.js"></script>
+
+
+
+
+
+
+</body>
+</html>
+

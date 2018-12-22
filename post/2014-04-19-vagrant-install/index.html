@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.52" />
+
+  <title>Installing Vagrant and the vagrant-vsphere plugin on CentOS 6.x &middot; Things I find interesting</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://sdorsett.github.io/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://sdorsett.github.io/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="https://sdorsett.github.io/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+ 
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="https://sdorsett.github.ioimg/favicon.ico" type="image/x-icon" />
+
+  
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="https://sdorsett.github.io/"> </a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/post/"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/about/"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/contact/"><i class='fa fa-phone fa-fw'></i>Contact</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/about/">About</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://twitter.com/standorsett" target="_blank"><i class="fa fa-twitter-square fa-fw"></i>Twitter</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://linkedin.com/in/stan-dorsett-53a8827" target="_blank"><i class="fa fa-linkedin-square fa-fw"></i>LinkedIn</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/sdorsett" target="_blank"><i class="fa fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small>&copy; 2018. All rights reserved.</small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Installing Vagrant and the vagrant-vsphere plugin on CentOS 6.x</h1>
+  <h2></h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>19 Apr 2014, 00:00</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://sdorsett.github.iotags/vagrant">vagrant</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://sdorsett.github.iotags/vagrant-vsphere">vagrant-vsphere</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://sdorsett.github.iotags/vsphere">vsphere</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  
+
+<p>Some readers might find this post to be a little &ldquo;in the weeds&rdquo; and cover details they are already familiar with. I struggled in my first attempts to get Vagrant working on CentOS, because I couldn&rsquo;t find any good tutorials that covered the entire process. If you get bored with basic network configuration or have another preferred method for installing Ruby, please understand I&rsquo;m trying to provide as much detail as possible to those without much linux experience. I am also assuming you have a working vCenter, ESXi hosts and dhcp server configured to assign IP addresses for the Vagrant virtual machines we will be deploying.</p>
+
+<h3 id="1-create-a-centos-6-x-minimal-virtual-machine-for-installing-vagrant">1. Create a CentOS 6.x minimal virtual machine for installing Vagrant.</h3>
+
+<p>Create or clone a fresh CentOS 6.x minimal virtual machine. I already had an existing Centos 6.5 minimal template that I simply cloned for this purpose.</p>
+
+<h3 id="2-power-on-the-new-cloned-vm-and-connect-to-the-virtual-machine-console">2. Power on the new cloned vm and connect to the virtual machine console</h3>
+
+<h3 id="3-modify-etc-sysconfig-network-etc-sysconfig-network-scripts-ifcfg-eth0-etc-resolv-conf-to-reflect-the-network-settings-for-your-vagrant-vm">3. Modify /etc/sysconfig/network, /etc/sysconfig/network-scripts/ifcfg-eth0 &amp; /etc/resolv.conf to reflect the network settings for your vagrant vm:</h3>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span><span style="color:#75715e"># cat /etc/sysconfig/network</span> 
+NETWORKING<span style="color:#f92672">=</span>yes 
+HOSTNAME<span style="color:#f92672">=</span>vagrant.mylab.net 
+GATEWAY<span style="color:#f92672">=</span><span style="color:#ae81ff">192</span>.168.1.1 
+<span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span><span style="color:#75715e"># cat /etc/sysconfig/network-scripts/ifcfg-eth0</span> 
+DEVICE<span style="color:#f92672">=</span>eth0 
+TYPE<span style="color:#f92672">=</span>Ethernet 
+ONBOOT<span style="color:#f92672">=</span>yes 
+NM_CONTROLLED<span style="color:#f92672">=</span>no 
+BOOTPROTO<span style="color:#f92672">=</span>static 
+IPADDR<span style="color:#f92672">=</span><span style="color:#ae81ff">192</span>.168.1.40 
+NETMASK<span style="color:#f92672">=</span><span style="color:#ae81ff">255</span>.255.255.0 
+<span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span><span style="color:#75715e"># cat /etc/resolv.conf</span>
+ search mylab.net 
+nameserver <span style="color:#ae81ff">192</span>.168.1.1 
+nameserver <span style="color:#ae81ff">8</span>.8.8.8 
+nameserver <span style="color:#ae81ff">8</span>.8.4.4</code></pre></div>
+
+<h3 id="4-restart-the-vm-for-the-hostname-change-to-take-affect">4. Restart the vm for the hostname change to take affect</h3>
+
+<h3 id="5-ssh-to-the-vagrant-vm-using-the-ip-address-you-assigned-in-etc-sysconf-network-scripts-ifcfg-eth0">5. SSH to the vagrant vm using the IP address you assigned in /etc/sysconf/network-scripts/ifcfg-eth0</h3>
+
+<h3 id="6-install-ruby-1-9-3-there-are-several-ways-http-www-agilesysadmin-net-acquiring-a-modern-ruby-part-one-to-install-ruby-1-9-3-on-centos-but-i-ll-cover-using-ruby-build-to-accomplish-this">6. Install Ruby 1.9.3. There are <a href="http://www.agilesysadmin.net/acquiring-a-modern-ruby-part-one">several ways</a> to install ruby 1.9.3 on CentOS, but I&rsquo;ll cover using ruby-build to accomplish this:</h3>
+
+<ul>
+<li>Use yum to install the packages we&rsquo;ll need to get ruby, rubygems and vagrant installed:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span><span style="color:#75715e"># yum install -y gcc-c++ glibc-headers openssl-devel readline libyaml-devel readline-devel zlib zlib-devel iconv-devel libxml2 libxml2-devel libxslt libxslt-devel wget git</span></code></pre></div>
+
+<ul>
+<li>Pull down the latest version of ruby-build using git:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span><span style="color:#75715e"># git clone https://github.com/sstephenson/ruby-build.git</span></code></pre></div>
+
+<ul>
+<li>Change to the directory the previous command created:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span><span style="color:#75715e"># cd ruby-build/</span></code></pre></div>
+
+<ul>
+<li>Run the &lsquo;install.sh&rsquo; script to install ruby-build:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant ruby-build<span style="color:#f92672">]</span><span style="color:#75715e"># ./install.sh</span></code></pre></div>
+
+<ul>
+<li>I have not been successful in getting vagrant-vsphere to run on any version of ruby newer than 1.9.3-p545. As a result I would recommend installing that version with the following command:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant ruby-build<span style="color:#f92672">]</span><span style="color:#75715e"># ruby-build --definitionsruby-build 1.9.3-p545 /usr/local/</span>
+Downloading yaml-0.1.6.tar.gz...
+-&gt; http://dqw8nmjcqpjn7.cloudfront.net/5fe00cda18ca5daeb43762b80c38e06e
+Installing yaml-0.1.6...
+Installed yaml-0.1.6 to /usr/local/
+
+Downloading ruby-1.9.3-p545.tar.gz...
+-&gt; http://dqw8nmjcqpjn7.cloudfront.net/8e8f6e4d7d0bb54e0edf8d9c4120f40c
+Installing ruby-1.9.3-p545...
+
+Installed ruby-1.9.3-p545 to /usr/local/</code></pre></div>
+
+<h3 id="7-we-will-next-need-to-install-rubygems-the-process-i-used-was-to-download-the-latest-version-from-rubygems-org-https-rubygems-org-pages-download-and-install-it">7. We will next need to install rubygems. The process I used was to download the latest version from <a href="https://rubygems.org/pages/download">rubygems.org</a> and install it:</h3>
+
+<ul>
+<li>Use wget to download the latest version listed on the rubygems download page:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant ruby-build<span style="color:#f92672">]</span><span style="color:#75715e"># cd ~/</span>
+<span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span><span style="color:#75715e"># wget http://production.cf.rubygems.org/rubygems/rubygems-2.2.2.tgz</span></code></pre></div>
+
+<ul>
+<li>Use tar to unzip the tar-gzipped file we downloaded:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span><span style="color:#75715e"># tar xvzf rubygems-2.2.2.tgz</span>
+<span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span><span style="color:#75715e"># cd rubygems-2.2.2</span></code></pre></div>
+
+<ul>
+<li>Install rubygems by running the &lsquo;setup.rb&rsquo; script:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant rubygems-2.2.2<span style="color:#f92672">]</span><span style="color:#75715e"># ruby setup.rb</span></code></pre></div>
+
+<h3 id="8-installing-vagrant">8. Installing Vagrant</h3>
+
+<ul>
+<li>Use wget to download the latest version listed on the <a href="https://www.vagrantup.com/downloads.html">Vagrant download</a> page:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant rubygems-2.2.2<span style="color:#f92672">]</span><span style="color:#75715e"># cd ~/</span>
+<span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span><span style="color:#75715e"># wget https://dl.bintray.com/mitchellh/vagrant/vagrant_1.5.2_x86_64.rpm</span></code></pre></div>
+
+<ul>
+<li>Use the &lsquo;rpm&rsquo; command to install the RPM package we downloaded in the previous step:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span><span style="color:#75715e"># rpm -i vagrant_1.5.2_x86_64.rpm</span></code></pre></div>
+
+<ul>
+<li>Export the directory that the vagrant executable was install to, in order to make it easier to run:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span><span style="color:#75715e"># export PATH=$PATH:/opt/vagrant/bin/</span></code></pre></div>
+
+<h3 id="9-installing-the-vagrant-vsphere-plugin">9. Installing the vagrant-vsphere plugin</h3>
+
+<ul>
+<li>The nokogiri gem, which is a ruby HTML, XML &amp; SAM parser, is required by vagrant-vsphere so we will install it with the following commands:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span><span style="color:#75715e"># gem install nokogiri</span>
+Building native extensions.  This could take a <span style="color:#66d9ef">while</span>...
+Successfully installed nokogiri-1.6.1
+unable to convert <span style="color:#e6db74">&#34;\x89&#34;</span> from ASCII-8BIT to UTF-8 <span style="color:#66d9ef">for</span> ext/nokogiri/tmp/x86_64-redhat-linux/ports/libxslt/1.1.26/libxslt-1.1.26/tests/xmlspec/logo-REC, skipping
+unable to convert <span style="color:#e6db74">&#34;\xF6&#34;</span> from ASCII-8BIT to UTF-8 <span style="color:#66d9ef">for</span> ext/nokogiri/tmp/x86_64-redhat-linux/ports/libxslt/1.1.26/libxslt-1.1.26/libxslt/xslt.c, skipping
+unable to convert <span style="color:#e6db74">&#34;\xF6&#34;</span> from ASCII-8BIT to UTF-8 <span style="color:#66d9ef">for</span> ext/nokogiri/tmp/x86_64-redhat-linux/ports/libxslt/1.1.26/libxslt-1.1.26/ChangeLog, skipping
+unable to convert <span style="color:#e6db74">&#34;\xE1&#34;</span> from ASCII-8BIT to UTF-8 <span style="color:#66d9ef">for</span> ext/nokogiri/tmp/x86_64-redhat-linux/ports/libxslt/1.1.26/libxslt-1.1.26/NEWS, skipping
+unable to convert <span style="color:#e6db74">&#34;\xFD&#34;</span> from ASCII-8BIT to UTF-8 <span style="color:#66d9ef">for</span> ext/nokogiri/tmp/x86_64-redhat-linux/ports/libxslt/1.1.26/libxslt-1.1.26/win32/Readme.txt, skipping
+unable to convert <span style="color:#e6db74">&#34;\xC0&#34;</span> from ASCII-8BIT to UTF-8 <span style="color:#66d9ef">for</span> ext/nokogiri/tmp/x86_64-redhat-linux/ports/libxml2/2.8.0/libxml2-2.8.0/test/XInclude/ents/isolatin.txt, skipping
+unable to convert <span style="color:#e6db74">&#34;\xE4&#34;</span> from ASCII-8BIT to UTF-8 <span style="color:#66d9ef">for</span> ext/nokogiri/tmp/x86_64-redhat-linux/ports/libxml2/2.8.0/libxml2-2.8.0/doc/examples/testWriter.c, skipping
+unable to convert <span style="color:#e6db74">&#34;\xF8&#34;</span> from ASCII-8BIT to UTF-8 <span style="color:#66d9ef">for</span> ext/nokogiri/tmp/x86_64-redhat-linux/ports/libxml2/2.8.0/libxml2-2.8.0/testapi.c, skipping
+unable to convert <span style="color:#e6db74">&#34;\xE9&#34;</span> from ASCII-8BIT to UTF-8 <span style="color:#66d9ef">for</span> ext/nokogiri/tmp/x86_64-redhat-linux/ports/libxml2/2.8.0/libxml2-2.8.0/runtest.c, skipping
+unable to convert <span style="color:#e6db74">&#34;\xF8&#34;</span> from ASCII-8BIT to UTF-8 <span style="color:#66d9ef">for</span> ext/nokogiri/tmp/x86_64-redhat-linux/ports/libxml2/2.8.0/libxml2-2.8.0/entities.c, skipping
+unable to convert <span style="color:#e6db74">&#34;\xC0&#34;</span> from ASCII-8BIT to UTF-8 <span style="color:#66d9ef">for</span> ports/x86_64-redhat-linux/libxslt/1.1.26/bin/xsltproc, skipping
+unable to convert <span style="color:#e6db74">&#34;\xE4&#34;</span> from ASCII-8BIT to UTF-8 <span style="color:#66d9ef">for</span> ports/x86_64-redhat-linux/libxml2/2.8.0/share/doc/libxml2-2.8.0/html/testWriter.c, skipping
+unable to convert <span style="color:#e6db74">&#34;\xC0&#34;</span> from ASCII-8BIT to UTF-8 <span style="color:#66d9ef">for</span> ports/x86_64-redhat-linux/libxml2/2.8.0/bin/xmllint, skipping
+unable to convert <span style="color:#e6db74">&#34;\xC0&#34;</span> from ASCII-8BIT to UTF-8 <span style="color:#66d9ef">for</span> ports/x86_64-redhat-linux/libxml2/2.8.0/bin/xmlcatalog, skipping
+<span style="color:#ae81ff">1</span> gem installed</code></pre></div>
+
+<ul>
+<li>Next we will install the rbvmomi gem with the following command. rbvmomi is a ruby interface for using the vSphere API.</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span><span style="color:#75715e"># gem install rbvmomi</span>
+Successfully installed rbvmomi-1.8.1
+<span style="color:#ae81ff">1</span> gem installed</code></pre></div>
+
+<ul>
+<li>Now we can install the vagrant-vsphere plugin with the following command:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span><span style="color:#75715e"># vagrant plugin install vagrant-vsphere</span>
+Installing the <span style="color:#e6db74">&#39;vagrant-vsphere&#39;</span> plugin. This can take a few minutes...
+Installed the plugin <span style="color:#e6db74">&#39;vagrant-vsphere (0.8.1)&#39;</span>!</code></pre></div>
+
+<h3 id="8-configuring-vagrant-vsphere">8. Configuring vagrant-vsphere</h3>
+
+<p>The vagrant-vsphere <a href="https://github.com/nsidc/vagrant-vsphere">README.md on github</a> mentions we need to create a vSphere box from the metadata.json located in the example_box directory.</p>
+
+<ul>
+<li>We can use the linux the &ldquo;find&rdquo; command to determine the path to the example_box directory:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span><span style="color:#75715e"># find / -name example_box</span>
+/root/.vagrant.d/gems/gems/vagrant-vsphere-0.8.1/example_box</code></pre></div>
+
+<ul>
+<li>Now we can change directory to that directory and create the necessary dummy box file:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span><span style="color:#75715e"># cd /root/.vagrant.d/gems/gems/vagrant-vsphere-0.8.1/example_box</span>
+<span style="color:#f92672">[</span>root@vagrant example_box<span style="color:#f92672">]</span><span style="color:#75715e"># tar cvzf dummy.box ./metadata.json</span>
+./metadata.json</code></pre></div>
+
+<ul>
+<li>Next we will create a new folder under /root for storing the box file we created and other vagrant configuration files</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant example_box<span style="color:#f92672">]</span><span style="color:#75715e"># mkdir -p ~/vagrant-vms/example_box</span>
+<span style="color:#f92672">[</span>root@vagrant example_box<span style="color:#f92672">]</span><span style="color:#75715e"># mv dummy.box ~/vagrant-vms/example_box</span></code></pre></div>
+
+<ul>
+<li>Vagrant reads it&rsquo;s configuration from a file named Vagrantfile, located in the directory from which the &ldquo;vagrant up&rdquo; command is run in. We need to go back to our &ldquo;vagrant-vms&rdquo; folder and create this file:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant example_box<span style="color:#f92672">]</span><span style="color:#75715e"># cd ~/vagrant-vms/</span>
+<span style="color:#f92672">[</span>root@vagrant vagrant-vms<span style="color:#f92672">]</span><span style="color:#75715e"># touch Vagrantfile</span></code></pre></div>
+
+<ul>
+<li>Modify the Vagrantfile to reflect your vsphere configuration. Here&rsquo;s an example of my working Vagrantfile:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant vagrant-vms<span style="color:#f92672">]</span><span style="color:#75715e"># cat Vagrantfile</span>
+
+Vagrant.configure<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;2&#34;</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">do</span> |config|
+  config.vm.box <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;dummy&#39;</span>
+  config.vm.box_url <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;./example_box/dummy.box&#39;</span>
+
+  config.vm.provider :vsphere <span style="color:#66d9ef">do</span> |vsphere|
+    vsphere.host <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;vcenter.mylab.net&#39;</span>
+    vsphere.name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;vagrant-test&#39;</span>
+    vsphere.clone_from_vm <span style="color:#f92672">=</span> true
+    vsphere.template_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;Centos-6.5&#39;</span>
+    vsphere.user <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;root@localos&#39;</span>
+    vsphere.password <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;S0meR@nd0mP@ssw0rd&#39;</span>
+    vsphere.insecure <span style="color:#f92672">=</span> true
+  end
+end</code></pre></div>
+
+<p>In this configuration file:</p>
+
+<ul>
+<li>&ldquo;vsphere.host&rdquo; is your vCenter server FQDN or IP address</li>
+<li>&ldquo;vsphere.name&rdquo; will be the name of the virtual machine that gets created</li>
+<li>&ldquo;vsphere.clone_from_vm&rdquo; specifies we will be cloning a vm rather than template</li>
+<li>&ldquo;vsphere.template_name&rdquo; is the name of the vm we will be cloning</li>
+<li>&ldquo;vsphere.user&rdquo; is the username we will be using to connect to vCenter</li>
+<li>&ldquo;vsphere.password&rdquo; is the password we will be using to connect ot vCenter</li>
+<li>&ldquo;vsphere.insecure&rdquo; tells vagrant to not worry about validating the certificate on the vCenter server</li>
+</ul>
+
+<h3 id="9-vagrant-up">9. Vagrant up!!!!</h3>
+
+<p>If everything has gone correctly up to this point we can issue a &ldquo;vagrant up &ndash;provider=vsphere&rdquo; command from the directory that contains the Vagrantfile:</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant vagrant-vms<span style="color:#f92672">]</span><span style="color:#75715e"># vagrant up --provider=vsphere</span>
+Bringing machine <span style="color:#e6db74">&#39;default&#39;</span> up with <span style="color:#e6db74">&#39;vsphere&#39;</span> provider...
+<span style="color:#f92672">==</span>&gt; default: Calling vSphere CloneVM with the following settings:
+<span style="color:#f92672">==</span>&gt; default:  -- Source VM: CentOS-6.5
+<span style="color:#f92672">==</span>&gt; default:  -- Name: vagrant-test
+<span style="color:#f92672">==</span>&gt; default: Waiting <span style="color:#66d9ef">for</span> SSH to become available...</code></pre></div>
+
+<p>You should see a &ldquo;Clone virtual machine&rdquo; task being run on your vCenter server and then completing.</p>
+
+<h3 id="10-canceling-the-vagrant-up-command-and-destroying-our-cloned-vm">10. Canceling the &ldquo;Vagrant up&rdquo; command and destroying our cloned vm.</h3>
+
+<p>Since we have not properly prepared the vm we are cloning (I will have another blog post covering this topic) Vagrant will never be able to successfully connect to the cloned vm using SSH. As a result we will need to cancel the &ldquo;vagrant up&rdquo; command:</p>
+
+<ul>
+<li>Press [control-c] to attempt to gracefully exit &ldquo;vagrant-up&rdquo;</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">^C<span style="color:#f92672">==</span>&gt; default: Waiting <span style="color:#66d9ef">for</span> cleanup before exiting...</code></pre></div>
+
+<p>I&rsquo;ve never seen this task complete so I will press [control-c] again to immediately exit:</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">^C<span style="color:#f92672">==</span>&gt; default: Exiting immediately, without cleanup!</code></pre></div>
+
+<ul>
+<li>Destroy the cloned vm by running &ldquo;vagrant destroy&rdquo; command:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant vagrant-vms<span style="color:#f92672">]</span><span style="color:#75715e"># vagrant destroy</span>
+<span style="color:#f92672">==</span>&gt; default: Calling vSphere PowerOff
+<span style="color:#f92672">==</span>&gt; default: Calling vShpere Destroy</code></pre></div>
+
+<p>You should see a &ldquo;Power Off virtual machine&rdquo; and &ldquo;Delet virtual machine&rdquo; tasks being run and then completing on your vCenter server.</p>
+
+<h4 id="hopefully-you-found-this-post-helpful-in-getting-vagrant-and-the-vagrant-vsphere-plugin-installed-and-configured-the-next-blog-post-will-be-covering-how-to-create-a-template-vm-that-has-been-prepared-for-vagrant-to-connect-seemlessly-using-ssh">Hopefully you found this post helpful in getting vagrant and the vagrant-vsphere plugin installed and configured. The next blog post will be covering how to create a template vm that has been prepared for vagrant to connect seemlessly using SSH.</h4>
+
+<hr />
+
+<h4 id="please-provide-any-feedback-or-suggestions-to-my-twitter-account-located-on-the-about-page">Please provide any feedback or suggestions to my twitter account located on the about page.</h4>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="https://sdorsett.github.io/post/2014-04-16-vagrant-explained/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="https://sdorsett.github.io/post/2014-04-16-vagrant-explained/">Vagrant Explained</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="next">
+      <a href="https://sdorsett.github.io/post/2014-04-20-vagrant-boxes/">Creating a CentOS 6.x template that is customized for Vagrant</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+    <a href="https://sdorsett.github.io/post/2014-04-20-vagrant-boxes/"><i class="fa fa-chevron-right"></i></a>
+    
+  </div>
+</div>
+
+
+
+  
+
+</div>
+
+</div>
+</div>
+<script src="https://sdorsett.github.iojs/ui.js"></script>
+<script src="https://sdorsett.github.iojs/menus.js"></script>
+
+
+
+
+
+
+</body>
+</html>
+

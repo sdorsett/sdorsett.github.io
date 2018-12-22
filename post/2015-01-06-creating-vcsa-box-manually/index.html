@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.52" />
+
+  <title>Creating a vCSA 5.5 .box template on CentOS 6.5 for vagrant deployment &middot; Things I find interesting</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://sdorsett.github.io/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://sdorsett.github.io/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="https://sdorsett.github.io/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+ 
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="https://sdorsett.github.ioimg/favicon.ico" type="image/x-icon" />
+
+  
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="https://sdorsett.github.io/"> </a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/post/"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/about/"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/contact/"><i class='fa fa-phone fa-fw'></i>Contact</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/about/">About</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://twitter.com/standorsett" target="_blank"><i class="fa fa-twitter-square fa-fw"></i>Twitter</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://linkedin.com/in/stan-dorsett-53a8827" target="_blank"><i class="fa fa-linkedin-square fa-fw"></i>LinkedIn</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/sdorsett" target="_blank"><i class="fa fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small>&copy; 2018. All rights reserved.</small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Creating a vCSA 5.5 .box template on CentOS 6.5 for vagrant deployment</h1>
+  <h2></h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>06 Jan 2015, 00:00</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://sdorsett.github.iotags/vagrant">vagrant</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://sdorsett.github.iotags/vsphere">vsphere</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  
+
+<p>In the last few blogs post we have created ESXi .box templates, but in order to create a complete virtual lab using vagrant we will also need a vCenter Server Appliance virtual machine. The vCSA comes as a .ova template, so we will need to convert it to a vagrant-vmware-ovf .box template before we can use it with vagrant.</p>
+
+<p>In this post we will need several packages installed, that we have covered in the last few posts:</p>
+
+<ul>
+<li>vagrant - I used vagrant 1.7.1 for these steps</li>
+<li><a href="https://github.com/gosddc/vagrant-vcenter">gosddc/vagrant-vcenter</a>.
+This repo contains a vagrant plugin (provider) that will deploy a vagrant-vmware-ovf generated .box template to a vcenter instance. This provider allows vagrant to seamlessly deploy to vCenter.</li>
+<li>ovftool - I have ovftool 3.5.1 installed on my CentOS vm.</li>
+</ul>
+
+<p>I will be using the same CentOS virtual machine we used <a href="https://sdorsett.github.io/2015/01/04/installing-vagrant-on-centos/">in the last post</a> since it already has all the packages we will be needing.</p>
+
+<h3 id="1-download-the-vcenter-server-appliance-iso-from-the-vmware-com-download-page-https-my-vmware-com-web-vmware-details-downloadgroup-vc55u2-productid-353">1. Download the vCenter Server Appliance .iso from the <a href="https://my.vmware.com/web/vmware/details?downloadGroup=VC55U2&amp;productId=353">vmware.com download page</a>.</h3>
+
+<p>I will be using &ldquo;VMware-vCenter-Server-Appliance-5.5.0.20000-2063318_OVF10.ova&rdquo;, which is the vCSA 5.5 U2 .ova.</p>
+
+<h3 id="2-use-ovftool-to-upload-the-vcsa-ova-to-vcenter">2. Use ovftool to upload the vCSA .ova to vCenter:</h3>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span><span style="color:#75715e"># ovftool --disableVerification  --noSSLVerify --datastore=esx01-local-sata --name=vcsa-5.5.0.20000-2063318 --network=vlan2 ~/VMware-vCenter-Server-Appliance-5.5.0.20000-2063318_OVF10.ova vi://root@192.168.1.201</span>
+Opening OVA source: VMware-vCenter-Server-Appliance-5.5.0.20000-2063318_OVF10.ova
+The manifest validates
+Enter login information <span style="color:#66d9ef">for</span> target vi://192.168.1.201/
+Username: root
+Password: **********
+Opening VI target: vi://root@192.168.1.201:443/
+Deploying to VI: vi://root@192.168.1.201:443/
+Transfer Completed
+Completed successfully
+<span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span>#</code></pre></div>
+
+<p>You will need to modify the following parameters in the ovftool command:</p>
+
+<ul>
+<li>&ndash;datastore - this is the datastore that ovftool will deploy the virtual machine to</li>
+<li>&ndash;name - this is the name the deployed virtual machine will be given</li>
+<li>&ndash;network - this is the portgroup the deployed virtual machine will be connected to</li>
+<li>vi://root://[esxi_host_ip_address] - update this part of the command with the IP address of one of your ESXi servers</li>
+</ul>
+
+<h3 id="3-modify-the-vcsa-virtual-machine-for-vagrant-deployment">3. Modify the vCSA virtual machine for vagrant deployment.</h3>
+
+<ul>
+<li><p>Power on the vcsa-5.5.0.20000-2063318 virtual machine in the VI or vSphere web client.</p></li>
+
+<li><p>Once the vCSA virtual machine is up and running, SSH to the IP address that is acquired by DHCP.</p></li>
+
+<li><p>Create the ~/.ssh directory</p></li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">localhost:~ <span style="color:#75715e"># mkdir ~/.ssh</span></code></pre></div>
+
+<ul>
+<li>Add the vagrant public ssh key to ~/.ssh/authorized_keys:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">localhost:~ <span style="color:#75715e"># cd .ssh</span>
+localhost:~/.ssh <span style="color:#75715e"># echo &#39;ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key&#39; &gt; ~/.ssh/authorized_keys</span></code></pre></div>
+
+<ul>
+<li>Modify the permissions on ~/.ssh &amp; ~/.ssh/authorized_keys since openssh is particular about file permissions:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">localhost:~/.ssh <span style="color:#75715e"># chmod 700 ~/.ssh</span>
+localhost:~/.ssh <span style="color:#75715e"># chmod 600 ~/.ssh/authorized_keys</span></code></pre></div>
+
+<ul>
+<li>Modify the following lines in /etc/ssh/sshd_config:</li>
+</ul>
+
+<p>Uncomment and update the following lines:
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">PubkeyAuthentication yes                  <span style="color:#75715e"># line 47</span>
+AuthorizedKeysFile ~/.ssh/authorized_keys <span style="color:#75715e"># line 48</span></code></pre></div>
+Comment out the following line:
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e">#MaxSessions 1                            # line 44</span></code></pre></div></p>
+
+<ul>
+<li>Power down the vcsa-5.5.0.20000-2063318 virtual machine in the VI or vSphere web client.</li>
+</ul>
+
+<h3 id="4-use-ovftool-to-export-the-vcsa-5-5-0-20000-2063318-virtual-machine">4. Use ovftool to export the vcsa-5.5.0.20000-2063318 virtual machine.</h3>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span><span style="color:#75715e"># ovftool vi://root@192.168.1.201/vcsa-5.5.0.20000-2063318 ./</span>
+Enter login information <span style="color:#66d9ef">for</span> source vi://192.168.1.201/
+Username: root
+Password: **********
+Opening VI source: vi://root@192.168.1.201:443/vcsa-5.5.0.20000-2063318
+Opening OVF target: ./
+Writing OVF package: ./vcsa-5.5.0.20000-2063318/vcsa-5.5.0.20000-2063318.ovf
+Transfer Completed
+Completed successfully</code></pre></div>
+
+<p>&ldquo;vi://root@192.168.1.201&rdquo; will need to be updated to use the IP address of the ESXi host that has your vcsa-5.5.0.20000-2063318 virtual machine.</p>
+
+<h3 id="5-add-the-additional-vagrant-vmware-ovf-files-and-tar-up-the-vcsa-5-5-0-20000-2063318-ovf-as-a-box-file">5. add the additional vagrant-vmware-ovf files and tar up the vcsa-5.5.0.20000-2063318 .ovf as a .box file:</h3>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span><span style="color:#75715e"># cd vcsa-5.5.0.20000-2063318/</span>
+<span style="color:#f92672">[</span>root@vagrant vcsa-5.5.0.20000-2063318<span style="color:#f92672">]</span><span style="color:#75715e"># echo &#39;{&#34;provider&#34;:&#34;vmware_ovf&#34;}&#39; &gt;&gt; metadata.json</span>
+<span style="color:#f92672">[</span>root@vagrant vcsa-5.5.0.20000-2063318<span style="color:#f92672">]</span><span style="color:#75715e"># touch Vagrantfile</span>
+<span style="color:#f92672">[</span>root@vagrant vcsa-5.5.0.20000-2063318<span style="color:#f92672">]</span><span style="color:#75715e"># tar cvzf vcsa-5.5.0.20000-2063318-vmware_ovf-1.0.box ./*</span>
+./metadata.json
+./Vagrantfile
+./vcsa-5.5.0.20000-2063318-disk1.vmdk
+./vcsa-5.5.0.20000-2063318-disk2.vmdk
+./vcsa-5.5.0.20000-2063318.mf
+./vcsa-5.5.0.20000-2063318.ovf
+<span style="color:#f92672">[</span>root@vagrant vcsa-5.5.0.20000-2063318<span style="color:#f92672">]</span>#</code></pre></div>
+
+<h3 id="6-create-a-directory-to-keep-our-vagrant-vmware-ovf-box-template-in-and-move-the-vcsa-template-to-it">6. Create a directory to keep our vagrant-vmware-ovf .box template in and move the vCSA template to it:</h3>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant vcsa-5.5.0.20000-2063318<span style="color:#f92672">]</span><span style="color:#75715e"># mkdir ~/box-files/</span>
+<span style="color:#f92672">[</span>root@vagrant vcsa-5.5.0.20000-2063318<span style="color:#f92672">]</span><span style="color:#75715e"># mv vcsa-5.5.0.20000-2063318-vmware_ovf-1.0.box ~/box-files/</span></code></pre></div>
+
+<ul>
+<li>Create directory and Vagrantfile for the vCSA virtual machines we will deploy with vagrant:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant vcsa-5.5.0.20000-2063318<span style="color:#f92672">]</span><span style="color:#75715e"># mkdir -p ~/vagrant-vms/vcsa-test/</span>
+<span style="color:#f92672">[</span>root@vagrant vcsa-5.5.0.20000-2063318<span style="color:#f92672">]</span><span style="color:#75715e"># cd ~/vagrant-vms/vcsa-test/</span>
+<span style="color:#f92672">[</span>root@vagrant vcsa-test<span style="color:#f92672">]</span><span style="color:#75715e"># vi Vagrantfile</span>
+<span style="color:#f92672">[</span>root@vagrant vcsa-test<span style="color:#f92672">]</span><span style="color:#75715e"># cat Vagrantfile</span>
+vcsa_box_url <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;/root/box-files/vcsa-5.5.0.20000-2063318-vmware_ovf-1.0.box&#39;</span>
+
+$script <span style="color:#f92672">=</span> <span style="color:#e6db74">&lt;&lt;SCRIPT
+</span><span style="color:#e6db74">#!/bin/bash
+</span><span style="color:#e6db74"># Commands to configure all the necessary services to start the vCenter Service, thanks @lamw ! see:
+</span><span style="color:#e6db74"># http://www.virtuallyghetto.com/2012/02/automating-vcenter-server-appliance.html
+</span><span style="color:#e6db74"> 
+</span><span style="color:#e6db74">echo &#34;Accepting EULA ...&#34;
+</span><span style="color:#e6db74">/usr/sbin/vpxd_servicecfg eula accept
+</span><span style="color:#e6db74"> 
+</span><span style="color:#e6db74">echo &#34;Configuring Embedded DB ...&#34;
+</span><span style="color:#e6db74">/usr/sbin/vpxd_servicecfg db write embedded
+</span><span style="color:#e6db74"> 
+</span><span style="color:#e6db74">echo &#34;Configuring SSO...&#34;
+</span><span style="color:#e6db74">/usr/sbin/vpxd_servicecfg sso write embedded
+</span><span style="color:#e6db74"> 
+</span><span style="color:#e6db74">echo &#34;Starting VCSA ...&#34;
+</span><span style="color:#e6db74">/usr/sbin/vpxd_servicecfg service start
+</span><span style="color:#e6db74">
+</span><span style="color:#e6db74"># http://www.virtuallyghetto.com/2014/02/how-to-automate-ntp-configurations-on.html
+</span><span style="color:#e6db74">/usr/sbin/vpxd_servicecfg timesync write ntp &#39;pool.ntp.org&#39; &#39;&#39;
+</span><span style="color:#e6db74">
+</span><span style="color:#e6db74"># Command to set IP address to 192.168.1.81:
+</span><span style="color:#e6db74"># http://www.virtuallyghetto.com/2013/02/automating-vcsa-network-configurations.html
+</span><span style="color:#e6db74">echo &#34;Setting static IP address to 192.168.1.81&#34;
+</span><span style="color:#e6db74">/opt/vmware/share/vami/vami_set_network eth0 STATICV4 192.168.1.81 255.255.255.0 192.168.1.1 &gt;&amp;- 2&gt;&amp;- &lt;&amp;- &amp;
+</span><span style="color:#e6db74">SCRIPT</span>
+
+nodes <span style="color:#f92672">=</span> <span style="color:#f92672">[</span>
+  <span style="color:#f92672">{</span> :hostname <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#39;vcsa-01a&#39;</span>, :box <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#39;vcsa-5.5.0.20000-2063318&#39;</span>, :box_url <span style="color:#f92672">=</span>&gt; vcsa_box_url<span style="color:#f92672">}</span>
+<span style="color:#f92672">]</span>
+ 
+Vagrant.configure<span style="color:#f92672">(</span><span style="color:#e6db74">&#39;2&#39;</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">do</span> |config|
+ 
+  config.vm.provider :vcenter <span style="color:#66d9ef">do</span> |vcenter|
+    vcenter.hostname <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;192.168.1.195&#39;</span>
+    vcenter.username <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;root&#39;</span>
+    vcenter.password <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;mySecretP@ssw0rd&#39;</span>
+    vcenter.folder_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;Vagrant/Deployed&#39;</span>
+    vcenter.datacenter_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;datacenter-01&#39;</span>
+    vcenter.computer_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;cluster-01&#39;</span>
+    vcenter.datastore_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;vsanDatastore&#39;</span>
+    vcenter.template_folder_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;Vagrant/Templates&#39;</span>
+    vcenter.network_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;vlan2&#39;</span>
+    vcenter.linked_clones <span style="color:#f92672">=</span> true
+    vcenter.enable_vm_customization <span style="color:#f92672">=</span> false
+  end
+ 
+  <span style="color:#75715e"># Go through nodes and configure each of them.j</span>
+  nodes.each <span style="color:#66d9ef">do</span> |node|
+    config.vm.define node<span style="color:#f92672">[</span>:hostname<span style="color:#f92672">]</span> <span style="color:#66d9ef">do</span> |node_config|
+ 
+      <span style="color:#66d9ef">if</span> node<span style="color:#f92672">[</span>:hostname<span style="color:#f92672">]</span>.include? <span style="color:#e6db74">&#39;vcsa-&#39;</span>
+        node_config.ssh.username <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;root&#39;</span>
+        node_config.ssh.insert_key <span style="color:#f92672">=</span> false
+        node_config.vm.synced_folder <span style="color:#e6db74">&#39;.&#39;</span>, <span style="color:#e6db74">&#39;/vagrant&#39;</span>, disabled: true
+        node_config.vm.provision <span style="color:#e6db74">&#34;shell&#34;</span>, inline: $script
+      end 
+      node_config.vm.box <span style="color:#f92672">=</span> node<span style="color:#f92672">[</span>:box<span style="color:#f92672">]</span>
+      node_config.vm.hostname <span style="color:#f92672">=</span> node<span style="color:#f92672">[</span>:hostname<span style="color:#f92672">]</span>
+      node_config.vm.box_url <span style="color:#f92672">=</span> node<span style="color:#f92672">[</span>:box_url<span style="color:#f92672">]</span>
+    end
+  end
+end</code></pre></div>
+
+<p>This Vagrantfile is specifying vagrant to use the vagrant-vcenter profiler to create one virtual machine (vcsa-01a) from the vcsa-5.5.0.20000-2063318-vmware_ovf-1.0.box file. You will need update the following properties to reflect your own vCenter configuration:</p>
+
+<ul>
+<li>vcenter.hostname = the IP address of your vCenter server</li>
+<li>vcenter.username = the username used to connect to your vCenter server</li>
+<li>vcenter.password = the password used to connect to your vCenter server</li>
+<li>vcenter.datacenter_name = the vCenter virtual datacenter to use for virtual machine deployment</li>
+<li>vcenter.computer_name = the vCenter host or cluster to use for virtual machine deployment. I&rsquo;ve used the cluster in my example.</li>
+<li>vcenter.datastore_name = the vCenter datastore to use for virtual machine deployment</li>
+<li>vcenter.folder_name = the vm folder that the virtual machines will be deployed to</li>
+<li>vcenter.template_folder_name = the vm folder that the vCSA template will be created in</li>
+<li>vcenter.network_name = the vCenter portgroup to connect the vCSA template to. There should be a DHCP server on this portgroup to provide IP addresses to the deployed vCSA template.</li>
+</ul>
+
+<p>There is also a script section at the top of the Vagrantfile I would like to point out. William Lam has posted several posts documenting how to automate vCSA configuration, and several of his suggestions have been included in this section. Namely those are:</p>
+
+<ul>
+<li>Accepting the EULA</li>
+<li>Configuring the vCSA to use the internal database</li>
+<li>Configuring internal SSO</li>
+<li>Starting the vCenter services</li>
+<li>Setting NTP</li>
+<li>Assigning a static IP address using vami_set_network command</li>
+</ul>
+
+<p>You might want to adjust the last part of the script, since it will set vCSA to use 192.168.1.81 as it&rsquo;s static IP address.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">echo <span style="color:#e6db74">&#34;Setting static IP address to 192.168.1.81&#34;</span>
+/opt/vmware/share/vami/vami_set_network eth0 STATICV4 <span style="color:#ae81ff">192</span>.168.1.81 <span style="color:#ae81ff">255</span>.255.255.0 <span style="color:#ae81ff">192</span>.168.1.1 &gt;&amp;- <span style="color:#ae81ff">2</span>&gt;&amp;- &lt;&amp;- &amp;</code></pre></div>
+
+<p>I prefer to set a static address for the vCSA, so that any scripts that follow the vCSA deployment will know exactly what IP address to use to connect to it. Also you might be wondering about extra characters following the VAMI command. Since this command is modifying the IP address of the virtual machine, we&rsquo;re need to run this command in the background without expecting a response. Here the breakdown of what is being done:</p>
+
+<ul>
+<li>&gt;&amp;- means close stdout.</li>
+<li>2&gt;&amp;- means close stderr.</li>
+<li>&lt;&amp;- means close stdin.</li>
+<li>&amp; means run in the background</li>
+</ul>
+
+<p>If we didn&rsquo;t pipe the vami_set_network command through these commands, vagrant would keep waiting on output in the SSH session that the command was successfully run, but the IP address had been changed so it would never receive the expected response.</p>
+
+<h3 id="4-vagrant-up">4. &ldquo;vagrant up&rdquo;</h3>
+
+<ul>
+<li>Now that we have created a Vagrantfile config file and updated it with our vCenter information we can bring up our virtual machine by running &ldquo;vagrant up&rdquo; in the directory with the Vagrantfile.</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant vcsa-test<span style="color:#f92672">]</span><span style="color:#75715e"># vagrant up</span>
+Bringing machine <span style="color:#e6db74">&#39;vcsa-01a&#39;</span> up with <span style="color:#e6db74">&#39;vcenter&#39;</span> provider...
+<span style="color:#f92672">==</span>&gt; vcsa-01a: Creating VM...
+<span style="color:#f92672">==</span>&gt; vcsa-01a: Powering on VM...
+<span style="color:#f92672">==</span>&gt; vcsa-01a: Running provisioner: shell...
+    vcsa-01a: Running: inline script
+<span style="color:#f92672">==</span>&gt; vcsa-01a: Accepting EULA ...
+<span style="color:#f92672">==</span>&gt; vcsa-01a: VC_CFG_RESULT<span style="color:#f92672">=</span>0
+<span style="color:#f92672">==</span>&gt; vcsa-01a: Configuring Embedded DB ...
+<span style="color:#f92672">==</span>&gt; vcsa-01a: insserv: Service network is missed in the runlevels <span style="color:#ae81ff">4</span> to use service postgresql
+<span style="color:#f92672">==</span>&gt; vcsa-01a: insserv: Service syslog is missed in the runlevels <span style="color:#ae81ff">4</span> to use service postgresql
+<span style="color:#f92672">==</span>&gt; vcsa-01a: VC_DB_SCHEMA_VERSION<span style="color:#f92672">=</span>VirtualCenter Database <span style="color:#ae81ff">5</span>.5
+<span style="color:#f92672">==</span>&gt; vcsa-01a: VC_DB_SCHEMA_INITIALIZED<span style="color:#f92672">=</span>1
+<span style="color:#f92672">==</span>&gt; vcsa-01a: VC_CFG_RESULT<span style="color:#f92672">=</span>0
+<span style="color:#f92672">==</span>&gt; vcsa-01a: Configuring SSO...
+<span style="color:#f92672">==</span>&gt; vcsa-01a: VC_CFG_RESULT<span style="color:#f92672">=</span>0
+<span style="color:#f92672">==</span>&gt; vcsa-01a: Starting VCSA ...
+<span style="color:#f92672">==</span>&gt; vcsa-01a: VC_CFG_RESULT<span style="color:#f92672">=</span>0
+<span style="color:#f92672">==</span>&gt; vcsa-01a: insserv: Service network is missed in the runlevels <span style="color:#ae81ff">4</span> to use service postgresql
+<span style="color:#f92672">==</span>&gt; vcsa-01a: insserv: Service syslog is missed in the runlevels <span style="color:#ae81ff">4</span> to use service postgresql
+<span style="color:#f92672">==</span>&gt; vcsa-01a: VC_CFG_RESULT<span style="color:#f92672">=</span>0
+<span style="color:#f92672">==</span>&gt; vcsa-01a: Setting static IP address to <span style="color:#ae81ff">192</span>.168.1.81
+<span style="color:#f92672">[</span>root@vagrant vcsa-test<span style="color:#f92672">]</span># </code></pre></div>
+
+<ul>
+<li>Once the &ldquo;vagrant up&rdquo; command completes, you can check the status of the vCSA vm using &ldquo;vagrant status&rdquo;:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant vcsa-test<span style="color:#f92672">]</span><span style="color:#75715e"># vagrant status</span>
+Current machine states:
+
+vcsa-01a                  running <span style="color:#f92672">(</span>vcenter<span style="color:#f92672">)</span>
+
+The VM is running. To stop this VM, you can run <span style="color:#e6db74">`</span>vagrant halt<span style="color:#e6db74">`</span> to
+shut it down forcefully, or you can run <span style="color:#e6db74">`</span>vagrant suspend<span style="color:#e6db74">`</span> to simply
+suspend the virtual machine. In either <span style="color:#66d9ef">case</span>, to restart it again,
+simply run <span style="color:#e6db74">`</span>vagrant up<span style="color:#e6db74">`</span>.
+<span style="color:#f92672">[</span>root@vagrant vcsa-test<span style="color:#f92672">]</span>#</code></pre></div>
+
+<ul>
+<li>You can now ssh into the vCSA virtual machine using &ldquo;vagrant ssh&rdquo;:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant vcsa-test<span style="color:#f92672">]</span><span style="color:#75715e"># vagrant ssh</span>
+<span style="color:#f92672">==</span>&gt; vcsa-01a: External IP <span style="color:#66d9ef">for</span> vcsa-01a: <span style="color:#ae81ff">192</span>.168.1.81
+Last login: Sat Jan <span style="color:#ae81ff">10</span> <span style="color:#ae81ff">20</span>:08:07 UTC <span style="color:#ae81ff">2015</span> from <span style="color:#ae81ff">192</span>.168.1.24 on pts/0
+Last login: Sat Jan <span style="color:#ae81ff">10</span> <span style="color:#ae81ff">20</span>:09:36 <span style="color:#ae81ff">2015</span> from <span style="color:#ae81ff">192</span>.168.1.24
+localhost:~ <span style="color:#75715e"># service vmware-vpxd status</span>
+vmware-vpxd is running
+tomcat is running
+localhost:~ <span style="color:#75715e"># exit</span>
+logout
+Connection to <span style="color:#ae81ff">192</span>.168.1.81 closed.
+<span style="color:#f92672">[</span>root@vagrant vcsa-test<span style="color:#f92672">]</span># </code></pre></div>
+
+<p>I wanted to point out that vagrant automatically detected up the IP address change we made through vmtools, so we didn&rsquo;t have to perform any additional steps for &ldquo;vagrant ssh&rdquo; to work.</p>
+
+<ul>
+<li>Once we are done using our virtual machine, it can be destroyed with a &ldquo;vagrant destroy&rdquo; command:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant vcsa-test<span style="color:#f92672">]</span><span style="color:#75715e"># vagrant destroy</span>
+    vcsa-01a: Are you sure you want to destroy the <span style="color:#e6db74">&#39;vcsa-01a&#39;</span> VM? <span style="color:#f92672">[</span>y/N<span style="color:#f92672">]</span> y
+<span style="color:#f92672">==</span>&gt; vcsa-01a: Powering off VM...
+<span style="color:#f92672">==</span>&gt; vcsa-01a: Destroying VM...
+<span style="color:#f92672">[</span>root@vagrant vcsa-test<span style="color:#f92672">]</span>#</code></pre></div>
+
+<ul>
+<li>If you are ever unsure of the state of the vagrant virtual machine you can run &ldquo;vagrant status&rdquo; to check:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant vcsa-test<span style="color:#f92672">]</span><span style="color:#75715e"># vagrant status</span>
+Current machine states:
+
+vcsa-01a                  not created <span style="color:#f92672">(</span>vcenter<span style="color:#f92672">)</span>
+
+The environment has not yet been created. Run <span style="color:#e6db74">`</span>vagrant up<span style="color:#e6db74">`</span> to
+create the environment. If a machine is not created, only the
+default provider will be shown. So <span style="color:#66d9ef">if</span> a provider is not listed,
+<span style="color:#66d9ef">then</span> the machine is not created <span style="color:#66d9ef">for</span> that environment.
+<span style="color:#f92672">[</span>root@vagrant vcsa-test<span style="color:#f92672">]</span># </code></pre></div>
+
+<h4 id="that-all-for-this-post-covering-how-to-create-a-vcsa-box-template-and-deploy-it-using-the-vagrant-vcenter-provider">That all for this post covering how to create a vCSA .box template and deploy it using the vagrant-vcenter provider.</h4>
+
+<hr />
+
+<h4 id="please-provide-any-feedback-or-suggestions-to-my-twitter-account-located-on-the-about-page">Please provide any feedback or suggestions to my twitter account located on the about page.</h4>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="https://sdorsett.github.io/post/2015-01-04-installing-vagrant-on-centos/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="https://sdorsett.github.io/post/2015-01-04-installing-vagrant-on-centos/">Installing vagrant and the vagrant-vcenter provider on CentOS 6.5</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="next">
+      <a href="https://sdorsett.github.io/post/2015-12-22-pipeline-for-creating-packer-box-files/">Setting up a pipeline for creating Packer .box files</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+    <a href="https://sdorsett.github.io/post/2015-12-22-pipeline-for-creating-packer-box-files/"><i class="fa fa-chevron-right"></i></a>
+    
+  </div>
+</div>
+
+
+
+  
+
+</div>
+
+</div>
+</div>
+<script src="https://sdorsett.github.iojs/ui.js"></script>
+<script src="https://sdorsett.github.iojs/menus.js"></script>
+
+
+
+
+
+
+</body>
+</html>
+

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Openstack on Things I find interesting</title>
+    <link>https://sdorsett.github.io/tags/openstack/</link>
+    <description>Recent content in Openstack on Things I find interesting</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2018. All rights reserved.</copyright>
+    <lastBuildDate>Tue, 21 Aug 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://sdorsett.github.io/tags/openstack/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Using Terraform to deploy an OVH public cloud server.</title>
+      <link>https://sdorsett.github.io/post/2018-08-21-using-terraform-to-deploy-to-ovh-public-cloud/</link>
+      <pubDate>Tue, 21 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/post/2018-08-21-using-terraform-to-deploy-to-ovh-public-cloud/</guid>
+      <description>This is the fifth in a series of posts that will walk you through using the Openstack-based OVH public cloud. In this post you will get introduced to using Terraform to create Openstack servers using the Openstack API. This post is assumes you have already signed up for an account with ovhcloud.com, added a payment method, created a cloud project, created an Openstack user, created a ssh keypair in the Horizon UI and downloaded the openrc.</description>
+    </item>
+    
+    <item>
+      <title>Using Vagrant to deploy an OVH public cloud server</title>
+      <link>https://sdorsett.github.io/post/2018-08-19-using-vagrant-to-deploy-to-ovh-public-cloud/</link>
+      <pubDate>Sun, 19 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/post/2018-08-19-using-vagrant-to-deploy-to-ovh-public-cloud/</guid>
+      <description>This is the fourth in a series of posts that will walk you through using the Openstack-based OVH public cloud. In this post you will get introduced to using Vagrant to create Openstack servers using the Openstack API. This post is assumes you have already signed up for an account with ovhcloud.com, added a payment method, created a cloud project, created an Openstack user, created a ssh keypair in the Horizon UI and downloaded the openrc.</description>
+    </item>
+    
+    <item>
+      <title>Using rclone to manage OVH Public Cloud swift storage</title>
+      <link>https://sdorsett.github.io/post/2018-08-14-using-rclone-to-connect-to-ovh-public-cloud-swift-storage/</link>
+      <pubDate>Tue, 14 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/post/2018-08-14-using-rclone-to-connect-to-ovh-public-cloud-swift-storage/</guid>
+      <description>This is the third in a series of posts that will walk you through using the Openstack-based OVH public cloud. In this post you will get introduced to using rclone to upload and retrieve files from the Openstack swift API.
+This post is assumes you have already signed up for an account with ovhcloud.com, added a payment method, created a cloud project and created an Openstack user. If you have not done these steps you can follow the steps in the first and second blog post in this series that will walk you through completing those steps.</description>
+    </item>
+    
+    <item>
+      <title>Using the Openstack cli to create a server on OVH public cloud</title>
+      <link>https://sdorsett.github.io/post/2018-08-10-using-the-openstack-cli-to-create-a-server-on-ovh-public-cloud/</link>
+      <pubDate>Fri, 10 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/post/2018-08-10-using-the-openstack-cli-to-create-a-server-on-ovh-public-cloud/</guid>
+      <description>This is the second in a series of posts that will walk you through using the Openstack-based OVH public cloud. In this post you will get introduced to using the Openstack cli to create an Openstack server.
+This post is assumes you have already signed up for an account with ovhcloud.com, added a payment method and created a cloud project. If you have not done these steps you can follow the first blog post in this series that will walk you through completing those steps.</description>
+    </item>
+    
+    <item>
+      <title>Manually creating an openstack server on OVH public cloud</title>
+      <link>https://sdorsett.github.io/post/2018-08-08-creating-an-openstack-server-on-ovh-public-cloud/</link>
+      <pubDate>Wed, 08 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/post/2018-08-08-creating-an-openstack-server-on-ovh-public-cloud/</guid>
+      <description>This is the first in a series of posts that will walk you through using the openstack-based OVH public cloud. In this post you will get introduced to using the ovhcloud.com UI to create an Openstack server.
+I will attempt in this post to present the options that are available to OVH public cloud customers along side the choices I made that were specific to my server.
+Let&amp;rsquo;s get started&amp;hellip;</description>
+    </item>
+    
+  </channel>
+</rss>

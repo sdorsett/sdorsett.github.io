@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.52" />
+
+  <title>Using Terraform to deploy an OVH public cloud server. &middot; Things I find interesting</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://sdorsett.github.io/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://sdorsett.github.io/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="https://sdorsett.github.io/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+ 
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="https://sdorsett.github.ioimg/favicon.ico" type="image/x-icon" />
+
+  
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="https://sdorsett.github.io/"> </a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/post/"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/about/"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/contact/"><i class='fa fa-phone fa-fw'></i>Contact</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/about/">About</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://twitter.com/standorsett" target="_blank"><i class="fa fa-twitter-square fa-fw"></i>Twitter</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://linkedin.com/in/stan-dorsett-53a8827" target="_blank"><i class="fa fa-linkedin-square fa-fw"></i>LinkedIn</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/sdorsett" target="_blank"><i class="fa fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small>&copy; 2018. All rights reserved.</small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Using Terraform to deploy an OVH public cloud server.</h1>
+  <h2></h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>21 Aug 2018, 00:00</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://sdorsett.github.iotags/terraform">terraform</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://sdorsett.github.iotags/openstack">openstack</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  
+
+<p>This is the fifth in a series of posts that will walk you through using the Openstack-based OVH public cloud. In this post you will get introduced to using Terraform to create Openstack servers using the Openstack API.
+This post is assumes you have already signed up for an account with ovhcloud.com, added a payment method, created a cloud project, created an Openstack user, created a ssh keypair in the Horizon UI and downloaded the openrc.sh file for this user. If you have not done these steps you can follow the steps in <a href="../2018-08-08-creating-an-openstack-instance-on-ovh-public-cloud">the first</a> and <a href="../2018-08-10-using-the-openstack-cli-to-create-a-server-on-ovh-public-cloud">second blog post</a> in this series that will walk you through completing those steps.</p>
+
+<p>I will attempt in this post to present the options that are available to OVH public cloud customers along side the choices I made that were specific to my Openstack server.
+Let&rsquo;s get started&hellip;</p>
+
+<h3 id="1-install-terraform">1. Install Terraform</h3>
+
+<p>The first thing you will need to do before you can move forward with this post is install Terraform. Go to <a href="https://www.terraform.io/downloads.html">https://www.terraform.io/downloads.html</a>, download the binary for your specific operating system, unzip the binary and copy it to a directory that is in your path. Here are the steps that I performed on my Mac laptop:</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">MacBook-Pro:~ standorsett$ cd ~/Downloads/
+MacBook-Pro:Downloads standorsett$ wget https://releases.hashicorp.com/terraform/0.11.8/terraform_0.11.8_darwin_amd64.zip
+--2018-08-21 <span style="color:#ae81ff">19</span>:12:36--  https://releases.hashicorp.com/terraform/0.11.8/terraform_0.11.8_darwin_amd64.zip
+Resolving releases.hashicorp.com <span style="color:#f92672">(</span>releases.hashicorp.com<span style="color:#f92672">)</span>... <span style="color:#ae81ff">151</span>.101.125.183
+Connecting to releases.hashicorp.com <span style="color:#f92672">(</span>releases.hashicorp.com<span style="color:#f92672">)</span>|<span style="color:#ae81ff">151</span>.101.125.183|:443... connected.
+HTTP request sent, awaiting response... <span style="color:#ae81ff">200</span> OK
+Length: <span style="color:#ae81ff">19269525</span> <span style="color:#f92672">(</span>18M<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>application/zip<span style="color:#f92672">]</span>
+Saving to: ‘terraform_0.11.8_darwin_amd64.zip’
+
+terraform_0.11.8_darwin_amd64.zip            <span style="color:#ae81ff">100</span>%<span style="color:#f92672">[=============================================================================================</span>&gt;<span style="color:#f92672">]</span>  <span style="color:#ae81ff">18</span>.38M  <span style="color:#ae81ff">1</span>.45MB/s    in 21s
+
+<span style="color:#ae81ff">2018</span>-08-21 <span style="color:#ae81ff">19</span>:12:57 <span style="color:#f92672">(</span><span style="color:#ae81ff">900</span> KB/s<span style="color:#f92672">)</span> - ‘terraform_0.11.8_darwin_amd64.zip’ saved <span style="color:#f92672">[</span><span style="color:#ae81ff">19269525</span>/19269525<span style="color:#f92672">]</span>
+
+MacBook-Pro:Downloads standorsett$ unzip terraform_0.11.8_darwin_amd64.zip
+Archive:  terraform_0.11.8_darwin_amd64.zip
+  inflating: terraform
+MacBook-Pro:Downloads standorsett$ mv terraform /usr/local/bin/
+MacBook-Pro:Downloads standorsett$ terraform --version
+Terraform v0.11.8
+
+MacBook-Pro:Downloads standorsett$</code></pre></div>
+
+<h3 id="2-create-a-new-directory-and-add-your-main-tf-file">2. Create a new directory and add your main.tf file</h3>
+
+<p>When using the <code>terraform</code> command, it will look for any files ending in .tf in the current directory and create them. As a result you should create a new directory for containing the terraform files we will use for creating the Openstack server.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">MacBook-Pro:~ standorsett$ mkdir -p ~/Documents/terraform/ovh_public_cloud_centos_7
+MacBook-Pro:~ standorsett$ cd ~/Documents/terraform/ovh_public_cloud_centos_7
+MacBook-Pro:ovh_public_cloud_centos_7 standorsett$</code></pre></div>
+
+<p>Next you will need to create a file named main.tf in our new directory that will describe the server you are wanting to have created.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">MacBook-Pro:ovh_public_cloud_centos_7 standorsett$ cat main.tf
+<span style="color:#75715e"># Configure the OpenStack Provider</span>
+provider <span style="color:#e6db74">&#34;openstack&#34;</span> <span style="color:#f92672">{</span>
+<span style="color:#75715e">#  user_name is unset so it defaults to OS_USERNAME environment variable</span>
+<span style="color:#75715e">#  tenant_name is unset so it defaults to OS_TENANT_NAME or OS_PROJECT_NAME environment variable</span>
+<span style="color:#75715e">#  password is unset so it defaults to OS_PASSWORD environment variable</span>
+<span style="color:#75715e">#  auth_url is unset so it defaults to OS_AUTH_URL environment variable</span>
+<span style="color:#75715e">#  region is unset so it defaults to OS_REGION_NAME environment variable</span>
+<span style="color:#f92672">}</span>
+
+<span style="color:#75715e"># get an image named &#34;Centos 7&#34;</span>
+data <span style="color:#e6db74">&#34;openstack_images_image_v2&#34;</span> <span style="color:#e6db74">&#34;centos_7&#34;</span> <span style="color:#f92672">{</span>
+  name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Centos 7&#34;</span>
+  most_recent <span style="color:#f92672">=</span> true
+<span style="color:#f92672">}</span>
+
+<span style="color:#75715e"># get a flavor named &#34;s1-2&#34;</span>
+data <span style="color:#e6db74">&#34;openstack_compute_flavor_v2&#34;</span> <span style="color:#e6db74">&#34;s1-2&#34;</span> <span style="color:#f92672">{</span>
+  name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;s1-2&#34;</span>
+<span style="color:#f92672">}</span>
+
+resource <span style="color:#e6db74">&#34;openstack_compute_instance_v2&#34;</span> <span style="color:#e6db74">&#34;basic&#34;</span> <span style="color:#f92672">{</span>
+  name            <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;terraform_centos_7&#34;</span>
+  image_id        <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>data.openstack_images_image_v2.centos_7.id<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+  flavor_id       <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>data.openstack_compute_flavor_v2.s1-2.id<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+  key_pair        <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;vagrant-keypair&#34;</span>                      <span style="color:#75715e"># ssh keypair name</span>
+  security_groups <span style="color:#f92672">=</span> <span style="color:#f92672">[</span><span style="color:#e6db74">&#34;default&#34;</span><span style="color:#f92672">]</span>
+
+  network <span style="color:#f92672">{</span>
+    name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Ext-Net&#34;</span>
+  <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+MacBook-Pro:ovh_public_cloud_centos_7 standorsett$</code></pre></div>
+
+<p>The <code>provider.keypair_name</code> should be set to match the name of the keypair you created in the Openstack Horizon UI in the second blog post. The <code>provider.image</code> and <code>provider.flavor</code> values listed above are the values I used with my testing.</p>
+
+<p>You also might notice that all of the details in the provider block of main.tf are commented out which means they will be pulled from environment variables set in your openrc.sh file.</p>
+
+<h3 id="3-source-your-openrc-sh-file">3. Source your openrc.sh file</h3>
+
+<p>Source the openrc.sh you previously downloaded for your Openstack user. Enter the password for your Openstack user when prompted. This step will export the environmental variables that the Vagrantfile needs in order to create the Openstack server.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">MacBook-Pro:ovh_public_cloud_centos_7 standorsett$ source ~/Downloads/openrc.sh
+Please enter your OpenStack Password:
+MacBook-Pro:ovh_public_cloud_centos_7 standorsett$</code></pre></div>
+
+<h3 id="4-download-all-needed-terraform-providers-by-running-terraform-init">4. Download all needed Terraform providers by running <code>terraform init</code></h3>
+
+<p>Terraform will automatically download all Terraform providers referenced by any .tf files by running <code>terraform init</code>. Here is the output from when I ran this command.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">MacBook-Pro:ovh_public_cloud_centos_7 standorsett$
+Initializing provider plugins...
+
+The following providers <span style="color:#66d9ef">do</span> not have any version constraints in configuration,
+so the latest version was installed.
+
+To prevent automatic upgrades to new major versions that may contain breaking
+changes, it is recommended to add version <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;...&#34;</span> constraints to the
+corresponding provider blocks in configuration, with the constraint strings
+suggested below.
+
+* provider.openstack: version <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;~&gt; 1.8&#34;</span>
+
+Terraform has been successfully initialized!
+
+You may now begin working with Terraform. Try running <span style="color:#e6db74">&#34;terraform plan&#34;</span> to see
+any changes that are required <span style="color:#66d9ef">for</span> your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration <span style="color:#66d9ef">for</span> Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to <span style="color:#66d9ef">do</span> so <span style="color:#66d9ef">if</span> necessary.
+MacBook-Pro:ovh_public_cloud_centos_7 standorsett$</code></pre></div>
+
+<h3 id="5-view-all-the-proposed-terraform-changes-by-running-terraform-plan">5. View all the proposed Terraform changes by running <code>terraform plan</code></h3>
+
+<p>By running <code>terraform plan</code> Terrraform will output all the details of the resources that will be created when commanded to apply the changes.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">MacBook-Pro:ovh_public_cloud_centos_7 standorsett$
+Refreshing Terraform state in-memory prior to plan...
+The refreshed state will be used to calculate this plan, but will not be
+persisted to local or remote state storage.
+
+data.openstack_images_image_v2.centos_7: Refreshing state...
+data.openstack_compute_flavor_v2.s1-2: Refreshing state...
+
+------------------------------------------------------------------------
+
+An execution plan has been generated and is shown below.
+Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  + openstack_compute_instance_v2.basic
+      id:                         &lt;computed&gt;
+      access_ip_v4:               &lt;computed&gt;
+      access_ip_v6:               &lt;computed&gt;
+      all_metadata.%:             &lt;computed&gt;
+      availability_zone:          &lt;computed&gt;
+      flavor_id:                  <span style="color:#e6db74">&#34;a64381e7-c4e7-4b01-9fbe-da405c544d2e&#34;</span>
+      flavor_name:                &lt;computed&gt;
+      force_delete:               <span style="color:#e6db74">&#34;false&#34;</span>
+      image_id:                   <span style="color:#e6db74">&#34;e0a89ff2-e98f-4a34-afae-68f9f6c9b5ad&#34;</span>
+      image_name:                 &lt;computed&gt;
+      key_pair:                   <span style="color:#e6db74">&#34;vagrant-keypair&#34;</span>
+      name:                       <span style="color:#e6db74">&#34;terraform_centos_7&#34;</span>
+      network.#:                  <span style="color:#e6db74">&#34;1&#34;</span>
+      network.0.access_network:   <span style="color:#e6db74">&#34;false&#34;</span>
+      network.0.fixed_ip_v4:      &lt;computed&gt;
+      network.0.fixed_ip_v6:      &lt;computed&gt;
+      network.0.floating_ip:      &lt;computed&gt;
+      network.0.mac:              &lt;computed&gt;
+      network.0.name:             <span style="color:#e6db74">&#34;Ext-Net&#34;</span>
+      network.0.port:             &lt;computed&gt;
+      network.0.uuid:             &lt;computed&gt;
+      power_state:                <span style="color:#e6db74">&#34;active&#34;</span>
+      region:                     &lt;computed&gt;
+      security_groups.#:          <span style="color:#e6db74">&#34;1&#34;</span>
+      security_groups.3814588639: <span style="color:#e6db74">&#34;default&#34;</span>
+      stop_before_destroy:        <span style="color:#e6db74">&#34;false&#34;</span>
+
+
+Plan: <span style="color:#ae81ff">1</span> to add, <span style="color:#ae81ff">0</span> to change, <span style="color:#ae81ff">0</span> to destroy.
+
+------------------------------------------------------------------------
+
+Note: You didn<span style="color:#e6db74">&#39;t specify an &#34;-out&#34; parameter to save this plan, so Terraform
+</span><span style="color:#e6db74">can&#39;</span>t guarantee that exactly these actions will be performed <span style="color:#66d9ef">if</span>
+<span style="color:#e6db74">&#34;terraform apply&#34;</span> is subsequently run.
+MacBook-Pro:ovh_public_cloud_centos_7 standorsett$</code></pre></div>
+
+<h3 id="6-apply-the-proposed-terraform-changes-by-running-terraform-apply-auto-approve">6. Apply the proposed Terraform changes by running <code>terraform apply -auto-approve</code></h3>
+
+<p>After verifying that the proposed change outputed by <code>terraform plan</code> look good, apply those changes by running <code>terraform apply -auto-approve</code>.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">MacBook-Pro:ovh_public_cloud_centos_7 standorsett$ terraform apply -auto-approve
+data.openstack_images_image_v2.centos_7: Refreshing state...
+data.openstack_compute_flavor_v2.s1-2: Refreshing state...
+openstack_compute_instance_v2.basic: Creating...
+  access_ip_v4:               <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;&lt;computed&gt;&#34;</span>
+  access_ip_v6:               <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;&lt;computed&gt;&#34;</span>
+  all_metadata.%:             <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;&lt;computed&gt;&#34;</span>
+  availability_zone:          <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;&lt;computed&gt;&#34;</span>
+  flavor_id:                  <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;a64381e7-c4e7-4b01-9fbe-da405c544d2e&#34;</span>
+  flavor_name:                <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;&lt;computed&gt;&#34;</span>
+  force_delete:               <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;false&#34;</span>
+  image_id:                   <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;e0a89ff2-e98f-4a34-afae-68f9f6c9b5ad&#34;</span>
+  image_name:                 <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;&lt;computed&gt;&#34;</span>
+  key_pair:                   <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;vagrant-keypair&#34;</span>
+  name:                       <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;terraform_centos_7&#34;</span>
+  network.#:                  <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;1&#34;</span>
+  network.0.access_network:   <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;false&#34;</span>
+  network.0.fixed_ip_v4:      <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;&lt;computed&gt;&#34;</span>
+  network.0.fixed_ip_v6:      <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;&lt;computed&gt;&#34;</span>
+  network.0.floating_ip:      <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;&lt;computed&gt;&#34;</span>
+  network.0.mac:              <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;&lt;computed&gt;&#34;</span>
+  network.0.name:             <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;Ext-Net&#34;</span>
+  network.0.port:             <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;&lt;computed&gt;&#34;</span>
+  network.0.uuid:             <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;&lt;computed&gt;&#34;</span>
+  power_state:                <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;active&#34;</span>
+  region:                     <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;&lt;computed&gt;&#34;</span>
+  security_groups.#:          <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;1&#34;</span>
+  security_groups.3814588639: <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;default&#34;</span>
+  stop_before_destroy:        <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;false&#34;</span>
+openstack_compute_instance_v2.basic: Still creating... <span style="color:#f92672">(</span>10s elapsed<span style="color:#f92672">)</span>
+openstack_compute_instance_v2.basic: Creation complete after 16s <span style="color:#f92672">(</span>ID: 130158c7-6e13-4b79-b729-b4250ac82b04<span style="color:#f92672">)</span>
+
+Apply complete! Resources: <span style="color:#ae81ff">1</span> added, <span style="color:#ae81ff">0</span> changed, <span style="color:#ae81ff">0</span> destroyed.
+
+MacBook-Pro:ovh_public_cloud_centos_7 standorsett$</code></pre></div>
+
+<h3 id="7-use-terraform-show-to-display-the-configuration-details-of-the-deployed-openstack-server">7. Use <code>terraform show</code> to display the configuration details of the deployed Openstack server</h3>
+
+<p>After deploying your server with <code>terraform apply</code> you can query the configuration details by running <code>terraform show</code>. This command will return the details of the data objects queried as well as the server deployed.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">MacBook-Pro:ovh_public_cloud_centos_7 standorsett$ terraform show
+data.openstack_compute_flavor_v2.s1-2:
+  id <span style="color:#f92672">=</span> a64381e7-c4e7-4b01-9fbe-da405c544d2e
+  disk <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span>
+  is_public <span style="color:#f92672">=</span> true
+  name <span style="color:#f92672">=</span> s1-2
+  ram <span style="color:#f92672">=</span> <span style="color:#ae81ff">2000</span>
+  rx_tx_factor <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+  swap <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+  vcpus <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+data.openstack_images_image_v2.centos_7:
+  id <span style="color:#f92672">=</span> e0a89ff2-e98f-4a34-afae-68f9f6c9b5ad
+  checksum <span style="color:#f92672">=</span> 8abade82e1295d92c7f360f3be1029d4
+  container_format <span style="color:#f92672">=</span> bare
+  disk_format <span style="color:#f92672">=</span> raw
+  file <span style="color:#f92672">=</span> /v2/images/e0a89ff2-e98f-4a34-afae-68f9f6c9b5ad/file
+  metadata.% <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+  min_disk_gb <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+  min_ram_mb <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+  most_recent <span style="color:#f92672">=</span> true
+  name <span style="color:#f92672">=</span> Centos <span style="color:#ae81ff">7</span>
+  owner <span style="color:#f92672">=</span> f0dffa44438a41bb9790b67b57b72dcf
+  protected <span style="color:#f92672">=</span> false
+  schema <span style="color:#f92672">=</span> /v2/schemas/image
+  size_bytes <span style="color:#f92672">=</span> <span style="color:#ae81ff">5242880000</span>
+  sort_direction <span style="color:#f92672">=</span> asc
+  sort_key <span style="color:#f92672">=</span> name
+  visibility <span style="color:#f92672">=</span> public
+openstack_compute_instance_v2.basic:
+  id <span style="color:#f92672">=</span> 130158c7-6e13-4b79-b729-b4250ac82b04
+  access_ip_v4 <span style="color:#f92672">=</span> <span style="color:#ae81ff">147</span>.135.76.68
+  access_ip_v6 <span style="color:#f92672">=</span> <span style="color:#f92672">[</span><span style="color:#ae81ff">2604</span>:2dc0:101:100::42<span style="color:#f92672">]</span>
+  all_metadata.% <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+  availability_zone <span style="color:#f92672">=</span> nova
+  flavor_id <span style="color:#f92672">=</span> a64381e7-c4e7-4b01-9fbe-da405c544d2e
+  flavor_name <span style="color:#f92672">=</span> s1-2
+  force_delete <span style="color:#f92672">=</span> false
+  image_id <span style="color:#f92672">=</span> e0a89ff2-e98f-4a34-afae-68f9f6c9b5ad
+  image_name <span style="color:#f92672">=</span> Centos <span style="color:#ae81ff">7</span>
+  key_pair <span style="color:#f92672">=</span> vagrant-keypair
+  name <span style="color:#f92672">=</span> terraform_centos_7
+  network.# <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+  network.0.access_network <span style="color:#f92672">=</span> false
+  network.0.fixed_ip_v4 <span style="color:#f92672">=</span> <span style="color:#ae81ff">147</span>.135.76.68
+  network.0.fixed_ip_v6 <span style="color:#f92672">=</span> <span style="color:#f92672">[</span><span style="color:#ae81ff">2604</span>:2dc0:101:100::42<span style="color:#f92672">]</span>
+  network.0.floating_ip <span style="color:#f92672">=</span>
+  network.0.mac <span style="color:#f92672">=</span> fa:16:3e:ef:3d:4c
+  network.0.name <span style="color:#f92672">=</span> Ext-Net
+  network.0.port <span style="color:#f92672">=</span>
+  network.0.uuid <span style="color:#f92672">=</span> b347ed75-8603-4ce0-a40c-c6c98a8820fc
+  power_state <span style="color:#f92672">=</span> active
+  region <span style="color:#f92672">=</span> US-EAST-VA-1
+  security_groups.# <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+  security_groups.3814588639 <span style="color:#f92672">=</span> default
+  stop_before_destroy <span style="color:#f92672">=</span> false
+
+MacBook-Pro:ovh_public_cloud_centos_7 standorsett$</code></pre></div>
+
+<p>If you look back at the output of your command you will see a line displaying the <code>network.0.fixed_ip_v4</code> IP address that you can use to connect with ssh.</p>
+
+<h3 id="8-connect-to-the-deployed-openstack-server-using-ssh">8. Connect to the deployed Openstack server using ssh.</h3>
+
+<p>You can now connect to the IP address that is displayed with <code>terraform show</code> using the private ssh key you created in a previous blog post.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">MacBook-Pro:ovh_public_cloud_centos_7 standorsett$ ssh -i ~/.ssh/id_rsa_vagrant-keypair centos@147.135.76.49
+The authenticity of host <span style="color:#e6db74">&#39;147.135.76.49 (147.135.76.49)&#39;</span> can<span style="color:#e6db74">&#39;t be established.
+</span><span style="color:#e6db74">ECDSA key fingerprint is SHA256:aVSsv0mHKgIizglcvouJkvtBBOiZfNcQTpIc5oxhNO4.
+</span><span style="color:#e6db74">ECDSA key fingerprint is MD5:91:74:c1:46:20:9c:11:0d:07:1d:f5:33:43:a9:11:74.
+</span><span style="color:#e6db74">Are you sure you want to continue connecting (yes/no)? yes
+</span><span style="color:#e6db74">Warning: Permanently added &#39;</span><span style="color:#ae81ff">147</span>.135.76.49<span style="color:#960050;background-color:#1e0010">&#39;</span> <span style="color:#f92672">(</span>ECDSA<span style="color:#f92672">)</span> to the list of known hosts.
+<span style="color:#f92672">[</span>centos@terraform-centos-7 ~<span style="color:#f92672">]</span>$ hostname
+terraform-centos-7
+<span style="color:#f92672">[</span>centos@terraform-centos-7 ~<span style="color:#f92672">]</span>$ ip a
+<span style="color:#ae81ff">1</span>: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu <span style="color:#ae81ff">65536</span> qdisc noqueue state UNKNOWN qlen <span style="color:#ae81ff">1</span>
+    link/loopback <span style="color:#ae81ff">00</span>:00:00:00:00:00 brd <span style="color:#ae81ff">00</span>:00:00:00:00:00
+    inet <span style="color:#ae81ff">127</span>.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host
+       valid_lft forever preferred_lft forever
+<span style="color:#ae81ff">2</span>: eth0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu <span style="color:#ae81ff">1500</span> qdisc pfifo_fast state UP qlen <span style="color:#ae81ff">1000</span>
+    link/ether fa:16:3e:04:af:e8 brd ff:ff:ff:ff:ff:ff
+    inet <span style="color:#ae81ff">147</span>.135.76.49/32 brd <span style="color:#ae81ff">147</span>.135.76.49 scope global dynamic eth0
+       valid_lft 86355sec preferred_lft 86355sec
+    inet6 fe80::f816:3eff:fe04:afe8/64 scope link
+       valid_lft forever preferred_lft forever
+<span style="color:#f92672">[</span>centos@terraform-centos-7 ~<span style="color:#f92672">]</span>$ exit
+logout
+Connection to <span style="color:#ae81ff">147</span>.135.76.49 closed.
+MacBook-Pro:ovh_public_cloud_centos_7 standorsett$</code></pre></div>
+
+<h3 id="9-destroy-your-terraform-openstack-server">9. Destroy your Terraform Openstack server.</h3>
+
+<p>After you are finished testing your Openstack server, you should destroy it in order to prevent being charged for it’s usage. This can be done using the <code>terraform destroy --force</code> command.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">MacBook-Pro:ovh_public_cloud_centos_7 standorsett$ terraform destroy --force
+data.openstack_images_image_v2.centos_7: Refreshing state...
+data.openstack_compute_flavor_v2.s1-2: Refreshing state...
+openstack_compute_instance_v2.basic: Refreshing state... <span style="color:#f92672">(</span>ID: 130158c7-6e13-4b79-b729-b4250ac82b04<span style="color:#f92672">)</span>
+openstack_compute_instance_v2.basic: Destroying... <span style="color:#f92672">(</span>ID: 130158c7-6e13-4b79-b729-b4250ac82b04<span style="color:#f92672">)</span>
+openstack_compute_instance_v2.basic: Still destroying... <span style="color:#f92672">(</span>ID: 130158c7-6e13-4b79-b729-b4250ac82b04, 10s elapsed<span style="color:#f92672">)</span>
+openstack_compute_instance_v2.basic: Destruction complete after 11s
+
+Destroy complete! Resources: <span style="color:#ae81ff">1</span> destroyed.
+MacBook-Pro:ovh_public_cloud_centos_7 standorsett$</code></pre></div>
+
+<h4 id="that-all-for-this-post-covering-how-to-use-terraform-to-deploy-a-ovh-public-cloud-server-in-this-post-you-have-only-scratched-the-surface-of-what-you-can-do-with-terraform-but-hopefully-if-showed-how-simple-it-is-to-get-started">That all for this post covering how to use Terraform to deploy a OVH public cloud server. In this post you have only scratched the surface of what you can do with Terraform, but hopefully if showed how simple it is to get started.</h4>
+
+<hr />
+
+<h4 id="please-provide-any-feedback-or-suggestions-to-my-twitter-account-located-on-the-about-page">Please provide any feedback or suggestions to my twitter account located on the about page.</h4>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="https://sdorsett.github.io/post/2018-08-19-using-vagrant-to-deploy-to-ovh-public-cloud/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="https://sdorsett.github.io/post/2018-08-19-using-vagrant-to-deploy-to-ovh-public-cloud/">Using Vagrant to deploy an OVH public cloud server</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+  </div>
+</div>
+
+
+
+  
+
+</div>
+
+</div>
+</div>
+<script src="https://sdorsett.github.iojs/ui.js"></script>
+<script src="https://sdorsett.github.iojs/menus.js"></script>
+
+
+
+
+
+
+</body>
+</html>
+

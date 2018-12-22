@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.52" />
+
+  <title>Using the Openstack cli to create a server on OVH public cloud &middot; Things I find interesting</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://sdorsett.github.io/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://sdorsett.github.io/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="https://sdorsett.github.io/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+ 
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="https://sdorsett.github.ioimg/favicon.ico" type="image/x-icon" />
+
+  
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="https://sdorsett.github.io/"> </a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/post/"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/about/"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/contact/"><i class='fa fa-phone fa-fw'></i>Contact</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/about/">About</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://twitter.com/standorsett" target="_blank"><i class="fa fa-twitter-square fa-fw"></i>Twitter</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://linkedin.com/in/stan-dorsett-53a8827" target="_blank"><i class="fa fa-linkedin-square fa-fw"></i>LinkedIn</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/sdorsett" target="_blank"><i class="fa fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small>&copy; 2018. All rights reserved.</small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Using the Openstack cli to create a server on OVH public cloud</h1>
+  <h2></h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>10 Aug 2018, 00:00</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://sdorsett.github.iotags/openstack">openstack</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://sdorsett.github.iotags/ovh">OVH</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  
+
+<p>This is the second in a series of posts that will walk you through using the Openstack-based OVH public cloud. In this post you will get introduced to using the Openstack cli to create an Openstack server.</p>
+
+<p>This post is assumes you have already signed up for an account with ovhcloud.com, added a payment method and created a cloud project. If you have not done these steps you can follow <a href="../2018-08-08-creating-an-openstack-instance-on-ovh-public-cloud">the first blog post</a> in this series that will walk you through completing those steps.</p>
+
+<p>I will attempt in this post to present the options that are available to OVH public cloud customers along side the choices I made that were specific to my Openstack server.</p>
+
+<p>Let&rsquo;s get started&hellip;</p>
+
+<hr />
+
+<h3 id="1-sign-into-ovhcloud-com-https-ovhcloud-com-auth">1. Sign into <a href="https://ovhcloud.com/auth/">ovhcloud.com</a>.</h3>
+
+<p>The first thing you will need to do before you can move forward with this post is sign into <a href="https://ovhcloud.com/auth/">https://ovhcloud.com/auth/</a> using the account you created in the first blog post..</p>
+
+<p><img src="https://sdorsett.github.io/static/08102018-01-login-username-password.png" alt="screenshot" /></p>
+
+<p>If you setup two-factor authentication, you will be prompted to enter the current two-factor token.</p>
+
+<p><img src="https://sdorsett.github.io/static/08102018-02-login-two-factor.png" alt="screenshot" /></p>
+
+<h3 id="2-create-a-new-user-account-to-use-with-the-openstack-api">2. Create a new user account to use with the Openstack API.</h3>
+
+<p>The Openstack API will not use the credentials you used to log into the ovhcloud.com site, but will instead use an Openstack user to create, modify or view objects in an OVH cloud project.</p>
+
+<p>If have not created one already, you will need to create an Openstack user account within the cloud project you want to work with. You can display all the Openstack user accounts that have been created in a cloud project by clicking the &lsquo;Openstack&rsquo; tab within any cloud project.</p>
+
+<p><img src="https://sdorsett.github.io/static/08102018-03-openstack-users.png" alt="screenshot" /></p>
+
+<p>Create a new user by clicking the &ldquo;Add user&rdquo; button.</p>
+
+<p><img src="https://sdorsett.github.io/static/08102018-04-openstack-add-user.png" alt="screenshot" /></p>
+
+<p>Once you have specified the username and clicked &ldquo;Confirm&rdquo; you will be taken back to the Openstack tab. You will see the user you created and will also be able to see the password generated for this user for a short period of time. Make sure you record this password to a safe place since it will not be visible for very long.</p>
+
+<p><img src="https://sdorsett.github.io/static/08102018-05-openstack-users-password-shown.png" alt="screenshot" /></p>
+
+<p>After a period of time you will no longer be able to see the password for the user you created, but If you do happen to forget the password, you can always have a new password regenerated.</p>
+
+<p><img src="https://sdorsett.github.io/static/08102018-14-openstack-users-password-hidden.png" alt="screenshot" /></p>
+
+<h3 id="3-download-an-openstack-configuration-file">3. Download an Openstack configuration file.</h3>
+
+<p>Now that you have an Openstack user created you can download an openrc.sh file that will contain all the details need by the Openstack cli to connect as this user. Click the &lsquo;&hellip;&rsquo; icon and the end of the line for the user you want to download a configuration file for and select &lsquo;Downloading an Openstack configuration file&rsquo;.</p>
+
+<p><img src="https://sdorsett.github.io/static/08102018-06-download-openrc.png" alt="screenshot" /></p>
+
+<p>Select the region (datacenter) you want to connect to and click &lsquo;confirm&rsquo;. Your browser will next prompt you where you want to save the downloaded openrc.sh file.</p>
+
+<p><img src="https://sdorsett.github.io/static/08102018-07-download-openrc-region.png" alt="screenshot" /></p>
+
+<p>If you look at the downloaded file you will see that it sets environment variables containing the Openstack details needed to connect to your cloud project.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">MacBook-Pro:Desktop standorsett$ cat ~/Downloads/openrc.sh
+<span style="color:#75715e">#!/bin/bash
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e"># To use an Openstack cloud you need to authenticate against keystone, which</span>
+<span style="color:#75715e"># returns a **Token** and **Service Catalog**. The catalog contains the</span>
+<span style="color:#75715e"># endpoint for all services the user/tenant has access to - including nova,</span>
+<span style="color:#75715e"># glance, keystone, swift.</span>
+#
+export OS_AUTH_URL<span style="color:#f92672">=</span>https://auth.cloud.ovh.us/v3/
+export OS_IDENTITY_API_VERSION<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span>
+
+export OS_USER_DOMAIN_NAME<span style="color:#f92672">=</span><span style="color:#e6db74">${</span>OS_USER_DOMAIN_NAME<span style="color:#66d9ef">:-</span><span style="color:#e6db74">&#34;Default&#34;</span><span style="color:#e6db74">}</span>
+export OS_PROJECT_DOMAIN_NAME<span style="color:#f92672">=</span><span style="color:#e6db74">${</span>OS_PROJECT_DOMAIN_NAME<span style="color:#66d9ef">:-</span><span style="color:#e6db74">&#34;Default&#34;</span><span style="color:#e6db74">}</span>
+
+
+<span style="color:#75715e"># With the addition of Keystone we have standardized on the term **tenant**</span>
+<span style="color:#75715e"># as the entity that owns the resources.</span>
+export OS_TENANT_ID<span style="color:#f92672">=</span>2897923a654b40d0b8b36a502bda4a8f
+export OS_TENANT_NAME<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;3543682553721111&#34;</span>
+
+<span style="color:#75715e"># In addition to the owning entity (tenant), openstack stores the entity</span>
+<span style="color:#75715e"># performing the action as the **user**.</span>
+export OS_USERNAME<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;5r7jJyuwwwsv&#34;</span>
+
+<span style="color:#75715e"># With Keystone you pass the keystone password.</span>
+echo <span style="color:#e6db74">&#34;Please enter your OpenStack Password: &#34;</span>
+read -sr OS_PASSWORD_INPUT
+export OS_PASSWORD<span style="color:#f92672">=</span>$OS_PASSWORD_INPUT
+
+<span style="color:#75715e"># If your configuration has multiple regions, we set that information here.</span>
+<span style="color:#75715e"># OS_REGION_NAME is optional and only valid in certain environments.</span>
+export OS_REGION_NAME<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;US-EAST-VA-1&#34;</span>
+<span style="color:#75715e"># Do not leave a blank variable, unset it if it was empty</span>
+<span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> -z <span style="color:#e6db74">&#34;</span>$OS_REGION_NAME<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span> unset OS_REGION_NAME; <span style="color:#66d9ef">fi</span>
+MacBook-Pro:Desktop standorsett$</code></pre></div>
+
+<p>The only piece of information that this file does not contain is your password, which it will prompt for when you source this file.</p>
+
+<h3 id="4-log-into-the-openstack-horizon-ui">4. Log into the Openstack Horizon UI.</h3>
+
+<p>Just like you needed to create an Openstack user for interacting with the Openstack API, you will need to create a ssh keypair used for connecting to Openstack servers. This can be done within the Openstack Horizon UI.</p>
+
+<p>Click the <code>...</code> icon and the end of the line for the user you want to use for interacting with the Openstack API and select <code>Launch Openstack Horizon</code>.</p>
+
+<p><img src="https://sdorsett.github.io/static/08102018-08-launch-openstack-horizon.png" alt="screenshot" /></p>
+
+<p>This will open another browser tab for the Openstack Horizon UI with your username already filled in. Provide the password for this user and click <code>connect</code>.</p>
+
+<p><img src="https://sdorsett.github.io/static/08102018-09-login-openstack-horizon.png" alt="screenshot" /></p>
+
+<h3 id="5-create-a-ssh-key-pair-in-the-openstack-horizon-ui">5. Create a ssh key-pair in the Openstack Horizon UI.</h3>
+
+<p>We need to add a new ssh keypair that the Openstack API can add to servers that are created through the API. To keep things simple I added the same public ssh key that I generated in the first blog post.</p>
+
+<p>To add a new ssh key pair go to <code>Project | Compute | Key pairs | Create Key Pair</code></p>
+
+<p><img src="https://sdorsett.github.io/static/08102018-10-openstack-horizon-key-pairs.png" alt="screenshot" /></p>
+
+<p>Give the key pair a friendly name you can remember and paste the contents of the public key file. Click <code>Import Key Pair</code> to add this key pair.</p>
+
+<p><img src="https://sdorsett.github.io/static/08102018-12-openstack-horizon-import-key-pair.png" alt="screenshot" /></p>
+
+<p>The key pair you just added will now be visible in the Horizon UI.</p>
+
+<p><img src="https://sdorsett.github.io/static/08102018-13-openstack-horizon-key-pairs.png" alt="screenshot" /></p>
+
+<h3 id="6-installing-the-openstack-cli">6. Installing the Openstack cli.</h3>
+
+<p>You will need to install the openstack cli on the operating system you are using. You can easily find instruction for installing it on whatever OS you prefer to use. I quickly installed it on my Mac laptop with homebrew using the following commands.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">brew install python2
+pip2 install --upgrade pip setuptools
+pip2 install --upgrade python-openstackclient</code></pre></div>
+
+<h3 id="7-sourcing-the-openrc-sh-file">7. Sourcing the openrc.sh file</h3>
+
+<p>The first step to using the Openstack cli you just installed is to source the openrc.sh file you downloaded in step 3. This will set environment variables that the Openstack cli will use to connect to the OVH public cloud. When you source the openrc.sh file you will be prompted for the password of the Openstack user listed in this file.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">MacBook-Pro:~ standorsett$ source ~/Downloads/openrc.sh
+Please enter your OpenStack Password:
+MacBook-Pro:~ standorsett$</code></pre></div>
+
+<p>If you take a look at your exported environmental variables after sourcing the openrc.sh file, you will see the values from the opensh.rc file set along with your password.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">MacBook-Pro:~ standorsett$ export | grep OS_
+declare -x OS_AUTH_URL<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://auth.cloud.ovh.us/v3/&#34;</span>
+declare -x OS_IDENTITY_API_VERSION<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;3&#34;</span>
+declare -x OS_PASSWORD<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;*******************************&#34;</span>
+declare -x OS_PROJECT_DOMAIN_NAME<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Default&#34;</span>
+declare -x OS_REGION_NAME<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;US-EAST-VA-1&#34;</span>
+declare -x OS_TENANT_ID<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;2897923a654b40d0b8b36a502bda4a8f&#34;</span>
+declare -x OS_TENANT_NAME<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;3543682553721111&#34;</span>
+declare -x OS_USERNAME<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;5r7jJyuwwwsv&#34;</span>
+declare -x OS_USER_DOMAIN_NAME<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Default&#34;</span>
+MacBook-Pro:~ standorsett$</code></pre></div>
+
+<h3 id="8-using-the-openstack-cli-to-create-an-openstack-server">8. Using the Openstack cli to create an Openstack server</h3>
+
+<p>Now that you have sourced the openrc.sh file you can create an Openstack server using the Openstack cli.</p>
+
+<p>The four pieces of information you will need to create a new server are:</p>
+
+<ul>
+<li>The ssh key pair name that will be allowed to connect.</li>
+<li>The operating system (image) you want to use.</li>
+<li>The size of the server (flavor) you want to use.</li>
+<li>The security group you want to have applied to the server.</li>
+</ul>
+
+<p>First list the ssh key pairs so you can see the key pair you created in step 5 by running <code>openstack keypair list</code>. You will need the name of this keypair shortly.</p>
+
+<p><img src="https://sdorsett.github.io/static/08102018-16-openstack-cli-keypair-list.png" alt="screenshot" /></p>
+
+<p>Next list the available operating system images by running <code>openstack image list</code>. You will need the ID of the image you want to use</p>
+
+<p>I noted <code>e0a89ff2-e98f-4a34-afae-68f9f6c9b5ad</code> for the ID of the Centos 7 image I wanted to use in my test.</p>
+
+<p><img src="https://sdorsett.github.io/static/08102018-17-openstack-cli-image-list.png" alt="screenshot" /></p>
+
+<p>Next list the available server sizes or flavors by running <code>openstack flavor list</code>. You will need the ID of the flavor of the server you want to create. I wanted to use a <code>s1-2</code> flavor image since it was the smallest sandbox server with the lowest hourly rate, so I noted it&rsquo;s ID was <code>a64381e7-c4e7-4b01-9fbe-da405c544d2e</code></p>
+
+<p><img src="https://sdorsett.github.io/static/08102018-18-openstack-cli-flavor-list.png" alt="screenshot" /></p>
+
+<p>Finally list the security groups by running <code>openstack security group list</code>. The default security group which allows all inbound and outbound traffic is named <code>default</code>. I decided to use this default security group for my test rather than create a new one that was more restrictive.</p>
+
+<p><img src="https://sdorsett.github.io/static/08102018-19-openstack-cli-security-group-list.png" alt="screenshot" />
+The default security group is named <code>default</code> so you will need to specify it when creating a server..</p>
+
+<p>Now knowing the flavor id, image id, keypair name and security group name you are ready to create a new openstack server using a command like the following</p>
+
+<pre><code>openstack server create --flavor a64381e7-c4e7-4b01-9fbe-da405c544d2e --image e0a89ff2-e98f-4a34-afae-68f9f6c9b5ad --key-name ovhus_public_cloud --security-group default openstack_cli_test
+</code></pre>
+
+<p>Below is a screenshot of me running that command.</p>
+
+<p><img src="https://sdorsett.github.io/static/08102018-20-openstack-cli-server-create.png" alt="screenshot" /></p>
+
+<p>After the Openstack server has been created you can run <code>openstack server list</code> to show the details of the server you just created. The networks field will show the IP address of the server.</p>
+
+<p><img src="https://sdorsett.github.io/static/08102018-21-openstack-cli-server-list.png" alt="screenshot" /></p>
+
+<p>Now that you know the IP address of the server you just created, You can test connecting to this server using the ssh key you created in the previous blog post.</p>
+
+<p><img src="https://sdorsett.github.io/static/08102018-22-openstack-cli-server-ssh.png" alt="screenshot" /></p>
+
+<h3 id="9-validating-the-openstack-server-in-ovhcloud-com-ui">9. Validating the Openstack server in ovhcloud.com UI</h3>
+
+<p>You can check the ovhcloud.com UI to confirm the server has been created and the IP address is the same as what <code>openstack server list</code> displayed.</p>
+
+<p><img src="https://sdorsett.github.io/static/08102018-23-ovhcloud-ui-server-created.png" alt="screenshot" /></p>
+
+<h3 id="10-deleting-the-openstack-server-using-the-openstack-cli">10. Deleting the Openstack server using the Openstack cli.</h3>
+
+<p>Once you are finished with your openstack server, you should delete the server to prevent being charged for it&rsquo;s usage. Run the following command in the Openstack cli to delete the server.</p>
+
+<p><img src="https://sdorsett.github.io/static/08102018-24-openstack-cli-server-delete.png" alt="screenshot" /></p>
+
+<p>Running <code>openstack server list</code> will show that the server has been sucessfully deleted.</p>
+
+<p><img src="https://sdorsett.github.io/static/08102018-25-openstack-cli-server-list.png" alt="screenshot" /></p>
+
+<p>You can also check the ovhcloud.com UI to confirm the server has been deleted.</p>
+
+<p><img src="https://sdorsett.github.io/static/08102018-26-ovhcloud-ui-server-deleted.png" alt="screenshot" /></p>
+
+<p>###That all for this post covering how to use the Openstack cli utility to create servers on the OVH public cloud.</p>
+
+<hr />
+
+<p>###Please provide any feedback or suggestions to my twitter account located on the about page.</p>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="https://sdorsett.github.io/post/2018-08-08-creating-an-openstack-server-on-ovh-public-cloud/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="https://sdorsett.github.io/post/2018-08-08-creating-an-openstack-server-on-ovh-public-cloud/">Manually creating an openstack server on OVH public cloud</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="next">
+      <a href="https://sdorsett.github.io/post/2018-08-14-using-rclone-to-connect-to-ovh-public-cloud-swift-storage/">Using rclone to manage OVH Public Cloud swift storage</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+    <a href="https://sdorsett.github.io/post/2018-08-14-using-rclone-to-connect-to-ovh-public-cloud-swift-storage/"><i class="fa fa-chevron-right"></i></a>
+    
+  </div>
+</div>
+
+
+
+  
+
+</div>
+
+</div>
+</div>
+<script src="https://sdorsett.github.iojs/ui.js"></script>
+<script src="https://sdorsett.github.iojs/menus.js"></script>
+
+
+
+
+
+
+</body>
+</html>
+

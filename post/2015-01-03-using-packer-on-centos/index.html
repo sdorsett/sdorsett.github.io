@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.52" />
+
+  <title>Using packer on CentOS 6.5 to create an ESXi .box template for vagrant deployment &middot; Things I find interesting</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://sdorsett.github.io/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://sdorsett.github.io/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="https://sdorsett.github.io/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+ 
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="https://sdorsett.github.ioimg/favicon.ico" type="image/x-icon" />
+
+  
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="https://sdorsett.github.io/"> </a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/post/"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/about/"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/contact/"><i class='fa fa-phone fa-fw'></i>Contact</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/about/">About</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://twitter.com/standorsett" target="_blank"><i class="fa fa-twitter-square fa-fw"></i>Twitter</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://linkedin.com/in/stan-dorsett-53a8827" target="_blank"><i class="fa fa-linkedin-square fa-fw"></i>LinkedIn</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/sdorsett" target="_blank"><i class="fa fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small>&copy; 2018. All rights reserved.</small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Using packer on CentOS 6.5 to create an ESXi .box template for vagrant deployment</h1>
+  <h2></h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>03 Jan 2015, 00:00</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://sdorsett.github.iotags/vagrant">vagrant</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://sdorsett.github.iotags/vsphere">vsphere</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  
+
+<p>In the previous post I demonstrated using packer to create a ESXi .box template on OS X with fusion and the vagrant vmware provider. Both of these pieces of software have a cost associated with their usage, so in this post I will demonstrate how to use CentOS 6.5 and ESXi for the same results.</p>
+
+<p>In this post we will again talk about two helpful gosddc projects:</p>
+
+<ul>
+<li><p><a href="https://github.com/gosddc/packer-post-processor-vagrant-vmware-ovf">gosddc/packer-post-processor-vagrant-vmware-ovf</a>.
+This repo contains a packer post processor that leverages VMware OVF Tool to create a vmware_ovf Vagrant box that is compatible with vagrant-vcloud, vagrant-vcenter and vagrant-vcloudair vagrant providers. It is only compatible with the packer VMware builder. This project is a post processor that makes the generation of the .box file seemless. Unfortunately there currently seems to be <a href="https://github.com/mitchellh/packer/issues/1457">a bug with packer</a> exporting the virtual machine artifact from a remote ESXi server. Hopefully this issue will be resolved with an upcoming release of packer which will allow this post processor to be used with remote ESXi.</p></li>
+
+<li><p><a href="https://github.com/gosddc/packer-templates">gosddc/packer-templates</a>.
+This repo contains Packer templates for boxes available at <a href="https://vagrantcloud.com/gosddc">https://vagrantcloud.com/gosddc</a>, they only work with VMware and require the packer-post-processor-vagrant-vmware-ovf post-processor to work. These templates are a good starting point for generating packer templates on VMware products.</p></li>
+</ul>
+
+<p>We will be using a virtual machine with a minimal install of CentOS 6.5 to install everything we need to build the packer template.</p>
+
+<h2 id="1-let-s-get-started-by-installing-packer">1. Let&rsquo;s get started by installing packer.</h2>
+
+<ul>
+<li>Copy the linux 64bit packer installer URL from the following link:</li>
+</ul>
+
+<p><a href="https://www.packer.io/downloads.html">https://www.packer.io/downloads.html</a></p>
+
+<ul>
+<li>Use wget on your CentOS vm to download the URL you copied</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span><span style="color:#75715e"># wget https://dl.bintray.com/mitchellh/packer/packer_0.7.5_linux_amd64.zip</span>
+--2015-01-02 <span style="color:#ae81ff">21</span>:17:41-- https://dl.bintray.com/mitchellh/packer/packer_0.7.5_linux_amd64.zip
+Resolving dl.bintray.com... <span style="color:#ae81ff">108</span>.168.194.91, <span style="color:#ae81ff">108</span>.168.194.92
+Connecting to dl.bintray.com|<span style="color:#ae81ff">108</span>.168.194.91|:443... connected.
+HTTP request sent, awaiting response... <span style="color:#ae81ff">302</span> 
+Resolving d29vzk4ow07wi7.cloudfront.net... <span style="color:#ae81ff">54</span>.230.5.16, <span style="color:#ae81ff">54</span>.230.5.11, <span style="color:#ae81ff">54</span>.230.5.30, ...
+Connecting to d29vzk4ow07wi7.cloudfront.net|<span style="color:#ae81ff">54</span>.230.5.16|:443... connected.
+HTTP request sent, awaiting response... <span style="color:#ae81ff">200</span> OK
+Length: <span style="color:#ae81ff">87262135</span> <span style="color:#f92672">(</span>83M<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>application/unknown<span style="color:#f92672">]</span>
+Saving to: <span style="color:#e6db74">&#34;packer_0.7.5_linux_amd64.zip&#34;</span>
+
+<span style="color:#ae81ff">100</span>%<span style="color:#f92672">[==================================================================================================</span>&gt;<span style="color:#f92672">]</span> <span style="color:#ae81ff">87</span>,262,135 <span style="color:#ae81ff">1</span>.92M/s in 50s 
+
+<span style="color:#ae81ff">2015</span>-01-02 <span style="color:#ae81ff">21</span>:18:42 <span style="color:#f92672">(</span><span style="color:#ae81ff">1</span>.65 MB/s<span style="color:#f92672">)</span> - <span style="color:#e6db74">&#34;packer_0.7.5_linux_amd64.zip&#34;</span> saved <span style="color:#f92672">[</span><span style="color:#ae81ff">87262135</span>/87262135<span style="color:#f92672">]</span></code></pre></div>
+
+<ul>
+<li>Install the unzip package on our CentOS vm since that&rsquo;s the format packer comes compressed in:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span><span style="color:#75715e"># yum install -y unzip</span>
+Loaded plugins: fastestmirror
+Setting up Install Process
+Loading mirror speeds from cached hostfile
+ * base: repos.dfw.quadranet.com
+ * extras: mirror.anl.gov
+ * updates: mirror.us.oneandone.net
+base                                                                                                                 | <span style="color:#ae81ff">3</span>.7 kB     <span style="color:#ae81ff">00</span>:00     
+extras                                                                                                               | <span style="color:#ae81ff">3</span>.4 kB     <span style="color:#ae81ff">00</span>:00     
+updates                                                                                                              | <span style="color:#ae81ff">3</span>.4 kB     <span style="color:#ae81ff">00</span>:00     
+Resolving Dependencies
+--&gt; Running transaction check
+---&gt; Package unzip.x86_64 <span style="color:#ae81ff">0</span>:6.0-1.el6 will be installed
+--&gt; Finished Dependency Resolution
+
+Dependencies Resolved
+
+<span style="color:#f92672">============================================================================================================================================</span>
+ Package                         Arch                             Version                              Repository                      Size
+<span style="color:#f92672">============================================================================================================================================</span>
+Installing:
+ unzip                           x86_64                           <span style="color:#ae81ff">6</span>.0-1.el6                            base                           <span style="color:#ae81ff">149</span> k
+
+Transaction Summary
+<span style="color:#f92672">============================================================================================================================================</span>
+Install       <span style="color:#ae81ff">1</span> Package<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>
+
+Total download size: <span style="color:#ae81ff">149</span> k
+Installed size: <span style="color:#ae81ff">313</span> k
+Downloading Packages:
+unzip-6.0-1.el6.x86_64.rpm                                                                                           | <span style="color:#ae81ff">149</span> kB     <span style="color:#ae81ff">00</span>:00     
+Running rpm_check_debug
+Running Transaction Test
+Transaction Test Succeeded
+Running Transaction
+  Installing : unzip-6.0-1.el6.x86_64                                                                                                   <span style="color:#ae81ff">1</span>/1 
+  Verifying  : unzip-6.0-1.el6.x86_64                                                                                                   <span style="color:#ae81ff">1</span>/1 
+
+Installed:
+  unzip.x86_64 <span style="color:#ae81ff">0</span>:6.0-1.el6                                                                                                                  
+
+Complete!
+<span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span># </code></pre></div>
+
+<ul>
+<li>Create the /usr/local/packer_7.5 directory and unzip the packer download to this location.</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span><span style="color:#75715e"># mkdir /usr/local/packer_7.5</span>
+<span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span><span style="color:#75715e"># cp packer_0.7.5_linux_amd64.zip /usr/local/packer_7.5/</span>
+<span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span><span style="color:#75715e"># cd /usr/local/packer_7.5/</span>
+<span style="color:#f92672">[</span>root@vagrant packer_7.5<span style="color:#f92672">]</span><span style="color:#75715e"># unzip packer_0.7.5_linux_amd64.zip</span>
+Archive: packer_0.7.5_linux_amd64.zip
+inflating: packer 
+inflating: packer-builder-amazon-chroot 
+inflating: packer-builder-amazon-ebs 
+inflating: packer-builder-amazon-instance 
+inflating: packer-builder-digitalocean 
+inflating: packer-builder-docker 
+inflating: packer-builder-googlecompute 
+inflating: packer-builder-null 
+inflating: packer-builder-openstack 
+inflating: packer-builder-parallels-iso 
+inflating: packer-builder-parallels-pvm 
+inflating: packer-builder-qemu 
+inflating: packer-builder-virtualbox-iso 
+inflating: packer-builder-virtualbox-ovf 
+inflating: packer-builder-vmware-iso 
+inflating: packer-builder-vmware-vmx 
+inflating: packer-post-processor-atlas 
+inflating: packer-post-processor-compress 
+inflating: packer-post-processor-docker-import 
+inflating: packer-post-processor-docker-push 
+inflating: packer-post-processor-docker-save 
+inflating: packer-post-processor-docker-tag 
+inflating: packer-post-processor-vagrant 
+inflating: packer-post-processor-vagrant-cloud 
+inflating: packer-post-processor-vsphere 
+inflating: packer-provisioner-ansible-local 
+inflating: packer-provisioner-chef-client 
+inflating: packer-provisioner-chef-solo 
+inflating: packer-provisioner-file 
+inflating: packer-provisioner-puppet-masterless 
+inflating: packer-provisioner-puppet-server 
+inflating: packer-provisioner-salt-masterless 
+inflating: packer-provisioner-shell</code></pre></div>
+
+<ul>
+<li>Add /usr/local/packer_7.5 to your path by running the following command.</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant packer_7.5<span style="color:#f92672">]</span><span style="color:#75715e"># export PATH=&#34;/usr/local/packer_7.5:$PATH&#34;</span></code></pre></div>
+
+<ul>
+<li>Add the export command we just ran into ~/.bash_profile to ensure this path change persists after reboots.</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant packer_7.5<span style="color:#f92672">]</span><span style="color:#75715e"># cat ~/.bash_profile</span>
+export PATH<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/usr/local/packer_7.5:</span>$PATH<span style="color:#e6db74">&#34;</span>
+<span style="color:#f92672">[</span>root@vagrant packer_7.5<span style="color:#f92672">]</span># </code></pre></div>
+
+<ul>
+<li>Stop iptables since packer will be using a http server to publish the ESXi kickstart files:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant packer_7.5<span style="color:#f92672">]</span><span style="color:#75715e"># service iptables stop</span>
+iptables: Setting chains to policy ACCEPT: filter <span style="color:#f92672">[</span> OK <span style="color:#f92672">]</span>
+iptables: Flushing firewall rules: <span style="color:#f92672">[</span> OK <span style="color:#f92672">]</span>
+iptables: Unloading modules: <span style="color:#f92672">[</span> OK <span style="color:#f92672">]</span>
+<span style="color:#f92672">[</span>root@vagrant packer_7.5<span style="color:#f92672">]</span># </code></pre></div>
+
+<h2 id="2-the-next-thing-we-need-to-do-is-download-and-install-ovftool">2. The next thing we need to do is download and install ovftool:</h2>
+
+<ul>
+<li>Download and install the latest version of the VMware OVF tool. VMware-ovftool-3.5.1-1747221-lin.x86_64.bundle is what I used.</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span><span style="color:#75715e"># chmod +x VMware-ovftool-3.5.1-1747221-lin.x86_64.bundle</span>
+<span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span><span style="color:#75715e"># ./VMware-ovftool-3.5.1-1747221-lin.x86_64.bundle</span>
+Extracting VMware Installer...done.
+You must accept the VMware OVF Tool component <span style="color:#66d9ef">for</span> Linux End User
+License Agreement to <span style="color:#66d9ef">continue</span>. Press Enter to proceed.
+VMWARE END USER LICENSE AGREEMENT
+
+<span style="color:#ae81ff">1</span>.4 <span style="color:#e6db74">&#34;Intellectual Property Rights&#34;</span> means all worldwide intellectual
+property rights, including without limitation, copyrights, trademarks, service
+Do you agree? <span style="color:#f92672">[</span>yes/no<span style="color:#f92672">]</span>: yes
+
+The product is ready to be installed. Press Enter to begin
+installation or Ctrl-C to cancel.
+
+Installing VMware OVF Tool component <span style="color:#66d9ef">for</span> Linux <span style="color:#ae81ff">3</span>.5.1
+Configuring...
+<span style="color:#f92672">[</span><span style="color:#75715e">######################################################################] 100%</span>
+Installation was successful.</code></pre></div>
+
+<ul>
+<li>Verify ovftool is successfully added to your path by running &ldquo;ovftool -v&rdquo;. This command should output the version of ovftool we installed.</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span><span style="color:#75715e"># ovftool -v</span>
+VMware ovftool <span style="color:#ae81ff">3</span>.5.1 <span style="color:#f92672">(</span>build-1747221<span style="color:#f92672">)</span></code></pre></div>
+
+<h2 id="3-now-we-can-download-and-install-the-gosddc-packer-components-we-will-need">3. Now we can download and install the gosddc packer components we will need.</h2>
+
+<ul>
+<li>Download the most recent linux amd64 version of the compiled packer-processor-vagrant-vmware-ovf binary from the following link:</li>
+</ul>
+
+<p><a href="https://github.com/gosddc/packer-post-processor-vagrant-vmware-ovf/releases">https://github.com/gosddc/packer-post-processor-vagrant-vmware-ovf/releases</a></p>
+
+<ul>
+<li><p>Unzip packer-post-processor-vagrant-vmware-ovf and copy it to &ldquo;/usr/local/packer_7.5&rdquo;. Ensure the permissions of this file match the other files in this directory.</p></li>
+
+<li><p>Create a directory to contain the packer templates:</p></li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span><span style="color:#75715e"># mkdir ~/packer</span>
+<span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span><span style="color:#75715e"># cd ~/packer</span></code></pre></div>
+
+<ul>
+<li>Clone the gosddc packer-templates repository:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant packer<span style="color:#f92672">]</span><span style="color:#75715e"># git clone https://github.com/gosddc/packer-templates.git</span>
+Initialized empty Git repository in /root/packer/packer-templates/.git/
+remote: Counting objects: <span style="color:#ae81ff">195</span>, <span style="color:#66d9ef">done</span>.
+remote: Total <span style="color:#ae81ff">195</span> <span style="color:#f92672">(</span>delta <span style="color:#ae81ff">0</span><span style="color:#f92672">)</span>, reused <span style="color:#ae81ff">0</span> <span style="color:#f92672">(</span>delta <span style="color:#ae81ff">0</span><span style="color:#f92672">)</span>
+Receiving objects: <span style="color:#ae81ff">100</span>% <span style="color:#f92672">(</span><span style="color:#ae81ff">195</span>/195<span style="color:#f92672">)</span>, <span style="color:#ae81ff">39</span>.32 KiB, <span style="color:#66d9ef">done</span>.
+Resolving deltas: <span style="color:#ae81ff">100</span>% <span style="color:#f92672">(</span><span style="color:#ae81ff">105</span>/105<span style="color:#f92672">)</span>, <span style="color:#66d9ef">done</span>.</code></pre></div>
+
+<h2 id="4-next-we-need-to-download-the-esxi-5-5-iso-and-copy-it-into-the-proper-directory-location">4. Next we need to download the ESXi 5.5 .iso and copy it into the proper directory location.</h2>
+
+<ul>
+<li>Create an &ldquo;iso&rdquo; directory for storing the ESXi iso files:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant packer<span style="color:#f92672">]</span><span style="color:#75715e"># cd packer-templates/</span>
+<span style="color:#f92672">[</span>root@vagrant packer-templates<span style="color:#f92672">]</span><span style="color:#75715e"># mkdir iso</span></code></pre></div>
+
+<ul>
+<li>Download and copy the &ldquo;VMware-VMvisor-Installer-5.5.0-1331820.x86_64.iso&rdquo; ESXi 5.5 installer to the iso directory.</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant packer-templates<span style="color:#f92672">]</span><span style="color:#75715e"># cp ~/VMware-VMvisor-Installer-5.5.0-1331820.x86_64.iso iso/</span></code></pre></div>
+
+<h2 id="5-finally-we-will-need-to-modify-validate-and-build-the-packer-esxi-json-packer-template-we-will-be-using">5. Finally we will need to modify, validate and build the packer esxi.json packer template we will be using.</h2>
+
+<ul>
+<li>Modify ~/packer/packer-templates/templates/esxi.json to look like the following:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant packer-templates<span style="color:#f92672">]</span><span style="color:#75715e"># vi templates/esxi.json</span>
+<span style="color:#f92672">[</span>root@vagrant packer-templates<span style="color:#f92672">]</span><span style="color:#75715e"># cat templates/esxi.json</span>
+<span style="color:#f92672">{</span>
+  <span style="color:#e6db74">&#34;variables&#34;</span>: <span style="color:#f92672">{</span>
+  <span style="color:#e6db74">&#34;version&#34;</span>: <span style="color:#e6db74">&#34;1.0&#34;</span>
+  <span style="color:#f92672">}</span>,
+  <span style="color:#e6db74">&#34;builders&#34;</span>: <span style="color:#f92672">[</span>
+    <span style="color:#f92672">{</span>
+      <span style="color:#e6db74">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;esxi55&#34;</span>,
+      <span style="color:#e6db74">&#34;vm_name&#34;</span>: <span style="color:#e6db74">&#34;esxi55&#34;</span>,
+      <span style="color:#e6db74">&#34;vmdk_name&#34;</span>: <span style="color:#e6db74">&#34;esxi55-disk0&#34;</span>,
+      <span style="color:#e6db74">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;vmware-iso&#34;</span>,
+      <span style="color:#e6db74">&#34;headless&#34;</span>: true,
+      <span style="color:#e6db74">&#34;disk_size&#34;</span>: <span style="color:#ae81ff">4096</span>,
+      <span style="color:#e6db74">&#34;guest_os_type&#34;</span>: <span style="color:#e6db74">&#34;centos-64&#34;</span>,
+      <span style="color:#e6db74">&#34;iso_url&#34;</span>: <span style="color:#e6db74">&#34;./iso/VMware-VMvisor-Installer-5.5.0-1331820.x86_64.iso&#34;</span>,
+      <span style="color:#e6db74">&#34;iso_checksum&#34;</span>: <span style="color:#e6db74">&#34;ef599dc7e647177027684c0eee346ccdbc8704f2&#34;</span>,
+      <span style="color:#e6db74">&#34;iso_checksum_type&#34;</span>: <span style="color:#e6db74">&#34;sha1&#34;</span>,
+      <span style="color:#e6db74">&#34;remote_host&#34;</span>: <span style="color:#e6db74">&#34;192.168.1.201&#34;</span>,
+      <span style="color:#e6db74">&#34;remote_datastore&#34;</span>: <span style="color:#e6db74">&#34;esx01-local-sata&#34;</span>,
+      <span style="color:#e6db74">&#34;remote_username&#34;</span>: <span style="color:#e6db74">&#34;root&#34;</span>,
+      <span style="color:#e6db74">&#34;remote_password&#34;</span>: <span style="color:#e6db74">&#34;mySecretP@ssw0rd&#34;</span>,
+      <span style="color:#e6db74">&#34;remote_type&#34;</span>: <span style="color:#e6db74">&#34;esx5&#34;</span>,
+      <span style="color:#e6db74">&#34;ssh_username&#34;</span>: <span style="color:#e6db74">&#34;root&#34;</span>,
+      <span style="color:#e6db74">&#34;ssh_password&#34;</span>: <span style="color:#e6db74">&#34;vagrant&#34;</span>,
+      <span style="color:#e6db74">&#34;ssh_wait_timeout&#34;</span>: <span style="color:#e6db74">&#34;60m&#34;</span>,
+      <span style="color:#e6db74">&#34;shutdown_command&#34;</span>: <span style="color:#e6db74">&#34;esxcli system maintenanceMode set -e true -t 0 ; esxcli system shutdown poweroff -d 10 -r &#39;Packer Shutdown&#39; ; esxcli system maintenanceMode set -e false -t 0&#34;</span>,
+      <span style="color:#e6db74">&#34;tools_upload_flavor&#34;</span>: <span style="color:#e6db74">&#34;linux&#34;</span>,
+      <span style="color:#e6db74">&#34;http_directory&#34;</span>: <span style="color:#e6db74">&#34;.&#34;</span>,
+      <span style="color:#e6db74">&#34;boot_wait&#34;</span>: <span style="color:#e6db74">&#34;5s&#34;</span>,
+      <span style="color:#e6db74">&#34;vmx_data&#34;</span>: <span style="color:#f92672">{</span>
+        <span style="color:#e6db74">&#34;memsize&#34;</span>: <span style="color:#e6db74">&#34;4096&#34;</span>,
+        <span style="color:#e6db74">&#34;numvcpus&#34;</span>: <span style="color:#e6db74">&#34;2&#34;</span>,
+        <span style="color:#e6db74">&#34;vhv.enable&#34;</span>: <span style="color:#e6db74">&#34;TRUE&#34;</span>,
+        <span style="color:#e6db74">&#34;ethernet0.virtualDev&#34;</span>: <span style="color:#e6db74">&#34;e1000&#34;</span>,
+        <span style="color:#e6db74">&#34;ethernet0.networkName&#34;</span>: <span style="color:#e6db74">&#34;vlan2&#34;</span>,
+        <span style="color:#e6db74">&#34;ethernet0.present&#34;</span>: <span style="color:#e6db74">&#34;TRUE&#34;</span>
+      <span style="color:#f92672">}</span>,
+      <span style="color:#e6db74">&#34;vmx_data_post&#34;</span>: <span style="color:#f92672">{</span>
+        <span style="color:#e6db74">&#34;guestos&#34;</span>: <span style="color:#e6db74">&#34;vmkernel5&#34;</span>,
+        <span style="color:#e6db74">&#34;ide1:0.present&#34;</span>: <span style="color:#e6db74">&#34;FALSE&#34;</span>
+      <span style="color:#f92672">}</span>,
+      <span style="color:#e6db74">&#34;boot_command&#34;</span>: <span style="color:#f92672">[</span>
+        <span style="color:#e6db74">&#34;&lt;enter&gt;&lt;wait&gt;O&lt;wait&gt; ks=http://{% raw %}{{ .HTTPIP }}{% endraw %}:{% raw %}{{ .HTTPPort }}{% endraw %}/scripts/esxi-5-kickstart.cfg&lt;enter&gt;&#34;</span>
+      <span style="color:#f92672">]</span>
+    <span style="color:#f92672">}</span>
+  <span style="color:#f92672">]</span>,
+  <span style="color:#e6db74">&#34;provisioners&#34;</span>: <span style="color:#f92672">[</span>
+    <span style="color:#f92672">{</span>
+      <span style="color:#e6db74">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;file&#34;</span>,
+      <span style="color:#e6db74">&#34;source&#34;</span>: <span style="color:#e6db74">&#34;puppet/modules/vagrantbaseconfig/files/vagrant.pub&#34;</span>,
+      <span style="color:#e6db74">&#34;destination&#34;</span>: <span style="color:#e6db74">&#34;/etc/ssh/keys-root/authorized_keys&#34;</span>
+    <span style="color:#f92672">}</span>,
+    <span style="color:#f92672">{</span>
+      <span style="color:#e6db74">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;shell&#34;</span>,
+      <span style="color:#e6db74">&#34;script&#34;</span>: <span style="color:#e6db74">&#34;scripts/esxi-vmware-tools_install.sh&#34;</span>
+    <span style="color:#f92672">}</span>,
+    <span style="color:#f92672">{</span>
+      <span style="color:#e6db74">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;shell&#34;</span>,
+      <span style="color:#e6db74">&#34;script&#34;</span>: <span style="color:#e6db74">&#34;scripts/esxi-cloning_configuration.sh&#34;</span>
+    <span style="color:#f92672">}</span>
+  <span style="color:#f92672">]</span>
+<span style="color:#f92672">}</span></code></pre></div>
+
+<p>There are several things I would like to point out in the esxi.json file we just created.</p>
+
+<ol>
+<li><p>builder - this section specifies that we will be using the &ldquo;vmware-iso&rdquo; builder, with a remote ESXi host, to create our packer template. You will need to modify several part of this to match your ESXi server:</p>
+
+<ul>
+<li>remote_host - this is the IP address of our ESXi server.</li>
+<li>remote_datastore - this is the datastore our virtual machine will be built on.</li>
+<li>remote_username - the ESXi username used to connect</li>
+<li>remote_password - the ESXi password used to connect</li>
+<li>remote_type - this specifies the remote server is ESXi 5.x</li>
+<li>ethernet0.networkName - this is the portgroup that the packer virtual machine connects to. This should be the same portgroup that the CentOS vm is one, since the ESXi install will need a kickstart file served by a http server included with packer.</li>
+</ul>
+
+<p>Also in the builder section you might notice we are setting the &ldquo;guest_os_type&rdquo; to be &ldquo;centos-64&rdquo; during install. This is due to packer attempting to mount the vmtools .iso at the end of the install process. This has no impact on the install and we change it back to &ldquo;vmkernel5&rdquo; in the &ldquo;vmx_data_post&rdquo; section, which gets processed post after the virtual machine is powered down after the install process has completed.</p></li>
+
+<li><p>provisioners - this section specifies we will be using multiple provisioners to modify our template after it has been created:</p>
+
+<ul>
+<li>a file provisioner that will copy the vagrant public ssh key into our ESXi template</li>
+<li>a shell script to install the vmware tools VIB for nested ESXi</li>
+<li>a shell script to make necessary MAC address changes in our nested ESXi template.</li>
+</ul></li>
+
+<li><p>post-processors - I have removed the vagrant-vmware-ovf post processor due to the bug I mentioned earlier.</p></li>
+</ol>
+
+<ul>
+<li>Modify the esxi-cloning_configuration.sh script in the scripts directory to read as follows:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant packer-templates<span style="color:#f92672">]</span><span style="color:#75715e"># vi scripts/esxi-cloning_configuration.sh</span>
+<span style="color:#f92672">[</span>root@vagrant packer-templates<span style="color:#f92672">]</span><span style="color:#75715e"># cat scripts/esxi-cloning_configuration.sh</span>
+<span style="color:#75715e"># Settings to ensure that ESXi cloning goes smooth, thanks @lamw ! see:</span>
+<span style="color:#75715e"># http://www.virtuallyghetto.com/2013/12/how-to-properly-clone-nested-esxi-vm.html</span>
+esxcli system settings advanced set -o /Net/FollowHardwareMac -i <span style="color:#ae81ff">1</span>
+sed -i <span style="color:#e6db74">&#39;/\/system\/uuid/d&#39;</span> /etc/vmware/esx.conf
+sed -i <span style="color:#e6db74">&#39;/\/net\/vmkernelnic\/child\[0000\]\/mac/d&#39;</span> /etc/vmware/esx.conf
+
+<span style="color:#75715e"># DHCP doesn&#39;t refresh correctly upon boot, this will force a renew, it will</span>
+<span style="color:#75715e"># be executed on every boot, if you don&#39;t like this behavior you can remove</span>
+<span style="color:#75715e"># the line during the Vagrant provisioning part.</span>
+sed -i <span style="color:#e6db74">&#39;/exit 0/d&#39;</span> /etc/rc.local.d/local.sh 
+echo <span style="color:#e6db74">&#39;esxcli network ip interface set -e false -i vmk0; esxcli network ip interface set -e true -i vmk0&#39;</span> &gt;&gt; /etc/rc.local.d/local.sh 
+echo <span style="color:#e6db74">&#39;exit 0&#39;</span> &gt;&gt; /etc/rc.local.d/local.sh 
+
+<span style="color:#75715e"># Ensure changes are persistent</span>
+/sbin/auto-backup.sh</code></pre></div>
+
+<p>We are adding the following line to delete the line that contains the vmkernel port MAC address in /etc/vmware/esx.conf, in order to force it to be regenerated on each clones template:</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sed -i <span style="color:#e6db74">&#39;/\/net\/vmkernelnic\/child\[0000\]\/mac/d&#39;</span> /etc/vmware/esx.conf</code></pre></div>
+
+<ul>
+<li>Validate the packer esxi.json file is ready for building by running the following command:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant packer-templates<span style="color:#f92672">]</span><span style="color:#75715e"># packer validate templates/esxi.json</span> 
+Template validated successfully.</code></pre></div>
+
+<ul>
+<li>Start the build by running:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant packer-templates<span style="color:#f92672">]</span><span style="color:#75715e"># packer build templates/esxi.json</span> 
+esxi55 output will be in this color.
+
+<span style="color:#f92672">==</span>&gt; esxi55: Downloading or copying ISO
+esxi55: Downloading or copying: file:///root/packer/packer-templates/iso/VMware-VMvisor-Installer-5.5.0-1331820.x86_64.iso
+<span style="color:#f92672">==</span>&gt; esxi55: Uploading ISO to remote machine...
+<span style="color:#f92672">==</span>&gt; esxi55: Creating virtual machine disk
+<span style="color:#f92672">==</span>&gt; esxi55: Building and writing VMX file
+<span style="color:#f92672">==</span>&gt; esxi55: Starting HTTP server on port 8828
+<span style="color:#f92672">==</span>&gt; esxi55: Registering remote VM...
+<span style="color:#f92672">==</span>&gt; esxi55: Starting virtual machine...
+esxi55: The VM will be run headless, without a GUI. If you want to
+esxi55: view the screen of the VM, connect via VNC without a password to
+esxi55: <span style="color:#ae81ff">192</span>.168.1.201:5988
+<span style="color:#f92672">==</span>&gt; esxi55: Waiting 5s <span style="color:#66d9ef">for</span> boot...
+<span style="color:#f92672">==</span>&gt; esxi55: Connecting to VM via VNC
+<span style="color:#f92672">==</span>&gt; esxi55: Typing the boot command over VNC...
+<span style="color:#f92672">==</span>&gt; esxi55: Waiting <span style="color:#66d9ef">for</span> SSH to become available...
+<span style="color:#f92672">==</span>&gt; esxi55: Connected to SSH!
+<span style="color:#f92672">==</span>&gt; esxi55: Uploading puppet/modules/vagrantbaseconfig/files/vagrant.pub <span style="color:#f92672">=</span>&gt; /etc/ssh/keys-root/authorized_keys
+<span style="color:#f92672">==</span>&gt; esxi55: Provisioning with shell script: scripts/esxi-vmware-tools_install.sh
+esxi55: Installation Result
+esxi55: Message: The update completed successfully, but the system needs to be rebooted <span style="color:#66d9ef">for</span> the changes to be effective.
+esxi55: Reboot Required: true
+esxi55: VIBs Installed: VMware_bootbank_esx-tools-for-esxi_9.7.0-0.0.00000
+esxi55: VIBs Removed:
+esxi55: VIBs Skipped:
+<span style="color:#f92672">==</span>&gt; esxi55: Provisioning with shell script: scripts/esxi-cloning_configuration.sh
+esxi55: diff: can<span style="color:#e6db74">&#39;t stat &#39;</span>/tmp/auto-backup.35224//etc/ssh/keys-root/authorized_keys<span style="color:#e6db74">&#39;: No such file or directory
+</span><span style="color:#e6db74">esxi55: Saving current state in /bootbank
+</span><span style="color:#e6db74">esxi55: Clock updated.
+</span><span style="color:#e6db74">esxi55: Time: 04:39:41 Date: 01/03/2015 UTC
+</span><span style="color:#e6db74">==&gt; esxi55: Gracefully halting virtual machine...
+</span><span style="color:#e6db74">esxi55: Waiting for VMware to clean up after itself...
+</span><span style="color:#e6db74">==&gt; esxi55: Deleting unnecessary VMware files...
+</span><span style="color:#e6db74">esxi55: Deleting: /vmfs/volumes/esx01-local-sata/output-esxi55/vmware.log
+</span><span style="color:#e6db74">==&gt; esxi55: Cleaning VMX prior to finishing up...
+</span><span style="color:#e6db74">esxi55: Unmounting floppy from VMX...
+</span><span style="color:#e6db74">esxi55: Detaching ISO from CD-ROM device...
+</span><span style="color:#e6db74">==&gt; esxi55: Compacting the disk image
+</span><span style="color:#e6db74">==&gt; esxi55: Unregistering virtual machine...
+</span><span style="color:#e6db74">Build &#39;</span>esxi55<span style="color:#960050;background-color:#1e0010">&#39;</span> finished.
+
+<span style="color:#f92672">==</span>&gt; Builds finished. The artifacts of successful builds are:
+--&gt; esxi55: VM files in directory: /vmfs/volumes/esx01-local-sata/output-esxi55
+<span style="color:#f92672">[</span>root@vagrant packer-templates<span style="color:#f92672">]</span># </code></pre></div>
+
+<p>If you want to keep an eye on the build process you can connect a VNC client to the address and port listed during the packer build process. For my build this was what was displayed:</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">esxi55: The VM will be run headless, without a GUI. If you want to
+esxi55: view the screen of the VM, connect via VNC without a password to
+esxi55: <span style="color:#ae81ff">192168</span>.1.201:5988</code></pre></div>
+
+<p>The other option to track the progress of the ESXi install is to open the console of the virtual machine in the VI or web client.</p>
+
+<ul>
+<li>The last line of the packer output shows the datastore location of the virtual machine that was created. We need to SSH to the ESXi host in order to re-register the virtual machine, in order to export it using ovftool:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span><span style="color:#75715e"># ssh root@192.168.1.201 &#34;vim-cmd solo/registervm /vmfs/volumes/esx01-local-sata/output-esxi55/*.vmx&#34;</span>
+Password: 
+<span style="color:#ae81ff">70</span></code></pre></div>
+
+<p>Update this command to reflect the IP address and path to the virtual machine that packer created. Also take note of the vmid that the command returns, since we&rsquo;ll need this in a future step.</p>
+
+<ul>
+<li>Use the following command to export the virtual machine we just registered:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span><span style="color:#75715e"># ovftool vi://root:[esxi_password]@192.168.1.201/esxi55 ./</span>
+Opening VI source: vi://root@192.168.1.201:443/esxi55
+Opening OVF target: ./
+Writing OVF package: ./esxi55/esxi55.ovf
+Transfer Completed 
+Completed successfully</code></pre></div>
+
+<p>Replace the IP address, password and virtual machine name if needed.</p>
+
+<ul>
+<li>Unregister the virtual machine template using the following command with the vmid returned by the registration command:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span><span style="color:#75715e"># ssh root@192.168.1.201 &#34;vim-cmd vmsvc/unregister 70&#34;</span>
+Password:</code></pre></div>
+
+<h2 id="6-since-we-disable-the-vagrant-vcenter-ovf-post-processor-we-will-need-to-create-the-box-file-according-to-the-specifications-listed-here-https-github-com-gosddc-packer-post-processor-vagrant-vmware-ovf-wiki-vmware-ovf-box-format">6. Since we disable the vagrant-vcenter-ovf post processor, we will need to create the .box file according to the specifications<a href="https://github.com/gosddc/packer-post-processor-vagrant-vmware-ovf/wiki/vmware_ovf-Box-Format"> listed here</a>:</h2>
+
+<ul>
+<li>Create the metadata.json file needed by the vagrant-vmware-ovf .box file:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant esxi55<span style="color:#f92672">]</span><span style="color:#75715e"># echo &#39;{&#34;provider&#34;:&#34;vmware_ovf&#34;}&#39; &gt;&gt; metadata.json</span>
+<span style="color:#f92672">[</span>root@vagrant esxi55<span style="color:#f92672">]</span># </code></pre></div>
+
+<ul>
+<li>Create an empty Vagrantfile to include in the .box file:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant esxi55<span style="color:#f92672">]</span><span style="color:#75715e"># touch Vagrantfile</span>
+<span style="color:#f92672">[</span>root@vagrant esxi55<span style="color:#f92672">]</span>#</code></pre></div>
+
+<ul>
+<li>Use tar to compress the files in this directory into a .box file:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant esxi55<span style="color:#f92672">]</span><span style="color:#75715e"># tar cvzf esxi55-vmware_ovf-1.1.box ./*</span>
+./esxi55-disk1.vmdk
+./esxi55.mf
+./esxi55.ovf
+./metadata.json
+./Vagrantfile
+<span style="color:#f92672">[</span>root@vagrant esxi55<span style="color:#f92672">]</span><span style="color:#75715e"># ls -la</span>
+total <span style="color:#ae81ff">968296</span>
+drwxr-xr-x. <span style="color:#ae81ff">2</span> root root      <span style="color:#ae81ff">4096</span> Jan  <span style="color:#ae81ff">3</span> <span style="color:#ae81ff">15</span>:36 .
+drwxr-xr-x. <span style="color:#ae81ff">9</span> root root      <span style="color:#ae81ff">4096</span> Jan  <span style="color:#ae81ff">3</span> <span style="color:#ae81ff">20</span>:12 ..
+-rw-r--r--. <span style="color:#ae81ff">1</span> root root <span style="color:#ae81ff">496975360</span> Jan  <span style="color:#ae81ff">3</span> <span style="color:#ae81ff">15</span>:32 esxi55-disk1.vmdk
+-rw-r--r--. <span style="color:#ae81ff">1</span> root root       <span style="color:#ae81ff">125</span> Jan  <span style="color:#ae81ff">3</span> <span style="color:#ae81ff">15</span>:32 esxi55.mf
+-rw-r--r--. <span style="color:#ae81ff">1</span> root root      <span style="color:#ae81ff">7522</span> Jan  <span style="color:#ae81ff">3</span> <span style="color:#ae81ff">15</span>:32 esxi55.ovf
+-rw-r--r--. <span style="color:#ae81ff">1</span> root root <span style="color:#ae81ff">494527542</span> Jan  <span style="color:#ae81ff">3</span> <span style="color:#ae81ff">15</span>:36 esxi55-vmware_ovf-1.1.box
+-rw-r--r--. <span style="color:#ae81ff">1</span> root root        <span style="color:#ae81ff">26</span> Jan  <span style="color:#ae81ff">3</span> <span style="color:#ae81ff">15</span>:34 metadata.json
+-rw-r--r--. <span style="color:#ae81ff">1</span> root root         <span style="color:#ae81ff">0</span> Jan  <span style="color:#ae81ff">3</span> <span style="color:#ae81ff">15</span>:34 Vagrantfile
+<span style="color:#f92672">[</span>root@vagrant esxi55<span style="color:#f92672">]</span># </code></pre></div>
+
+<h4 id="that-all-for-this-post-covering-the-basics-of-getting-packer-and-getting-it-installed-configured-on-centos-in-the-next-blog-post-i-m-planning-on-covering-how-to-install-vagrant-on-centos-and-using-it-to-deploy-this-box-templates-to-vcenter">That all for this post covering the basics of getting packer and getting it installed/configured on CentOS. In the next blog post I&rsquo;m planning  on covering how to install vagrant on CentOS and using it to deploy this .box templates to vCenter.</h4>
+
+<hr />
+
+<h4 id="please-provide-any-feedback-or-suggestions-to-my-twitter-account-located-on-the-about-page">Please provide any feedback or suggestions to my twitter account located on the about page.</h4>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="https://sdorsett.github.io/post/2014-12-28-getting-packer-installed-on-os-x/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="https://sdorsett.github.io/post/2014-12-28-getting-packer-installed-on-os-x/">Using packer on OS X to create an ESXi .box template for vagrant deployment</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="next">
+      <a href="https://sdorsett.github.io/post/2015-01-04-installing-vagrant-on-centos/">Installing vagrant and the vagrant-vcenter provider on CentOS 6.5</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+    <a href="https://sdorsett.github.io/post/2015-01-04-installing-vagrant-on-centos/"><i class="fa fa-chevron-right"></i></a>
+    
+  </div>
+</div>
+
+
+
+  
+
+</div>
+
+</div>
+</div>
+<script src="https://sdorsett.github.iojs/ui.js"></script>
+<script src="https://sdorsett.github.iojs/menus.js"></script>
+
+
+
+
+
+
+</body>
+</html>
+

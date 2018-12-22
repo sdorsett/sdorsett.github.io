@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.52" />
+
+  <title>Using rclone to manage OVH Public Cloud swift storage &middot; Things I find interesting</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://sdorsett.github.io/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://sdorsett.github.io/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="https://sdorsett.github.io/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+ 
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="https://sdorsett.github.ioimg/favicon.ico" type="image/x-icon" />
+
+  
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="https://sdorsett.github.io/"> </a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/post/"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/about/"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/contact/"><i class='fa fa-phone fa-fw'></i>Contact</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/about/">About</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://twitter.com/standorsett" target="_blank"><i class="fa fa-twitter-square fa-fw"></i>Twitter</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://linkedin.com/in/stan-dorsett-53a8827" target="_blank"><i class="fa fa-linkedin-square fa-fw"></i>LinkedIn</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/sdorsett" target="_blank"><i class="fa fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small>&copy; 2018. All rights reserved.</small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Using rclone to manage OVH Public Cloud swift storage</h1>
+  <h2></h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>14 Aug 2018, 00:00</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://sdorsett.github.iotags/openstack">openstack</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://sdorsett.github.iotags/ovh">OVH</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  
+
+<p>This is the third in a series of posts that will walk you through using the Openstack-based OVH public cloud. In this post you will get introduced to using rclone to upload and retrieve files from the Openstack swift API.</p>
+
+<p>This post is assumes you have already signed up for an account with ovhcloud.com, added a payment method, created a cloud project and created an Openstack user. If you have not done these steps you can follow the steps in <a href="../2018-08-08-creating-an-openstack-instance-on-ovh-public-cloud">the first</a> and <a href="../2018-08-10-using-the-openstack-cli-to-create-a-server-on-ovh-public-cloud">second blog post</a> in this series that will walk you through completing those steps.</p>
+
+<p>I will attempt in this post to present the options that are available to OVH public cloud customers along side the choices I made that were specific to my Openstack server.</p>
+
+<p>Let&rsquo;s get started&hellip;</p>
+
+<hr />
+
+<h3 id="1-sign-into-ovhcloud-com-https-ovhcloud-com-auth">1. Sign into <a href="https://ovhcloud.com/auth/">ovhcloud.com</a>.</h3>
+
+<p>The first thing you will need to do before you can move forward with this post is sign into <a href="https://ovhcloud.com/auth/">https://ovhcloud.com/auth/</a> using the account you created in the first blog post..</p>
+
+<p><img src="https://sdorsett.github.io/static/08102018-01-login-username-password.png" alt="screenshot" /></p>
+
+<p>If you setup two-factor authentication, you will be prompted to enter the current two-factor token.</p>
+
+<p><img src="https://sdorsett.github.io/static/08102018-02-login-two-factor.png" alt="screenshot" /></p>
+
+<h3 id="2-create-a-object-container">2. Create a object container.</h3>
+
+<p>The first step to store files in your OVH Public Cloud will be to create a swift object container to store the files. Object containers are managed by clicking the <code>storage</code> tab of the cloud project you want to store files in.</p>
+
+<p><img src="https://sdorsett.github.io/static/08142018-01-openstack-storage-empty.png" alt="screenshot" /></p>
+
+<p>If you do not have any object containers create, you can create one by clicking the <code>Create a container</code> button.</p>
+
+<p><img src="https://sdorsett.github.io/static/08142018-02-openstack-create-object-container.png" alt="screenshot" /></p>
+
+<p>Select the datacenter you want to create the object container in.</p>
+
+<p><img src="https://sdorsett.github.io/static/08142018-03-openstack-create-object-container.png" alt="screenshot" /></p>
+
+<p>Select what purpose for which you are intending to use the object container storage. I am intending to test file that need to be publicly available, without any sort of authentication, so I chose <code>Public</code>.</p>
+
+<p>Name the object container a name that reflects it&rsquo;s purpose and click <code>Create the container</code></p>
+
+<p><img src="https://sdorsett.github.io/static/08142018-04-openstack-create-object-container.png" alt="screenshot" /></p>
+
+<p>You will next be taken to a view that lists the details of the newly created object container.</p>
+
+<p><img src="https://sdorsett.github.io/static/08142018-05-openstack-create-object-container.png" alt="screenshot" /></p>
+
+<h3 id="3-install-rclone">3. Install rclone</h3>
+
+<p>Rclone is self described as &lsquo;a command line program to sync files and directories to and from cloud storage.&rsquo; It is opensource and is compatible with Openstack swift, so it will work with OVH Public Cloud object containers.</p>
+
+<p>The first thing you need to do is download the latest version for your operating system from the <a href="https://rclone.org/downloads/">rclone download page</a>, unzip the binary and place it within our path.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">MacBook-Pro:~ standorsett$ cd ~/Downloads/
+MacBook-Pro:Downloads standorsett$ wget https://downloads.rclone.org/v1.42/rclone-v1.42-osx-amd64.zip
+--2018-08-14 <span style="color:#ae81ff">13</span>:50:18--  https://downloads.rclone.org/v1.42/rclone-v1.42-osx-amd64.zip
+Resolving downloads.rclone.org <span style="color:#f92672">(</span>downloads.rclone.org<span style="color:#f92672">)</span>... <span style="color:#ae81ff">5</span>.153.250.7
+Connecting to downloads.rclone.org <span style="color:#f92672">(</span>downloads.rclone.org<span style="color:#f92672">)</span>|<span style="color:#ae81ff">5</span>.153.250.7|:443... connected.
+HTTP request sent, awaiting response... <span style="color:#ae81ff">200</span> OK
+Length: <span style="color:#ae81ff">9748516</span> <span style="color:#f92672">(</span><span style="color:#ae81ff">9</span>.3M<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>application/zip<span style="color:#f92672">]</span>
+Saving to: ‘rclone-v1.42-osx-amd64.zip’
+
+rclone-v1.42-osx-amd64.zip                    <span style="color:#ae81ff">100</span>%<span style="color:#f92672">[==============================================================================================</span>&gt;<span style="color:#f92672">]</span>   <span style="color:#ae81ff">9</span>.30M   574KB/s    in 37s
+
+<span style="color:#ae81ff">2018</span>-08-14 <span style="color:#ae81ff">13</span>:50:56 <span style="color:#f92672">(</span><span style="color:#ae81ff">255</span> KB/s<span style="color:#f92672">)</span> - ‘rclone-v1.42-osx-amd64.zip’ saved <span style="color:#f92672">[</span><span style="color:#ae81ff">9748516</span>/9748516<span style="color:#f92672">]</span>
+
+MacBook-Pro:Downloads standorsett$ </code></pre></div>
+
+<p>&hellip;unzip the binary,</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">MacBook-Pro:Downloads standorsett$ unzip rclone-v1.42-osx-amd64.zip
+Archive:  rclone-v1.42-osx-amd64.zip
+   creating: rclone-v1.42-osx-amd64/
+  inflating: rclone-v1.42-osx-amd64/README.html
+  inflating: rclone-v1.42-osx-amd64/rclone
+  inflating: rclone-v1.42-osx-amd64/rclone.1
+  inflating: rclone-v1.42-osx-amd64/README.txt
+MacBook-Pro:Downloads standorsett$ </code></pre></div>
+
+<p>&hellip;and place it within a folder that is exported in your path.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">MacBook-Pro:Downloads standorsett$ sudo cp rclone-v1.42-osx-amd64/rclone /usr/local/bin/
+MacBook-Pro:Downloads standorsett$ which rclone
+/usr/local/bin/rclone
+MacBook-Pro:Downloads standorsett$ rclone --version
+rclone v1.42
+- os/arch: darwin/amd64
+- go version: go1.10.1
+MacBook-Pro:Downloads standorsett$
+MacBook-Pro:Downloads standorsett$ cd ~/
+MacBook-Pro:~ standorsett$</code></pre></div>
+
+<h3 id="4-source-the-openrc-sh-file-you-downloaded-in-the-previous-blog-post-http-sdorsett-github-io-2018-08-10-using-the-openstack-cli-to-create-a-server-on-ovh-public-cloud">4. Source the openrc.sh file you downloaded in the <a href="http://sdorsett.github.io/2018/08/10/using-the-openstack-cli-to-create-a-server-on-ovh-public-cloud/">previous blog post</a>.</h3>
+
+<p>The simplest way to use rclone is to source the openrc.sh file you downloaded in the previous blog post. This will set environment variables that the rclone cli will use to connect to the OVH public cloud. When you source the openrc.sh file you will be prompted for the password of the Openstack user listed in this file.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">MacBook-Pro:~ standorsett$ source ~/Downloads/openrc.sh
+Please enter your OpenStack Password:
+MacBook-Pro:~ standorsett$</code></pre></div>
+
+<p>##5. Export two RCLONE_CONFIG environment variables</p>
+
+<p>As mentioned on the <a href="https://rclone.org/swift/#using-an-alternate-authentication-method">rclone swift documentation</a> you can use rclone with swift without a config file by exporting two environment variables.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">MacBook-Pro:~ standorsett$ export RCLONE_CONFIG_MYREMOTE_TYPE<span style="color:#f92672">=</span>swift
+MacBook-Pro:~ standorsett$ export RCLONE_CONFIG_MYREMOTE_ENV_AUTH<span style="color:#f92672">=</span>true
+MacBook-Pro:~ standorsett$</code></pre></div>
+
+<h3 id="6-using-rclone-to-list-remote-object-containers">6. Using rclone to list remote object containers.</h3>
+
+<p>You can now list all remove object containers by running the command <code>rclone lsd myremote:</code></p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">MacBook-Pro:~ standorsett$ export RCLONE_CONFIG_MYREMOTE_TYPE<span style="color:#f92672">=</span>swift
+MacBook-Pro:~ standorsett$ export RCLONE_CONFIG_MYREMOTE_ENV_AUTH<span style="color:#f92672">=</span>true
+MacBook-Pro:~ standorsett$ rclone lsd myremote:
+<span style="color:#ae81ff">2018</span>/08/14 <span style="color:#ae81ff">13</span>:23:16 NOTICE: Config file <span style="color:#e6db74">&#34;/Users/standorsett/.config/rclone/rclone.conf&#34;</span> not found - using defaults
+           <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">2018</span>-08-14 <span style="color:#ae81ff">13</span>:23:18         <span style="color:#ae81ff">0</span> public_storage_container
+MacBook-Pro:~ standorsett$</code></pre></div>
+
+<p>If you get tired of seeing the &lsquo;rclone.conf not found&rsquo; informational message, you can get rid of it by creating an empty config file with the same name mentioned.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">MacBook-Pro:~ standorsett$ touch /Users/standorsett/.config/rclone/rclone.conf
+MacBook-Pro:~ standorsett$ rclone lsd myremote:
+           <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">2018</span>-08-14 <span style="color:#ae81ff">13</span>:23:40         <span style="color:#ae81ff">0</span> public_storage_container
+MacBook-Pro:~ standorsett$</code></pre></div>
+
+<p>You can see the command I ran returned the <code>public_storage_container</code> object container I created in step 2.</p>
+
+<h3 id="6-using-rclone-to-upload-files-to-the-object-container">6. Using rclone to upload files to the object container.</h3>
+
+<p>Now that you have confirmed rclone is seeing to the OVH Public Cloud object container you created in step 2, you can upload a file to it. I decided to test with the rclone zip file for OSX that I downlaoded in step 3.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">MacBook-Pro:~ standorsett$ rclone copy ~/Downloads/rclone-v1.42-osx-amd64.zip myremote:public_storage_container
+MacBook-Pro:~ standorsett$</code></pre></div>
+
+<p>You can now run <code>rclone ls myremote:[object_container_name]</code> to list the contents of your object container. Here is the output of when I ran that command. I also decided to output the size of the file on the local disk to compare the two. Both the local and remote files contain the same number of bytes.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">MacBook-Pro:~ standorsett$ rclone ls myremote:public_storage_container
+  <span style="color:#ae81ff">9748516</span> rclone-v1.42-osx-amd64.zip
+MacBook-Pro:~ standorsett$ ls -la ~/Downloads/rclone-v1.42-osx-amd64.zip
+-rw-r--r--@ <span style="color:#ae81ff">1</span> standorsett  staff  <span style="color:#ae81ff">9748516</span> Jun <span style="color:#ae81ff">16</span> <span style="color:#ae81ff">12</span>:22 /Users/standorsett/Downloads/rclone-v1.42-osx-amd64.zip
+MacBook-Pro:~ standorsett$</code></pre></div>
+
+<p>The file sizes of the local and remote files matched, but I also wanted to be safe and compare the local MD5 hashsum</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">MacBook-Pro:~ standorsett$ md5 ~/Downloads/rclone-v1.42-osx-amd64.zip
+MD5 <span style="color:#f92672">(</span>/Users/standorsett/Downloads/rclone-v1.42-osx-amd64.zip<span style="color:#f92672">)</span> <span style="color:#f92672">=</span> 6fc9f13129bd890164be65bc11f6c870
+MacBook-Pro:~ standorsett$</code></pre></div>
+
+<p>&hellip;to the remote hashsum</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">MacBook-Pro:~ standorsett$ rclone hashsum MD5 myremote:public_storage_container/rclone-v1.42-osx-amd64.zip
+6fc9f13129bd890164be65bc11f6c870  rclone-v1.42-osx-amd64.zip
+MacBook-Pro:~ standorsett$</code></pre></div>
+
+<p>&hellip;and verified that the two hashsums matched.</p>
+
+<h3 id="7-downloading-the-file-from-the-public-object-container">7. Downloading the file from the public object container.</h3>
+
+<p>If you created a public object container, all the files contained within the object container can be downloaded without providing any authentication. You should alway consider the purpose of the files being uploaded to the object container when deciding if it should be private or public.</p>
+
+<p>You can test that the files can be access without any authentication. First confirm the file is visible in the ovhcloud.com UI.</p>
+
+<p><img src="https://sdorsett.github.io/static/08142018-06-confirming-file-uploaded-in-ui.png" alt="screenshot" /></p>
+
+<p>You can then paste the <code>Container URL</code> displayed in the object container in a browser and see all the objects contained in it.</p>
+
+<p><img src="https://sdorsett.github.io/static/08142018-07-confirming-file-uploaded-in-browser.png" alt="screenshot" /></p>
+
+<p>The final test you can do is to add the file name you uploaded to the container URL and test downloading the file.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">MacBook-Pro:~ standorsett$ wget https://storage.us-east-va-1.cloud.ovh.us/v1/AUTH_2897923a654b40d0b8b36a502bda4a8f/public_storage_container/rclone-v1.42-osx-amd64.zip
+--2018-08-14 <span style="color:#ae81ff">22</span>:21:38--  https://storage.us-east-va-1.cloud.ovh.us/v1/AUTH_2897923a654b40d0b8b36a502bda4a8f/public_storage_container/rclone-v1.42-osx-amd64.zip
+Resolving storage.us-east-va-1.cloud.ovh.us <span style="color:#f92672">(</span>storage.us-east-va-1.cloud.ovh.us<span style="color:#f92672">)</span>... <span style="color:#ae81ff">147</span>.135.3.101
+Connecting to storage.us-east-va-1.cloud.ovh.us <span style="color:#f92672">(</span>storage.us-east-va-1.cloud.ovh.us<span style="color:#f92672">)</span>|<span style="color:#ae81ff">147</span>.135.3.101|:443... connected.
+HTTP request sent, awaiting response... <span style="color:#ae81ff">200</span> OK
+Length: <span style="color:#ae81ff">9748516</span> <span style="color:#f92672">(</span><span style="color:#ae81ff">9</span>.3M<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>application/zip<span style="color:#f92672">]</span>
+Saving to: ‘rclone-v1.42-osx-amd64.zip’
+
+rclone-v1.42-osx-amd64.zip                    <span style="color:#ae81ff">100</span>%<span style="color:#f92672">[==============================================================================================</span>&gt;<span style="color:#f92672">]</span>   <span style="color:#ae81ff">9</span>.30M  <span style="color:#ae81ff">2</span>.45MB/s    in <span style="color:#ae81ff">4</span>.3s
+
+<span style="color:#ae81ff">2018</span>-08-14 <span style="color:#ae81ff">22</span>:21:42 <span style="color:#f92672">(</span><span style="color:#ae81ff">2</span>.16 MB/s<span style="color:#f92672">)</span> - ‘rclone-v1.42-osx-amd64.zip’ saved <span style="color:#f92672">[</span><span style="color:#ae81ff">9748516</span>/9748516<span style="color:#f92672">]</span>
+
+MacBook-Pro:~ standorsett$</code></pre></div>
+
+<h3 id="8-delete-the-uploaded-file-with-rclone">8. Delete the uploaded file with rclone.</h3>
+
+<p>Once you are finished with your test files, you should delete them to prevent being charged for their usage. You can delete the files by running the rclone command of <code>rclone deletefile remote:path</code>. Here is the output of when I ran this command and then listed out the files in my object container to verify it had been deleted..</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">MacBook-Pro:~ standorsett$ rclone deletefile myremote:public_storage_container/rclone-v1.42-osx-amd64.zip
+MacBook-Pro:~ standorsett$ rclone ls myremote:public_storage_container
+MacBook-Pro:~ standorsett$</code></pre></div>
+
+<p>###That all for this post covering how to use the rclone utility to manage your OVH public cloud swift storage.</p>
+
+<hr />
+
+<p>###Please provide any feedback or suggestions to my twitter account located on the about page.</p>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="https://sdorsett.github.io/post/2018-08-10-using-the-openstack-cli-to-create-a-server-on-ovh-public-cloud/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="https://sdorsett.github.io/post/2018-08-10-using-the-openstack-cli-to-create-a-server-on-ovh-public-cloud/">Using the Openstack cli to create a server on OVH public cloud</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="next">
+      <a href="https://sdorsett.github.io/post/2018-08-19-using-vagrant-to-deploy-to-ovh-public-cloud/">Using Vagrant to deploy an OVH public cloud server</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+    <a href="https://sdorsett.github.io/post/2018-08-19-using-vagrant-to-deploy-to-ovh-public-cloud/"><i class="fa fa-chevron-right"></i></a>
+    
+  </div>
+</div>
+
+
+
+  
+
+</div>
+
+</div>
+</div>
+<script src="https://sdorsett.github.iojs/ui.js"></script>
+<script src="https://sdorsett.github.iojs/menus.js"></script>
+
+
+
+
+
+
+</body>
+</html>
+

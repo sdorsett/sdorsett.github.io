@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Vagrant Vcenter on Things I find interesting</title>
+    <link>https://sdorsett.github.io/tags/vagrant-vcenter/</link>
+    <description>Recent content in Vagrant Vcenter on Things I find interesting</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2018. All rights reserved.</copyright>
+    <lastBuildDate>Mon, 05 Jan 2015 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://sdorsett.github.io/tags/vagrant-vcenter/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Installing vagrant and the vagrant-vcenter provider on CentOS 6.5</title>
+      <link>https://sdorsett.github.io/post/2015-01-04-installing-vagrant-on-centos/</link>
+      <pubDate>Mon, 05 Jan 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/post/2015-01-04-installing-vagrant-on-centos/</guid>
+      <description>If you followed the steps in one of the two previous posts, you have a ESXi .box template in the vagrant-vmware-ovf format. This format allows for deploying the exact same template to vCenter, vCloud Director or vCloud Air, by simply specifying a different provider in vagrant. This post will cover deploying to vCenter, since that is the most readily available of the three.
+In this post we will again talk about the following helpful gosddc project:</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.52" />
+
+  <title>Using Vagrant to deploy an OVH public cloud server &middot; Things I find interesting</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://sdorsett.github.io/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://sdorsett.github.io/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="https://sdorsett.github.io/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+ 
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="https://sdorsett.github.ioimg/favicon.ico" type="image/x-icon" />
+
+  
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="https://sdorsett.github.io/"> </a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/post/"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/about/"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/contact/"><i class='fa fa-phone fa-fw'></i>Contact</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/about/">About</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://twitter.com/standorsett" target="_blank"><i class="fa fa-twitter-square fa-fw"></i>Twitter</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://linkedin.com/in/stan-dorsett-53a8827" target="_blank"><i class="fa fa-linkedin-square fa-fw"></i>LinkedIn</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/sdorsett" target="_blank"><i class="fa fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small>&copy; 2018. All rights reserved.</small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Using Vagrant to deploy an OVH public cloud server</h1>
+  <h2></h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>19 Aug 2018, 00:00</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://sdorsett.github.iotags/vagrant">vagrant</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://sdorsett.github.iotags/openstack">openstack</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://sdorsett.github.iotags/ovh">OVH</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  
+
+<p>This is the fourth in a series of posts that will walk you through using the Openstack-based OVH public cloud. In this post you will get introduced to using Vagrant to create Openstack servers using the Openstack API.
+This post is assumes you have already signed up for an account with ovhcloud.com, added a payment method, created a cloud project, created an Openstack user, created a ssh keypair in the Horizon UI and downloaded the openrc.sh file for this user. If you have not done these steps you can follow the steps in <a href="../2018-08-08-creating-an-openstack-instance-on-ovh-public-cloud">the first</a> and <a href="../2018-08-10-using-the-openstack-cli-to-create-a-server-on-ovh-public-cloud">second blog post</a> in this series that will walk you through completing those steps.</p>
+
+<p>I will attempt in this post to present the options that are available to OVH public cloud customers along side the choices I made that were specific to my Openstack server.
+Let&rsquo;s get started&hellip;</p>
+
+<h3 id="1-install-vagrant">1. Install Vagrant</h3>
+
+<p>The first thing you will need to do before you can move forward with this post is install Vagrant. Go to <a href="https://www.vagrantup.com/downloads.html">https://www.vagrantup.com/downloads.html</a>, download the installer for your specific operating system and install Vagrant.</p>
+
+<h3 id="2-install-the-vagrant-openstack-provider">2. Install the Vagrant Openstack provider</h3>
+
+<p>You will next need to install the Vagrant Openstack provider.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">MacBook-Pro:~ standorsett$ vagrant plugin install vagrant-openstack-provider
+Installing the <span style="color:#e6db74">&#39;vagrant-openstack-provider&#39;</span> plugin. This can take a few minutes...
+Fetching: terminal-table-1.4.5.gem <span style="color:#f92672">(</span><span style="color:#ae81ff">100</span>%<span style="color:#f92672">)</span>
+Fetching: sshkey-1.6.1.gem <span style="color:#f92672">(</span><span style="color:#ae81ff">100</span>%<span style="color:#f92672">)</span>
+Fetching: colorize-0.7.3.gem <span style="color:#f92672">(</span><span style="color:#ae81ff">100</span>%<span style="color:#f92672">)</span>
+Fetching: public_suffix-2.0.5.gem <span style="color:#f92672">(</span><span style="color:#ae81ff">100</span>%<span style="color:#f92672">)</span>
+Fetching: vagrant-openstack-provider-0.13.0.gem <span style="color:#f92672">(</span><span style="color:#ae81ff">100</span>%<span style="color:#f92672">)</span>
+Installed the plugin <span style="color:#e6db74">&#39;vagrant-openstack-provider (0.13.0)&#39;</span>!
+MacBook-Pro:~ standorsett$</code></pre></div>
+
+<h3 id="3-create-a-new-directory-and-add-your-vagrantfile">3. Create a new directory and add your Vagrantfile</h3>
+
+<p>When using the <code>vagrant</code> command, it will look for a Vagrantfile in the current directory. As a result you should create a new directory for containing the Vagrantfile we will use for our Openstack server.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">MacBook-Pro:~ standorsett$ mkdir -p ~/Documents/vagrant/ovh_public_cloud_centos_7
+MacBook-Pro:~ standorsett$ cd ~/Documents/vagrant/ovh_public_cloud_centos_7
+MacBook-Pro:ovh_public_cloud_centos_7 standorsett$ </code></pre></div>
+
+<p>Next you will need to create a Vagrantfile in our new directory that will describe the server you are wanting to have created.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">MacBook-Pro:ovh_public_cloud_centos_7 standorsett$ cat Vagrantfile
+require <span style="color:#e6db74">&#39;vagrant-openstack-provider&#39;</span>
+
+Vagrant.configure<span style="color:#f92672">(</span><span style="color:#e6db74">&#39;2&#39;</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">do</span> |config|
+
+  config.vm.define :<span style="color:#e6db74">&#39;vagrant-centos7&#39;</span> <span style="color:#66d9ef">do</span> |v|
+
+    v.ssh.username <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;centos&#39;</span>
+    v.ssh.private_key_path <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;~/.ssh/id_rsa-ovhus_public_cloud&#39;</span>
+    v.ssh.insert_key <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;false&#39;</span>
+    v.vm.synced_folder <span style="color:#e6db74">&#39;.&#39;</span>, <span style="color:#e6db74">&#39;/vagrant&#39;</span>, type: <span style="color:#e6db74">&#39;rsync&#39;</span>
+    v.vm.provider :openstack <span style="color:#66d9ef">do</span> |provider|
+      provider.openstack_auth_url    <span style="color:#f92672">=</span> ENV<span style="color:#f92672">[</span><span style="color:#e6db74">&#39;OS_AUTH_URL&#39;</span><span style="color:#f92672">]</span>
+      provider.openstack_network_url <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;https://network.us-east-va-1.cloud.ovh.us/v2.0&#39;</span>
+      provider.identity_api_version  <span style="color:#f92672">=</span> ENV<span style="color:#f92672">[</span><span style="color:#e6db74">&#39;OS_IDENTITY_API_VERSION&#39;</span><span style="color:#f92672">]</span>
+      provider.username              <span style="color:#f92672">=</span> ENV<span style="color:#f92672">[</span><span style="color:#e6db74">&#39;OS_USERNAME&#39;</span><span style="color:#f92672">]</span>
+      provider.password              <span style="color:#f92672">=</span> ENV<span style="color:#f92672">[</span><span style="color:#e6db74">&#39;OS_PASSWORD&#39;</span><span style="color:#f92672">]</span>
+      provider.domain_name           <span style="color:#f92672">=</span> ENV<span style="color:#f92672">[</span><span style="color:#e6db74">&#39;OS_USER_DOMAIN_NAME&#39;</span><span style="color:#f92672">]</span>
+      provider.project_name          <span style="color:#f92672">=</span> ENV<span style="color:#f92672">[</span><span style="color:#e6db74">&#39;OS_TENANT_NAME&#39;</span><span style="color:#f92672">]</span>
+      provider.flavor                <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span>
+      provider.image                 <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span>
+      provider.keypair_name          <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;vagrant-keypair&#39;</span>
+      provider.region                <span style="color:#f92672">=</span> ENV<span style="color:#f92672">[</span><span style="color:#e6db74">&#39;OS_REGION_NAME&#39;</span><span style="color:#f92672">]</span>
+      provider.networks              <span style="color:#f92672">=</span> <span style="color:#f92672">[</span> <span style="color:#e6db74">&#39;Ext-Net&#39;</span> <span style="color:#f92672">]</span>
+    end
+  end
+end
+MacBook-Pro:ovh_public_cloud_centos_7 standorsett$</code></pre></div>
+
+<p>The <code>v.ssh.private_key_path</code> should reference the ssh private key file that was created in our second blog post. The <code>provider.keypair_name</code> should be set to match the name of the keypair you created in the Openstack Horizon UI in the second blog post. The <code>provider.image</code> and <code>provider.flavor</code> values are initially blank, but you will update those shortly.</p>
+
+<p>You also might notice that most of the details in this Vagrantfile are referencing <code>ENV</code> which means they will be pulled from environment variables.</p>
+
+<h3 id="4-source-your-openrc-sh-file">4. Source your openrc.sh file</h3>
+
+<p>Source the openrc.sh you previously downloaded for your Openstack user. Enter the password for your Openstack user when prompted. This step will export the environmental variables that the Vagrantfile needs in order to create the Openstack server.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">MacBook-Pro:ovh_public_cloud_centos_7 standorsett$ source ~/Downloads/openrc.sh
+Please enter your OpenStack Password:
+MacBook-Pro:ovh_public_cloud_centos_7 standorsett$</code></pre></div>
+
+<h3 id="5-test-connecting-to-the-ovh-public-cloud">5. Test connecting to the OVH public cloud.</h3>
+
+<p>You can now test connecting to the OVH public cloud API by running <code>vagrant status</code></p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">MacBook-Pro:ovh_public_cloud_centos_7 standorsett$ vagrant status
+Current machine states:
+
+vagrant-centos7           not created <span style="color:#f92672">(</span>openstack<span style="color:#f92672">)</span>
+
+The server is not created. Run <span style="color:#e6db74">`</span>vagrant up<span style="color:#e6db74">`</span> to create it.
+MacBook-Pro:ovh_public_cloud_centos_7 standorsett$</code></pre></div>
+
+<p>If you received a message that the server was not created, then your credentials and Openstack details are valid.</p>
+
+<h3 id="6-using-the-vagrant-openstack-provider-to-query-for-available-flavor-and-images">6. Using the Vagrant Openstack provider to query for available flavor and images.</h3>
+
+<p>The Vagrant Openstack provider can be used us query the Openstack API for available resources. I knew I wanted to use a Centos image so I ran <code>vagrant openstack image-list | egrep '(--|Name|Centos)'</code> to return images that contained the name Centos:</p>
+
+<p><img src="https://sdorsett.github.io/static/08192018-01-vagrant-openstack-image-list.png" alt="screenshot" /></p>
+
+<p>I also knew I wanted to use a sandbox image, which all start with s1 in the name, so I ran <code>vagrant openstack flavor-list | egrep '(--|Name|s1)'</code> to return all s1 images:</p>
+
+<p><img src="https://sdorsett.github.io/static/08192018-02-vagrant-openstack-flavor-list.png" alt="screenshot" /></p>
+
+<h3 id="6-update-your-vagrantfile-to-reflect-the-image-and-flavor-name-that-you-want-to-use">6. Update your Vagrantfile to reflect the image and flavor name that you want to use.</h3>
+
+<p>After using the Vagrant Openstack provider to return the available image and flavor names, update your Vagrantfile to reference the image and flavor you want to use. I chose “Centos 7” and “s1-2” for mine.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">MacBook-Pro:ovh_public_cloud_centos_7 standorsett$ cat Vagrantfile
+require <span style="color:#e6db74">&#39;vagrant-openstack-provider&#39;</span>
+ 
+Vagrant.configure<span style="color:#f92672">(</span><span style="color:#e6db74">&#39;2&#39;</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">do</span> |config|
+ 
+  config.vm.define :<span style="color:#e6db74">&#39;vagrant-centos7&#39;</span> <span style="color:#66d9ef">do</span> |v|
+ 
+    v.ssh.username <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;centos&#39;</span>
+    v.ssh.private_key_path <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;~/.ssh/id_rsa-ovhus_public_cloud&#39;</span>
+    v.ssh.insert_key <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;false&#39;</span>
+    v.vm.synced_folder <span style="color:#e6db74">&#39;.&#39;</span>, <span style="color:#e6db74">&#39;/vagrant&#39;</span>, type: <span style="color:#e6db74">&#39;rsync&#39;</span>
+    v.vm.provider :openstack <span style="color:#66d9ef">do</span> |provider|
+      provider.openstack_auth_url    <span style="color:#f92672">=</span> ENV<span style="color:#f92672">[</span><span style="color:#e6db74">&#39;OS_AUTH_URL&#39;</span><span style="color:#f92672">]</span>
+      provider.openstack_network_url <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;https://network.us-east-va-1.cloud.ovh.us/v2.0&#39;</span>
+      provider.identity_api_version  <span style="color:#f92672">=</span> ENV<span style="color:#f92672">[</span><span style="color:#e6db74">&#39;OS_IDENTITY_API_VERSION&#39;</span><span style="color:#f92672">]</span>
+      provider.username              <span style="color:#f92672">=</span> ENV<span style="color:#f92672">[</span><span style="color:#e6db74">&#39;OS_USERNAME&#39;</span><span style="color:#f92672">]</span>
+      provider.password              <span style="color:#f92672">=</span> ENV<span style="color:#f92672">[</span><span style="color:#e6db74">&#39;OS_PASSWORD&#39;</span><span style="color:#f92672">]</span>
+      provider.domain_name           <span style="color:#f92672">=</span> ENV<span style="color:#f92672">[</span><span style="color:#e6db74">&#39;OS_USER_DOMAIN_NAME&#39;</span><span style="color:#f92672">]</span>
+      provider.project_name          <span style="color:#f92672">=</span> ENV<span style="color:#f92672">[</span><span style="color:#e6db74">&#39;OS_TENANT_NAME&#39;</span><span style="color:#f92672">]</span>
+      provider.flavor                <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;s1-2&#39;</span>
+      provider.image                 <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;Centos 7&#39;</span>
+      provider.keypair_name          <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;vagrant-keypair&#39;</span>
+      provider.region                <span style="color:#f92672">=</span> ENV<span style="color:#f92672">[</span><span style="color:#e6db74">&#39;OS_REGION_NAME&#39;</span><span style="color:#f92672">]</span>
+      provider.networks              <span style="color:#f92672">=</span> <span style="color:#f92672">[</span> <span style="color:#e6db74">&#39;Ext-Net&#39;</span> <span style="color:#f92672">]</span>
+    end
+  end
+end
+MacBook-Pro:ovh_public_cloud_centos_7 standorsett$</code></pre></div>
+
+<h3 id="7-run-vagrant-up-to-create-the-openstack-server">7. Run <code>vagrant up</code> to create the Openstack server</h3>
+
+<p>The next step is for you to run <code>vagrant up</code> to create the Openstack server as defined in your Vagrantfile.</p>
+
+<p>I want to give one warning that this command will not succeed successfully with vagrant-openstack-provider version 0.13.0, but we will address these issues in a moment. I pressed <code>control-c</code> after receiving a few of the Host unreachable messages to break out of Vagrant.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"> 
+MacBook-Pro:ovh_public_cloud_centos_7 standorsett$ vagrant up
+Bringing machine <span style="color:#e6db74">&#39;vagrant-centos7&#39;</span> up with <span style="color:#e6db74">&#39;openstack&#39;</span> provider...
+<span style="color:#f92672">==</span>&gt; vagrant-centos7: Finding flavor <span style="color:#66d9ef">for</span> server...
+<span style="color:#f92672">==</span>&gt; vagrant-centos7: Finding image <span style="color:#66d9ef">for</span> server...
+<span style="color:#f92672">==</span>&gt; vagrant-centos7: Finding network<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span> <span style="color:#66d9ef">for</span> server...
+<span style="color:#f92672">==</span>&gt; vagrant-centos7: Launching a server with the following settings...
+<span style="color:#f92672">==</span>&gt; vagrant-centos7:  -- Tenant          :
+<span style="color:#f92672">==</span>&gt; vagrant-centos7:  -- Name            : vagrant-centos7
+<span style="color:#f92672">==</span>&gt; vagrant-centos7:  -- Flavor          : s1-2
+<span style="color:#f92672">==</span>&gt; vagrant-centos7:  -- FlavorRef       : a64381e7-c4e7-4b01-9fbe-da405c544d2e
+<span style="color:#f92672">==</span>&gt; vagrant-centos7:  -- Image           : Centos 7
+<span style="color:#f92672">==</span>&gt; vagrant-centos7:  -- ImageRef        : e0a89ff2-e98f-4a34-afae-68f9f6c9b5ad
+<span style="color:#f92672">==</span>&gt; vagrant-centos7:  -- KeyPair         : vagrant-keypair
+<span style="color:#f92672">==</span>&gt; vagrant-centos7:  -- Network         : b347ed75-8603-4ce0-a40c-c6c98a8820fc
+<span style="color:#f92672">==</span>&gt; vagrant-centos7: Waiting <span style="color:#66d9ef">for</span> the server to be built...
+<span style="color:#f92672">==</span>&gt; vagrant-centos7: Waiting <span style="color:#66d9ef">for</span> machine to boot. This may take a few minutes...
+    vagrant-centos7: SSH address: <span style="color:#ae81ff">2604</span>:2dc0:101:100::1b:22
+    vagrant-centos7: SSH username: centos
+    vagrant-centos7: SSH auth method: private key
+    vagrant-centos7: Warning: Host unreachable. Retrying...
+    vagrant-centos7: Warning: Host unreachable. Retrying...
+    vagrant-centos7: Warning: Host unreachable. Retrying...
+^C
+<span style="color:#f92672">==</span>&gt; vagrant-centos7: Waiting <span style="color:#66d9ef">for</span> cleanup before exiting...
+An unknown error happened in Vagrant OpenStack provider
+
+To easily debug what happened, we recommend to set the environment
+variable VAGRANT_OPENSTACK_LOG to debug
+
+    $ export VAGRANT_OPENSTACK_LOG<span style="color:#f92672">=</span>debug
+
+If doing this does not help fixing your issue, there may be a bug
+in the provider. Please submit an issue on Github at
+https://github.com/ggiamarchi/vagrant-openstack-provider
+with the stracktrace and the logs.
+
+We are looking <span style="color:#66d9ef">for</span> feedback, so feel free to ask questions or
+describe features you would like to see in this provider.
+An unknown error happened in Vagrant OpenStack provider
+
+To easily debug what happened, we recommend to set the environment
+variable VAGRANT_OPENSTACK_LOG to debug
+
+    $ export VAGRANT_OPENSTACK_LOG<span style="color:#f92672">=</span>debug
+
+If doing this does not help fixing your issue, there may be a bug
+in the provider. Please submit an issue on Github at
+https://github.com/ggiamarchi/vagrant-openstack-provider
+with the stracktrace and the logs.
+
+We are looking <span style="color:#66d9ef">for</span> feedback, so feel free to ask questions or
+describe features you would like to see in this provider.
+Catched Error: Catched Error: Catched Error: Vagrant exited after cleanup due to external interrupt.
+MacBook-Pro:ovh_public_cloud_centos_7 standorsett$</code></pre></div>
+
+<p>If you look back at the output of your command you will see a line displaying a message like <code>SSH address: 2604:2dc0:101:100::1b:22</code>
+You will also see that the same IPV6 address is returned for the HostName when you run <code>vagrant ssh-config</code></p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">MacBook-Pro:ovh_public_cloud_centos_7 standorsett$ vagrant ssh-config
+Host vagrant-centos7
+  HostName <span style="color:#ae81ff">2604</span>:2dc0:101:100::1b
+  User centos
+  Port <span style="color:#ae81ff">22</span>
+  UserKnownHostsFile /dev/null
+  StrictHostKeyChecking no
+  PasswordAuthentication no
+  IdentityFile /Users/standorsett/.ssh/id_rsa-ovhus_public_cloud
+  IdentitiesOnly yes
+  LogLevel ERROR
+
+MacBook-Pro:ovh_public_cloud_centos_7 standorsett$</code></pre></div>
+
+<h3 id="8-updating-the-vagrant-openstack-provider-to-return-an-ipv4-address">8. Updating the Vagrant Openstack provider to return an IPV4 address</h3>
+
+<p>There is an <a href="https://github.com/ggiamarchi/vagrant-openstack-provider/pull/359">open pull request</a> for the Vagrant openstack provider to allow a user to specify if the provider should connect to an IPV4 or IPV6 address. Until that pull request is merge I would suggest making <a href="https://github.com/sghribi/vagrant-openstack-provider/commit/040c7168066bad36a9c9995418f3189d5a85a125">these suggested changes</a> to <code>~/.vagrant.d/gems/2.4.4/gems/vagrant-openstack-provider-0.13.0/lib/vagrant-openstack-provider/utils.rb</code></p>
+
+<p><img src="https://sdorsett.github.io/static/08192018-04-edit-util-rb-file.png" alt="screenshot" /></p>
+
+<p>After modifying the utils.rb file try running <code>vagrant ssh-config</code> again to make sure the command is returning an IPV4 address.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"> 
+MacBook-Pro:ovh_public_cloud_centos_7 standorsett$ vagrant ssh-config
+Host vagrant-centos7
+  HostName <span style="color:#ae81ff">147</span>.135.76.34
+  User centos
+  Port <span style="color:#ae81ff">22</span>
+  UserKnownHostsFile /dev/null
+  StrictHostKeyChecking no
+  PasswordAuthentication no
+  IdentityFile /Users/standorsett/.ssh/id_rsa-ovhus_public_cloud
+  IdentitiesOnly yes
+  LogLevel ERROR
+ 
+MacBook-Pro:ovh_public_cloud_centos_7 standorsett$</code></pre></div>
+
+<h3 id="8-use-vagrant-to-destroy-and-re-deploy-the-openstack-server">8. Use Vagrant to destroy and re-deploy the Openstack server</h3>
+
+<p>Now that Vagrant is returning an IPV4 address it should deploy correctly. Destroy your Openstack server by running <code>vagrant destroy -f</code></p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">MacBook-Pro:ovh_public_cloud_centos_7 standorsett$ vagrant destroy
+<span style="color:#f92672">==</span>&gt; vagrant-centos7: Deleting server...
+<span style="color:#f92672">==</span>&gt; vagrant-centos7: Waiting <span style="color:#66d9ef">for</span> the server to be deleted...
+MacBook-Pro:ovh_public_cloud_centos_7 standorsett$</code></pre></div>
+
+<p>&hellip;followed by <code>vagrant up</code> to deploy it again</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">MacBook-Pro:ovh_public_cloud_centos_7 standorsett$ vagrant up
+Bringing machine <span style="color:#e6db74">&#39;vagrant-centos7&#39;</span> up with <span style="color:#e6db74">&#39;openstack&#39;</span> provider...
+<span style="color:#f92672">==</span>&gt; vagrant-centos7: Finding flavor <span style="color:#66d9ef">for</span> server...
+<span style="color:#f92672">==</span>&gt; vagrant-centos7: Finding image <span style="color:#66d9ef">for</span> server...
+<span style="color:#f92672">==</span>&gt; vagrant-centos7: Finding network<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span> <span style="color:#66d9ef">for</span> server...
+<span style="color:#f92672">==</span>&gt; vagrant-centos7: Launching a server with the following settings...
+<span style="color:#f92672">==</span>&gt; vagrant-centos7:  -- Tenant          :
+<span style="color:#f92672">==</span>&gt; vagrant-centos7:  -- Name            : vagrant-centos7
+<span style="color:#f92672">==</span>&gt; vagrant-centos7:  -- Flavor          : s1-2
+<span style="color:#f92672">==</span>&gt; vagrant-centos7:  -- FlavorRef       : a64381e7-c4e7-4b01-9fbe-da405c544d2e
+<span style="color:#f92672">==</span>&gt; vagrant-centos7:  -- Image           : Centos 7
+<span style="color:#f92672">==</span>&gt; vagrant-centos7:  -- ImageRef        : e0a89ff2-e98f-4a34-afae-68f9f6c9b5ad
+<span style="color:#f92672">==</span>&gt; vagrant-centos7:  -- KeyPair         : vagrant-keypair
+<span style="color:#f92672">==</span>&gt; vagrant-centos7:  -- Network         : b347ed75-8603-4ce0-a40c-c6c98a8820fc
+<span style="color:#f92672">==</span>&gt; vagrant-centos7: Waiting <span style="color:#66d9ef">for</span> the server to be built...
+<span style="color:#f92672">==</span>&gt; vagrant-centos7: Waiting <span style="color:#66d9ef">for</span> machine to boot. This may take a few minutes...
+    vagrant-centos7: SSH address: <span style="color:#ae81ff">147</span>.135.76.17:22
+    vagrant-centos7: SSH username: centos
+    vagrant-centos7: SSH auth method: private key
+    vagrant-centos7: Warning: Connection refused. Retrying...
+    vagrant-centos7: Warning: Connection refused. Retrying...
+<span style="color:#f92672">==</span>&gt; vagrant-centos7: Machine booted and ready!
+<span style="color:#f92672">==</span>&gt; vagrant-centos7: Installing rsync to the VM...
+<span style="color:#f92672">==</span>&gt; vagrant-centos7: Rsyncing folder: /Users/standorsett/Documents/vagrant/ovh_public_cloud_centos_7/ <span style="color:#f92672">=</span>&gt; /vagrant
+MacBook-Pro:ovh_public_cloud_centos_7 standorsett$</code></pre></div>
+
+<p>You can see in my output that Vagrant successfully connected to the assigned IPV4 address, installed rsync and used it to copy over the folder that contained the Vagrantfile to /vagrant.</p>
+
+<h3 id="9-connect-to-your-openstack-server">9. Connect to your Openstack server</h3>
+
+<p>Connecting to your Openstack server created by Vagrant is as easy as running <code>vagrant ssh</code></p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">MacBook-Pro:ovh_public_cloud_centos_7 standorsett$ vagrant ssh
+<span style="color:#f92672">[</span>centos@vagrant-centos7 ~<span style="color:#f92672">]</span>$ cd /vagrant/
+<span style="color:#f92672">[</span>centos@vagrant-centos7 vagrant<span style="color:#f92672">]</span>$ ls -la
+total <span style="color:#ae81ff">12</span>
+drwxr-xr-x   <span style="color:#ae81ff">2</span> centos centos <span style="color:#ae81ff">4096</span> Aug <span style="color:#ae81ff">19</span> <span style="color:#ae81ff">23</span>:31 .
+dr-xr-xr-x. <span style="color:#ae81ff">19</span> root   root   <span style="color:#ae81ff">4096</span> Aug <span style="color:#ae81ff">19</span> <span style="color:#ae81ff">23</span>:59 ..
+-rw-r--r--   <span style="color:#ae81ff">1</span> centos centos <span style="color:#ae81ff">1063</span> Aug <span style="color:#ae81ff">19</span> <span style="color:#ae81ff">23</span>:31 Vagrantfile
+<span style="color:#f92672">[</span>centos@vagrant-centos7 vagrant<span style="color:#f92672">]</span>$ cat Vagrantfile
+require <span style="color:#e6db74">&#39;vagrant-openstack-provider&#39;</span>
+ 
+Vagrant.configure<span style="color:#f92672">(</span><span style="color:#e6db74">&#39;2&#39;</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">do</span> |config|
+ 
+  config.vm.define :<span style="color:#e6db74">&#39;vagrant-centos7&#39;</span> <span style="color:#66d9ef">do</span> |v|
+ 
+    v.ssh.username <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;centos&#39;</span>
+    v.ssh.private_key_path <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;~/.ssh/id_rsa-ovhus_public_cloud&#39;</span>
+    v.ssh.insert_key <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;false&#39;</span>
+    v.vm.synced_folder <span style="color:#e6db74">&#39;.&#39;</span>, <span style="color:#e6db74">&#39;/vagrant&#39;</span>, type: <span style="color:#e6db74">&#39;rsync&#39;</span>
+    v.vm.provider :openstack <span style="color:#66d9ef">do</span> |provider|
+      provider.openstack_auth_url    <span style="color:#f92672">=</span> ENV<span style="color:#f92672">[</span><span style="color:#e6db74">&#39;OS_AUTH_URL&#39;</span><span style="color:#f92672">]</span>
+      provider.openstack_network_url <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;https://network.us-east-va-1.cloud.ovh.us/v2.0&#39;</span>
+      provider.identity_api_version  <span style="color:#f92672">=</span> ENV<span style="color:#f92672">[</span><span style="color:#e6db74">&#39;OS_IDENTITY_API_VERSION&#39;</span><span style="color:#f92672">]</span>
+      provider.username              <span style="color:#f92672">=</span> ENV<span style="color:#f92672">[</span><span style="color:#e6db74">&#39;OS_USERNAME&#39;</span><span style="color:#f92672">]</span>
+      provider.password              <span style="color:#f92672">=</span> ENV<span style="color:#f92672">[</span><span style="color:#e6db74">&#39;OS_PASSWORD&#39;</span><span style="color:#f92672">]</span>
+      provider.domain_name           <span style="color:#f92672">=</span> ENV<span style="color:#f92672">[</span><span style="color:#e6db74">&#39;OS_USER_DOMAIN_NAME&#39;</span><span style="color:#f92672">]</span>
+      provider.project_name          <span style="color:#f92672">=</span> ENV<span style="color:#f92672">[</span><span style="color:#e6db74">&#39;OS_TENANT_NAME&#39;</span><span style="color:#f92672">]</span>
+      provider.flavor                <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;s1-2&#39;</span>
+      provider.image                 <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;Centos 7&#39;</span>
+      provider.keypair_name          <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;vagrant-keypair&#39;</span>
+      provider.region                <span style="color:#f92672">=</span> ENV<span style="color:#f92672">[</span><span style="color:#e6db74">&#39;OS_REGION_NAME&#39;</span><span style="color:#f92672">]</span>
+      provider.networks              <span style="color:#f92672">=</span> <span style="color:#f92672">[</span> <span style="color:#e6db74">&#39;Ext-Net&#39;</span> <span style="color:#f92672">]</span>
+    end
+  end
+end
+<span style="color:#f92672">[</span>centos@vagrant-centos7 vagrant<span style="color:#f92672">]</span>$ ip a show dev eth0
+<span style="color:#ae81ff">2</span>: eth0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu <span style="color:#ae81ff">1500</span> qdisc pfifo_fast state UP qlen <span style="color:#ae81ff">1000</span>
+    link/ether fa:16:3e:79:76:78 brd ff:ff:ff:ff:ff:ff
+    inet <span style="color:#ae81ff">147</span>.135.76.17/32 brd <span style="color:#ae81ff">147</span>.135.76.17 scope global dynamic eth0
+       valid_lft 85791sec preferred_lft 85791sec
+    inet6 fe80::f816:3eff:fe79:7678/64 scope link
+       valid_lft forever preferred_lft forever
+<span style="color:#f92672">[</span>centos@vagrant-centos7 vagrant<span style="color:#f92672">]</span>$</code></pre></div>
+
+<h3 id="10-destroy-your-vagrant-openstack-server">10. Destroy your Vagrant Openstack server.</h3>
+
+<p>After you are finished testing your Openstack server, you should destroy it in order to prevent being charged for it’s usage. This can be done using the same <code>vagrant destroy</code> command we did earlier.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">MacBook-Pro:ovh_public_cloud_centos_7 standorsett$ vagrant destroy
+<span style="color:#f92672">==</span>&gt; vagrant-centos7: Deleting server...
+<span style="color:#f92672">==</span>&gt; vagrant-centos7: Waiting <span style="color:#66d9ef">for</span> the server to be deleted...
+MacBook-Pro:ovh_public_cloud_centos_7 standorsett$</code></pre></div>
+
+<p>That all for this post covering how to use Vagrant to quickly deploy a OVH public cloud server. In this post you have only scratched the surface of what you can do with Vagrant, but hopefully if showed how simple it is to get started.
+Please provide any feedback or suggestions to my twitter account located on the about page.</p>
+
+<hr />
+
+<h4 id="please-provide-any-feedback-or-suggestions-to-my-twitter-account-located-on-the-about-page">Please provide any feedback or suggestions to my twitter account located on the about page.</h4>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="https://sdorsett.github.io/post/2018-08-14-using-rclone-to-connect-to-ovh-public-cloud-swift-storage/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="https://sdorsett.github.io/post/2018-08-14-using-rclone-to-connect-to-ovh-public-cloud-swift-storage/">Using rclone to manage OVH Public Cloud swift storage</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="next">
+      <a href="https://sdorsett.github.io/post/2018-08-21-using-terraform-to-deploy-to-ovh-public-cloud/">Using Terraform to deploy an OVH public cloud server.</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+    <a href="https://sdorsett.github.io/post/2018-08-21-using-terraform-to-deploy-to-ovh-public-cloud/"><i class="fa fa-chevron-right"></i></a>
+    
+  </div>
+</div>
+
+
+
+  
+
+</div>
+
+</div>
+</div>
+<script src="https://sdorsett.github.iojs/ui.js"></script>
+<script src="https://sdorsett.github.iojs/menus.js"></script>
+
+
+
+
+
+
+</body>
+</html>
+

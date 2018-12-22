@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on Things I find interesting</title>
+    <link>https://sdorsett.github.io/tags/</link>
+    <description>Recent content in Tags on Things I find interesting</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2018. All rights reserved.</copyright>
+    <lastBuildDate>Tue, 21 Aug 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://sdorsett.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Openstack</title>
+      <link>https://sdorsett.github.io/tags/openstack/</link>
+      <pubDate>Tue, 21 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/tags/openstack/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Ovftool</title>
+      <link>https://sdorsett.github.io/tags/ovftool/</link>
+      <pubDate>Mon, 28 Dec 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/tags/ovftool/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Ovh</title>
+      <link>https://sdorsett.github.io/tags/ovh/</link>
+      <pubDate>Sun, 19 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/tags/ovh/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Packer</title>
+      <link>https://sdorsett.github.io/tags/packer/</link>
+      <pubDate>Mon, 28 Dec 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/tags/packer/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Puppet</title>
+      <link>https://sdorsett.github.io/tags/puppet/</link>
+      <pubDate>Tue, 06 May 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/tags/puppet/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Terraform</title>
+      <link>https://sdorsett.github.io/tags/terraform/</link>
+      <pubDate>Tue, 21 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/tags/terraform/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Vagrant</title>
+      <link>https://sdorsett.github.io/tags/vagrant/</link>
+      <pubDate>Sun, 19 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/tags/vagrant/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Vagrant Vcenter</title>
+      <link>https://sdorsett.github.io/tags/vagrant-vcenter/</link>
+      <pubDate>Mon, 05 Jan 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/tags/vagrant-vcenter/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Vagrant Vcloud</title>
+      <link>https://sdorsett.github.io/tags/vagrant-vcloud/</link>
+      <pubDate>Mon, 26 May 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/tags/vagrant-vcloud/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Vagrant Vsphere</title>
+      <link>https://sdorsett.github.io/tags/vagrant-vsphere/</link>
+      <pubDate>Thu, 24 Apr 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/tags/vagrant-vsphere/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Vsphere</title>
+      <link>https://sdorsett.github.io/tags/vsphere/</link>
+      <pubDate>Wed, 23 Dec 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/tags/vsphere/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

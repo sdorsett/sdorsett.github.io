@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Things I find interesting</title>
+    <link>https://sdorsett.github.io/</link>
+    <description>Recent content on Things I find interesting</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2018. All rights reserved.</copyright>
+    <lastBuildDate>Thu, 09 Aug 2018 13:50:49 +0100</lastBuildDate>
+    
+	<atom:link href="https://sdorsett.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>About</title>
+      <link>https://sdorsett.github.io/about/</link>
+      <pubDate>Thu, 09 Aug 2018 13:50:49 +0100</pubDate>
+      
+      <guid>https://sdorsett.github.io/about/</guid>
+      <description>Who am I?
+I am an automation engineer working for OVH in the United States and trying to share what I&amp;rsquo;m learning with anyone willing to listen.
+Have questions or suggestions? Feel free to ask me on Twitter.
+Thanks for reading!</description>
+    </item>
+    
+    <item>
+      <title>Using Terraform to deploy an OVH public cloud server.</title>
+      <link>https://sdorsett.github.io/post/2018-08-21-using-terraform-to-deploy-to-ovh-public-cloud/</link>
+      <pubDate>Tue, 21 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/post/2018-08-21-using-terraform-to-deploy-to-ovh-public-cloud/</guid>
+      <description>This is the fifth in a series of posts that will walk you through using the Openstack-based OVH public cloud. In this post you will get introduced to using Terraform to create Openstack servers using the Openstack API. This post is assumes you have already signed up for an account with ovhcloud.com, added a payment method, created a cloud project, created an Openstack user, created a ssh keypair in the Horizon UI and downloaded the openrc.</description>
+    </item>
+    
+    <item>
+      <title>Using Vagrant to deploy an OVH public cloud server</title>
+      <link>https://sdorsett.github.io/post/2018-08-19-using-vagrant-to-deploy-to-ovh-public-cloud/</link>
+      <pubDate>Sun, 19 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/post/2018-08-19-using-vagrant-to-deploy-to-ovh-public-cloud/</guid>
+      <description>This is the fourth in a series of posts that will walk you through using the Openstack-based OVH public cloud. In this post you will get introduced to using Vagrant to create Openstack servers using the Openstack API. This post is assumes you have already signed up for an account with ovhcloud.com, added a payment method, created a cloud project, created an Openstack user, created a ssh keypair in the Horizon UI and downloaded the openrc.</description>
+    </item>
+    
+    <item>
+      <title>Using rclone to manage OVH Public Cloud swift storage</title>
+      <link>https://sdorsett.github.io/post/2018-08-14-using-rclone-to-connect-to-ovh-public-cloud-swift-storage/</link>
+      <pubDate>Tue, 14 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/post/2018-08-14-using-rclone-to-connect-to-ovh-public-cloud-swift-storage/</guid>
+      <description>This is the third in a series of posts that will walk you through using the Openstack-based OVH public cloud. In this post you will get introduced to using rclone to upload and retrieve files from the Openstack swift API.
+This post is assumes you have already signed up for an account with ovhcloud.com, added a payment method, created a cloud project and created an Openstack user. If you have not done these steps you can follow the steps in the first and second blog post in this series that will walk you through completing those steps.</description>
+    </item>
+    
+    <item>
+      <title>Using the Openstack cli to create a server on OVH public cloud</title>
+      <link>https://sdorsett.github.io/post/2018-08-10-using-the-openstack-cli-to-create-a-server-on-ovh-public-cloud/</link>
+      <pubDate>Fri, 10 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/post/2018-08-10-using-the-openstack-cli-to-create-a-server-on-ovh-public-cloud/</guid>
+      <description>This is the second in a series of posts that will walk you through using the Openstack-based OVH public cloud. In this post you will get introduced to using the Openstack cli to create an Openstack server.
+This post is assumes you have already signed up for an account with ovhcloud.com, added a payment method and created a cloud project. If you have not done these steps you can follow the first blog post in this series that will walk you through completing those steps.</description>
+    </item>
+    
+    <item>
+      <title>Manually creating an openstack server on OVH public cloud</title>
+      <link>https://sdorsett.github.io/post/2018-08-08-creating-an-openstack-server-on-ovh-public-cloud/</link>
+      <pubDate>Wed, 08 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/post/2018-08-08-creating-an-openstack-server-on-ovh-public-cloud/</guid>
+      <description>This is the first in a series of posts that will walk you through using the openstack-based OVH public cloud. In this post you will get introduced to using the ovhcloud.com UI to create an Openstack server.
+I will attempt in this post to present the options that are available to OVH public cloud customers along side the choices I made that were specific to my server.
+Let&amp;rsquo;s get started&amp;hellip;</description>
+    </item>
+    
+    <item>
+      <title>Exploring the OVH public cloud and opensource tools that can use it.</title>
+      <link>https://sdorsett.github.io/post/2018-08-06-exploring-the-ovhpublic-cloud/</link>
+      <pubDate>Mon, 06 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/post/2018-08-06-exploring-the-ovhpublic-cloud/</guid>
+      <description>This post is the beginning of a series of posts that will explain how to use the openstack-based OVH public cloud UI and opensource tools that you can use to automate and manage your openstack infrastructure.
+Over the last few years, I have worked primarily with VMware products and have not taken the time to learn with openstack. Now that the OVH public cloud has launched in the United States, and I work for OVH US, I figured it was time to start learning how customers could put this offering to use.</description>
+    </item>
+    
+    <item>
+      <title>Scripted Packer build, ovftool export and Vagrant .box file creation</title>
+      <link>https://sdorsett.github.io/post/2015-12-28-scripted-packer-build-and-export/</link>
+      <pubDate>Mon, 28 Dec 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/post/2015-12-28-scripted-packer-build-and-export/</guid>
+      <description>This is the seventh in a series of posts on using a Packer pipeline to generate Vagrant .box files.
+In the last post we covered using ovftool to convert Packer generated virtual machines into Vagrant .box files. I promised to show you a better way of exporting and creating the Vagrant .box files, so in this post we will be combining the following items in one script:
+ Kicking off the Packer build of a specific template Exporting the Packer generated virtual machine Creating the necessary metadata.</description>
+    </item>
+    
+    <item>
+      <title>Using ovftool to convert Packer generated virtual machines into Vagrant .box files</title>
+      <link>https://sdorsett.github.io/post/2015-12-27-using-ovftool-to-export-packer-generated-virtual-machines/</link>
+      <pubDate>Sun, 27 Dec 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/post/2015-12-27-using-ovftool-to-export-packer-generated-virtual-machines/</guid>
+      <description>This is the sixth in a series of posts on using a Packer pipeline to generate Vagrant .box files.
+In the last post we covered copying our existing CentOS 6.7 template and adding the Puppet agent in order to generate a new Packer template. In this post we will be covering how to use ovftool to convert Packer generated virtual machines into Vagrant .box files. This post will be going over the manual steps on purpose, since I feel it will make more sense when we start to cover automating the steps that you can already performed by hand.</description>
+    </item>
+    
+    <item>
+      <title>Copying our existing CentOS 6.7 template and adding the Puppet agent</title>
+      <link>https://sdorsett.github.io/post/2015-12-26-copy-our-existing-template-and-add-the-puppet-agent/</link>
+      <pubDate>Sat, 26 Dec 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/post/2015-12-26-copy-our-existing-template-and-add-the-puppet-agent/</guid>
+      <description>This is the fifth in a series of posts on using a Packer pipeline to generate Vagrant .box files.
+In the last post we covered creating a Packer template for installing CentOS 6.7 with vmtools. In this post we will be basing a new Packer template on the one we created last post and add installing the Puppet Enterprise 3.8.2 agent.
+This is an older version of the Puppet Enterprise agent, but it will let us create a Vagrant .</description>
+    </item>
+    
+    <item>
+      <title>Creating our first Packer template for installing CentOS 6.7 with vmtools</title>
+      <link>https://sdorsett.github.io/post/2015-12-25-creating-a-packer-template-for-installing-centos-67/</link>
+      <pubDate>Fri, 25 Dec 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/post/2015-12-25-creating-a-packer-template-for-installing-centos-67/</guid>
+      <description>This is the fourth in a series of posts on using a Packer pipeline to generate Vagrant .box files.
+In the last two posts we covered installing a ESXi virtual machine for use with Packer and Setting up Packer, ovftool and Apache web server on a CentOS virtual machine. In this post we will be putting all this prep work to use in order to install a CentOS 6.7 image using Packer.</description>
+    </item>
+    
+    <item>
+      <title>Setting up Packer, ovftool and Apache web server on a CentOS virtual machine</title>
+      <link>https://sdorsett.github.io/post/2015-12-24-installing-packer-and-ovftool-on-centos/</link>
+      <pubDate>Thu, 24 Dec 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/post/2015-12-24-installing-packer-and-ovftool-on-centos/</guid>
+      <description>This is the third in a series of posts on using a Packer pipeline to generate Vagrant .box files.
+In the last post we setup a ESXi virtual machine that would be the target for creating Packer images. In order to follow along with this post you will need two things:
+ A fresh CentOS virtual machine on which we will install Packer - I&amp;rsquo;m using CentOS 6.6 minimal install named &amp;ldquo;packer-centos&amp;rdquo; with 2 vCPU, 4GB of memory and a 100GB virtual hard drive.</description>
+    </item>
+    
+    <item>
+      <title>Installing a ESXi 6.0 virtual machine for use with Packer</title>
+      <link>https://sdorsett.github.io/post/2015-12-23-installing-esxi-virtual-machine-for-packer-depolyment/</link>
+      <pubDate>Wed, 23 Dec 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/post/2015-12-23-installing-esxi-virtual-machine-for-packer-depolyment/</guid>
+      <description>This is the second in a series of posts on using a Packer pipeline to generate Vagrant .box files.
+In order to begin using Packer to create images, we will first need to lay the &amp;ldquo;virtual&amp;rdquo; ground work. Packer can create virtual machine images on a wide variety of virtualization or cloud platforms, but since I work for VMware I have been using the ESXi hypervisor.
+ This post will be covering installing ESXi as a virtual machine on a vSphere cluster.</description>
+    </item>
+    
+    <item>
+      <title>Setting up a pipeline for creating Packer .box files</title>
+      <link>https://sdorsett.github.io/post/2015-12-22-pipeline-for-creating-packer-box-files/</link>
+      <pubDate>Tue, 22 Dec 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/post/2015-12-22-pipeline-for-creating-packer-box-files/</guid>
+      <description>Recently at work, the vCloud Air Zombie team has been using Packer to generate Vagrant templates for use in development and testing. I have previously covered how to use Packer to create create a .box template for use with Vagrant, but I thought it might be useful to others to demonstrate how we are using Packer to create images.
+This will be the first of several blog posts in which I intend to cover:</description>
+    </item>
+    
+    <item>
+      <title>Creating a vCSA 5.5 .box template on CentOS 6.5 for vagrant deployment</title>
+      <link>https://sdorsett.github.io/post/2015-01-06-creating-vcsa-box-manually/</link>
+      <pubDate>Tue, 06 Jan 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/post/2015-01-06-creating-vcsa-box-manually/</guid>
+      <description>In the last few blogs post we have created ESXi .box templates, but in order to create a complete virtual lab using vagrant we will also need a vCenter Server Appliance virtual machine. The vCSA comes as a .ova template, so we will need to convert it to a vagrant-vmware-ovf .box template before we can use it with vagrant.
+In this post we will need several packages installed, that we have covered in the last few posts:</description>
+    </item>
+    
+    <item>
+      <title>Installing vagrant and the vagrant-vcenter provider on CentOS 6.5</title>
+      <link>https://sdorsett.github.io/post/2015-01-04-installing-vagrant-on-centos/</link>
+      <pubDate>Mon, 05 Jan 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/post/2015-01-04-installing-vagrant-on-centos/</guid>
+      <description>If you followed the steps in one of the two previous posts, you have a ESXi .box template in the vagrant-vmware-ovf format. This format allows for deploying the exact same template to vCenter, vCloud Director or vCloud Air, by simply specifying a different provider in vagrant. This post will cover deploying to vCenter, since that is the most readily available of the three.
+In this post we will again talk about the following helpful gosddc project:</description>
+    </item>
+    
+    <item>
+      <title>Using packer on CentOS 6.5 to create an ESXi .box template for vagrant deployment</title>
+      <link>https://sdorsett.github.io/post/2015-01-03-using-packer-on-centos/</link>
+      <pubDate>Sat, 03 Jan 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/post/2015-01-03-using-packer-on-centos/</guid>
+      <description>In the previous post I demonstrated using packer to create a ESXi .box template on OS X with fusion and the vagrant vmware provider. Both of these pieces of software have a cost associated with their usage, so in this post I will demonstrate how to use CentOS 6.5 and ESXi for the same results.
+In this post we will again talk about two helpful gosddc projects:
+ gosddc/packer-post-processor-vagrant-vmware-ovf. This repo contains a packer post processor that leverages VMware OVF Tool to create a vmware_ovf Vagrant box that is compatible with vagrant-vcloud, vagrant-vcenter and vagrant-vcloudair vagrant providers.</description>
+    </item>
+    
+    <item>
+      <title>Using packer on OS X to create an ESXi .box template for vagrant deployment</title>
+      <link>https://sdorsett.github.io/post/2014-12-28-getting-packer-installed-on-os-x/</link>
+      <pubDate>Sun, 28 Dec 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/post/2014-12-28-getting-packer-installed-on-os-x/</guid>
+      <description>I&amp;rsquo;ve been recently working on using packer to create vagrant .box files rather than manually creating them as I documented in a previous post. For this post I will be using fusion and the vagrant vmware provider, each of which have an associated cost, but I will cover a free alternative using packer and CentOS in a future post.
+Several github projects by gosddc have helped me in getting packer up and running on my Macbook:</description>
+    </item>
+    
+    <item>
+      <title>Installing Vagrant and the vagrant-vcloud plugin on CentOS 6.x</title>
+      <link>https://sdorsett.github.io/post/2014-05-26-vagrant-install/</link>
+      <pubDate>Mon, 26 May 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/post/2014-05-26-vagrant-install/</guid>
+      <description>In this post I&amp;rsquo;m setting out to explain how to create a CentOS 6.4 vm, from template, in vCHS (or a vCloud Director instance) and then install vagrant-vcloud on that.
+1. Create a CentOS 6.x minimal virtual machine from a template in a vCHS organization. I will demonstrate creating a new CentOS vm in vCHS using a template, but you could just as easily create a new CentOS virtual machine from scratch in vCloud Director.</description>
+    </item>
+    
+    <item>
+      <title>Introducing the vagrant-vcloud provider</title>
+      <link>https://sdorsett.github.io/post/2014-05-25-vagrant-vcloud/</link>
+      <pubDate>Sun, 25 May 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/post/2014-05-25-vagrant-vcloud/</guid>
+      <description>While continuing to explore what the vagrant-vsphere provider is capable of I came across the vagrant-vcloud provider, which had recently released a new version. I work for the vCHS operations group, so I figured it would be interesting to compare the feature differences of the vsphere &amp;amp; vcloud providers.
+Over the next few blog posts I intend to cover the following vagrant-vcloud provider related topics:
+ Installing Vagant and the vagrant-vcloud plugin on a CentOS 6.</description>
+    </item>
+    
+    <item>
+      <title>Creating a Puppet manifest and integrating it with Vagrant</title>
+      <link>https://sdorsett.github.io/post/2014-05-06-vagrant-and-puppet/</link>
+      <pubDate>Tue, 06 May 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/post/2014-05-06-vagrant-and-puppet/</guid>
+      <description>This post will cover configuring Vagrant to automatically run a Puppet manifest on the vm created by &amp;ldquo;vagrant up.&amp;rdquo; This capability allows you to test your Puppet manifests, make changes and test again, all quickly and easily. Let&amp;rsquo;s get started:
+1. Create the Puppet manifest &amp;amp; modules we will be using for our Vagrant tests. For testing purposes we will be creating a Puppet manifest that ensures NTP is installed and is configured to use the following NTP servers:</description>
+    </item>
+    
+    <item>
+      <title>Using advanced vagrant-vsphere provider settings and vCenter guest customization</title>
+      <link>https://sdorsett.github.io/post/2014-04-24-vagrant-and-vcenter-guest-customization/</link>
+      <pubDate>Thu, 24 Apr 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/post/2014-04-24-vagrant-and-vcenter-guest-customization/</guid>
+      <description>This post will pick up where we left off by demonstrating more vagrant-vsphere provider settings using the CentOS template we customized in the last blog post. Let&amp;rsquo;s get started:
+1. Create a new customization specification in the vSphere web client. This customization specification will allow us to set the hostname of the vm created by &amp;ldquo;vagrant up&amp;rdquo; to the same name as the virtual machine.  Go to Home | Customization Specification Manager:   Click the &amp;ldquo;Create a new specification&amp;rdquo; button:   Select &amp;ldquo;Linux&amp;rdquo; for the &amp;ldquo;Target VM Operating System&amp;rdquo; and name the customization specification.</description>
+    </item>
+    
+    <item>
+      <title>Creating a CentOS 6.x template that is customized for Vagrant</title>
+      <link>https://sdorsett.github.io/post/2014-04-20-vagrant-boxes/</link>
+      <pubDate>Sun, 20 Apr 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/post/2014-04-20-vagrant-boxes/</guid>
+      <description>This post will continue our examination of using the vagrant-vsphere plugin, by customizing a CentOS template for integration with Vagrant. Having a Vagrant customize template will allow us to deploy this template and SSH to the cloned vm using the &amp;ldquo;vagrant ssh&amp;rdquo; command, as well automatically run puppet manifests when we deploy a vm using Vagrant. Let&amp;rsquo;s get started:
+1. Ensure you have a DHCP server on the network you will be connecting the Vagrant deployed templates to.</description>
+    </item>
+    
+    <item>
+      <title>Installing Vagrant and the vagrant-vsphere plugin on CentOS 6.x</title>
+      <link>https://sdorsett.github.io/post/2014-04-19-vagrant-install/</link>
+      <pubDate>Sat, 19 Apr 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/post/2014-04-19-vagrant-install/</guid>
+      <description>Some readers might find this post to be a little &amp;ldquo;in the weeds&amp;rdquo; and cover details they are already familiar with. I struggled in my first attempts to get Vagrant working on CentOS, because I couldn&amp;rsquo;t find any good tutorials that covered the entire process. If you get bored with basic network configuration or have another preferred method for installing Ruby, please understand I&amp;rsquo;m trying to provide as much detail as possible to those without much linux experience.</description>
+    </item>
+    
+    <item>
+      <title>Vagrant Explained</title>
+      <link>https://sdorsett.github.io/post/2014-04-16-vagrant-explained/</link>
+      <pubDate>Wed, 02 Apr 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/post/2014-04-16-vagrant-explained/</guid>
+      <description>Vagrant, according to the documentation, provides a &amp;ldquo;disposable environment and consistent workflow for developing and testing infrastructure management scripts. You can quickly test things like shell scripts, Chef cookbooks, Puppet modules, and more using local virtualization such as VirtualBox or VMware. Then, with the same configuration, you can test these scripts on remote clouds such as AWS or RackSpace with the same workflow.&amp;rdquo;
+I&amp;rsquo;ve been wanting to dedicate more time to working with Puppet and needed a better way to quickly test my manifests on a fresh system.</description>
+    </item>
+    
+  </channel>
+</rss>

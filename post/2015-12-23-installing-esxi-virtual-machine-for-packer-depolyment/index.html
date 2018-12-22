@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.52" />
+
+  <title>Installing a ESXi 6.0 virtual machine for use with Packer &middot; Things I find interesting</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://sdorsett.github.io/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://sdorsett.github.io/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="https://sdorsett.github.io/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+ 
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="https://sdorsett.github.ioimg/favicon.ico" type="image/x-icon" />
+
+  
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="https://sdorsett.github.io/"> </a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/post/"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/about/"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/contact/"><i class='fa fa-phone fa-fw'></i>Contact</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/about/">About</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://twitter.com/standorsett" target="_blank"><i class="fa fa-twitter-square fa-fw"></i>Twitter</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://linkedin.com/in/stan-dorsett-53a8827" target="_blank"><i class="fa fa-linkedin-square fa-fw"></i>LinkedIn</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/sdorsett" target="_blank"><i class="fa fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small>&copy; 2018. All rights reserved.</small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Installing a ESXi 6.0 virtual machine for use with Packer</h1>
+  <h2></h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>23 Dec 2015, 00:00</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://sdorsett.github.iotags/packer">packer</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://sdorsett.github.iotags/vsphere">vsphere</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  
+
+<p>This is the second in a series of posts on <a href="../2015-12-22-pipeline-for-creating-packer-box-files">using a Packer pipeline to generate Vagrant .box files</a>.</p>
+
+<p>In order to begin using Packer to create images, we will first need to lay the &ldquo;virtual&rdquo; ground work. Packer can create virtual machine images on a wide variety of virtualization or cloud platforms, but since I work for VMware I have been using the ESXi hypervisor.</p>
+
+<ul>
+<li>This post will be covering installing ESXi as a virtual machine on a vSphere cluster. There is no reason that you couldn&rsquo;t use Packer with a stand alone physical server that has ESXi installed as well.</li>
+<li>These steps were performed using the vCenter 6.0 web client. You could just as well use ESXi 5 with the C# client, but the steps for setting up nested virtualization will be slightly different.</li>
+<li>There is nothing new about the steps being covered, but I figured it would be best to go ahead and document them.</li>
+<li>If you are looking for the best resources regarding running ESXi in a virtual machine, I would suggest taking a look at <a href="http://www.virtuallyghetto.com/">William Lam&rsquo;s blog</a> which covers this subject in great detail. Williams site also provides more details about the embedded host client we will be using.</li>
+</ul>
+
+<p>Let&rsquo;s get started&hellip;</p>
+
+<h3 id="1-log-into-the-web-client-of-your-vcenter-instance-and-create-a-new-virtual-machine">1. Log into the web client of your vCenter instance and create a new virtual machine.</h3>
+
+<p>We first need to create a new virtual machine inside of which we will install the ESXi 6.0 hypervisor.</p>
+
+<p><img src="https://sdorsett.github.io/static/01-new-virtual-machine.jpg" alt="screenshot" /></p>
+
+<h3 id="2-step-through-the-new-virtual-machine-wizard">2. Step through the new virtual machine wizard:</h3>
+
+<p><img src="https://sdorsett.github.io/static/02-create-new-virtual-machine.jpg" alt="screenshot" /></p>
+
+<p>Name the virtual machine what you would like and click next. I named mine &ldquo;packer-esxi&rdquo;.</p>
+
+<p><img src="https://sdorsett.github.io/static/03-virtual-machine-name.jpg" alt="screenshot" /></p>
+
+<p>Select the vCenter cluster or resource pool the virtual machine will reside in and click next.</p>
+
+<p><img src="https://sdorsett.github.io/static/04-select-compute-resource.jpg" alt="screenshot" /></p>
+
+<p>Select the datastore you want the ESXi virtual machine to be created on and click next. I&rsquo;m using a local datastore on one of my physical ESXi hosts, to prevent Packer from using storage shared across the entire cluster.</p>
+
+<p><img src="https://sdorsett.github.io/static/05-select-storage.jpg" alt="screenshot" /></p>
+
+<p>Select the compatibility (virtual hardware level) for the virtual machine and click next. I kept with the default of version 11.</p>
+
+<p><img src="https://sdorsett.github.io/static/06-select-compatibility.jpg" alt="screenshot" /></p>
+
+<p>Select the guest operating system. vSphere 6.0 or newer will allow you to select ESXi 6.0 as you guest OS. Click next. This is where things will be different if you are using vSphere 5.0 and the c# client since you will only have ESXi 5.0 listed as an option.</p>
+
+<p><img src="https://sdorsett.github.io/static/07-select-guest-os.jpg" alt="screenshot" /></p>
+
+<p>Customize to virtual hardware to have the necessary resources. I had created my ESXi vurtual machine with:</p>
+
+<ul>
+<li>2 vCPU</li>
+<li>16 GB of memory</li>
+<li>100GB virtual hard drive</li>
+</ul>
+
+<p><img src="https://sdorsett.github.io/static/08-customize-hardware.jpg" alt="screenshot" /></p>
+
+<p>Make sure you expand CPU and enable &ldquo;Hardware virtualization.&rdquo; The ESXi installer will fail if this is not enabled.</p>
+
+<p><img src="https://sdorsett.github.io/static/09-customize-hardware.jpg" alt="screenshot" /></p>
+
+<p>Click finish to create the virtual machine.</p>
+
+<p><img src="https://sdorsett.github.io/static/10-ready-to-complete.jpg" alt="screenshot" /></p>
+
+<h3 id="3-enable-promiscuous-mode-on-virtual-portgroup-being-used-by-esxi-virtual-machine">3. Enable promiscuous mode on virtual portgroup being used by ESXi virtual machine</h3>
+
+<p>You will need to ensure the portgroup (virtual network) you are connecting the ESXi virtual machine to has promiscuous mode enabled. Enabling promiscuous mode is required for the ESXi virtual machine to pass traffic to the child virtual machines running on it.</p>
+
+<p><img src="https://sdorsett.github.io/static/29-enable-protgroup-promiscuous-mode.png" alt="screenshot" /></p>
+
+<h3 id="4-connect-the-virtual-cdrom-of-the-esxi-virtual-machine-to-the-esxi-6-0-installer-iso-and-power-it-on">4. Connect the virtual CDROM of the ESXi virtual machine to the ESXi 6.0 installer .iso and power it on.</h3>
+
+<p><img src="https://sdorsett.github.io/static/11-start-esxi-vm.jpg" alt="screenshot" /></p>
+
+<h3 id="5-connect-to-the-console-of-the-esxi-virtual-machine-and-step-through-the-installer">5. Connect to the console of the ESXi virtual machine and step through the installer</h3>
+
+<p>Press enter to begin</p>
+
+<p><img src="https://sdorsett.github.io/static/12-esxi-installer.jpg" alt="screenshot" /></p>
+
+<p>Press F11 to accept the EULA</p>
+
+<p><img src="https://sdorsett.github.io/static/13-esxi-installer.jpg" alt="screenshot" /></p>
+
+<p>Select the 100GB virtual hard drive we created with the virtual machine</p>
+
+<p><img src="https://sdorsett.github.io/static/14-esxi-installer.jpg" alt="screenshot" /></p>
+
+<p>Select your keyboard layout and press enter</p>
+
+<p><img src="https://sdorsett.github.io/static/15-esxi-installer.jpg" alt="screenshot" /></p>
+
+<p>Enter the root password twice and press enter</p>
+
+<p><img src="https://sdorsett.github.io/static/16-esxi-installer.jpg" alt="screenshot" /></p>
+
+<p><img src="https://sdorsett.github.io/static/17-esxi-installer.jpg" alt="screenshot" /></p>
+
+<p>Press F11 to begin the install process</p>
+
+<p><img src="https://sdorsett.github.io/static/18-esxi-installer.jpg" alt="screenshot" /></p>
+
+<p>Disconnect the .iso file from the virtual CDROM before rebooting the virtual machine</p>
+
+<p><img src="https://sdorsett.github.io/static/19-esxi-installer.jpg" alt="screenshot" /></p>
+
+<p><img src="https://sdorsett.github.io/static/20-esxi-installer.jpg" alt="screenshot" /></p>
+
+<p><img src="https://sdorsett.github.io/static/21-esxi-post-install.jpg" alt="screenshot" /></p>
+
+<h3 id="6-press-f2-to-log-into-esxi-and-make-the-following-changes">6. Press F2 to log into ESXi and make the following changes:</h3>
+
+<ul>
+<li>Set the management IP address, subnet mask and gateway</li>
+<li>Set the hostname, dns servers and search domain</li>
+<li>Enable ssh</li>
+</ul>
+
+<p><img src="https://sdorsett.github.io/static/22-set-ip-address.jpg" alt="screenshot" /></p>
+
+<p><img src="https://sdorsett.github.io/static/23-apply-network-config.jpg" alt="screenshot" /></p>
+
+<p><img src="https://sdorsett.github.io/static/24-enable-ssh.jpg" alt="screenshot" /></p>
+
+<h3 id="7-on-your-local-machine-download-the-embedded-host-client-vib">7. On your local machine download the embedded host client .vib</h3>
+
+<p>The embedded host client is a VMware fling that allows you to manage an ESXi host from a browser, without needing the #c client or vCenter. You can download the embedded host client .vib from <a href="https://labs.vmware.com/flings/esxi-embedded-host-client">this link</a>.</p>
+
+<p><img src="https://sdorsett.github.io/static/25-download-embedded-host-client.jpg" alt="screenshot" /></p>
+
+<h3 id="8-scp-the-downloaded-vib-to-the-esxi-virtual-machine">8. SCP the downloaded .vib to the ESXi virtual machine</h3>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sdorsett-mbp:~ sdorsett$ scp ~/Downloads/esxui_signed.vib root@192.168.1.51:/tmp/
+The authenticity of host <span style="color:#e6db74">&#39;192.168.1.51 (192.168.1.51)&#39;</span> cant be established.
+RSA key fingerprint is <span style="color:#ae81ff">82</span>:e9:6b:9e:9d:ac:d7:8a:65:e2:9e:bf:60:fc:2b:df.
+Are you sure you want to <span style="color:#66d9ef">continue</span> connecting <span style="color:#f92672">(</span>yes/no<span style="color:#f92672">)</span>? yes
+Warning: Permanently added <span style="color:#e6db74">&#39;192.168.1.51&#39;</span> <span style="color:#f92672">(</span>RSA<span style="color:#f92672">)</span> to the list of known hosts.
+Password: ********
+esxui_signed.vib                                                                                                                                <span style="color:#ae81ff">100</span>% 2805KB   <span style="color:#ae81ff">2</span>.7MB/s   <span style="color:#ae81ff">00</span>:00
+sdorsett-mbp:~ sdorsett$</code></pre></div>
+
+<h3 id="9-ssh-to-the-esxi-virtual-machine-and-install-the-embedded-host-client-vib">9. SSH to the ESXi virtual machine and install the embedded host client .vib</h3>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sdorsett-mbp:~ sdorsett$ ssh root@192.168.1.51
+Password: ********
+The time and date of this login have been sent to the system logs.
+
+VMware offers supported, powerful system administration tools.  Please
+see www.vmware.com/go/sysadmintools <span style="color:#66d9ef">for</span> details.
+
+The ESXi Shell can be disabled by an administrative user. See the
+vSphere Security documentation <span style="color:#66d9ef">for</span> more information.
+
+<span style="color:#f92672">[</span>root@packer-esxi:~<span style="color:#f92672">]</span> cd tmp
+<span style="color:#f92672">[</span>root@packer-esxi:/tmp<span style="color:#f92672">]</span> ls
+esxui_signed.vib  nfsgssd_krb5cc    probe.session     vmware-root
+
+<span style="color:#f92672">[</span>root@packer-esxi:/tmp<span style="color:#f92672">]</span> esxcli software vib install -v /tmp/esxui_signed.vib
+Installation Result
+   Message: Operation finished successfully.
+   Reboot Required: false
+   VIBs Installed: VMware_bootbank_esx-ui_0.0.2-0.1.3357452
+   VIBs Removed:
+   VIBs Skipped:
+
+<span style="color:#f92672">[</span>root@packer-esxi:/tmp<span style="color:#f92672">]</span></code></pre></div>
+
+<h3 id="10-enable-guest-ip-hack-on-the-esxi-virtual-machine">10. Enable guest ip hack on the ESXi virtual machine</h3>
+
+<p>The <a href="https://www.packer.io/docs/builders/vmware-iso.html">Packer VMware .iso builder documentation</a> lists the following esxcli command as needing to be run on the ESXi virtual machine:</p>
+
+<p><img src="https://sdorsett.github.io/static/28-enable-guest-ip-hack.jpg" alt="screenshot" /></p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@packer-esxi:/tmp<span style="color:#f92672">]</span> esxcli system settings advanced set -o /Net/GuestIPHack -i <span style="color:#ae81ff">1</span>
+<span style="color:#f92672">[</span>root@packer-esxi:/tmp<span style="color:#f92672">]</span> exit
+Connection to <span style="color:#ae81ff">192</span>.168.1.51 closed.
+sdorsett-mbp:~ sdorsett$</code></pre></div>
+
+<h3 id="11-log-into-the-embedded-host-client-to-validate-that-it-it-working-properly">11. Log into the embedded host client to validate that it it working properly</h3>
+
+<p>Open a browser on your local machine and go to https://[ESXi-virtual-machine-ip-address]/ui<br />
+Accept any certificate warnings and log in using root as the username and the password you entered while installing ESXi.</p>
+
+<p><img src="https://sdorsett.github.io/static/26-embedded-host-client.jpg" alt="screenshot" /></p>
+
+<p>Under Storage | Datastores we can see a datastore name &ldquo;datastore1&rdquo; was automatically created using the extra space of the virtual hard drive.</p>
+
+<p><img src="https://sdorsett.github.io/static/27-embedded-host-client.jpg" alt="screenshot" /></p>
+
+<h4 id="that-all-for-this-post-covering-how-to-create-a-esxi-virtual-machine-that-we-will-use-to-create-packer-images">That all for this post covering how to create a ESXi virtual machine that we will use to create Packer images.</h4>
+
+<hr />
+
+<h4 id="please-provide-any-feedback-or-suggestions-to-my-twitter-account-located-on-the-about-page">Please provide any feedback or suggestions to my twitter account located on the about page.</h4>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="https://sdorsett.github.io/post/2015-12-22-pipeline-for-creating-packer-box-files/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="https://sdorsett.github.io/post/2015-12-22-pipeline-for-creating-packer-box-files/">Setting up a pipeline for creating Packer .box files</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="next">
+      <a href="https://sdorsett.github.io/post/2015-12-24-installing-packer-and-ovftool-on-centos/">Setting up Packer, ovftool and Apache web server on a CentOS virtual machine</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+    <a href="https://sdorsett.github.io/post/2015-12-24-installing-packer-and-ovftool-on-centos/"><i class="fa fa-chevron-right"></i></a>
+    
+  </div>
+</div>
+
+
+
+  
+
+</div>
+
+</div>
+</div>
+<script src="https://sdorsett.github.iojs/ui.js"></script>
+<script src="https://sdorsett.github.iojs/menus.js"></script>
+
+
+
+
+
+
+</body>
+</html>
+

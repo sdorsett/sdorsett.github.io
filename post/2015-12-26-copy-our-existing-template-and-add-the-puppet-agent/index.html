@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.52" />
+
+  <title>Copying our existing CentOS 6.7 template and adding the Puppet agent &middot; Things I find interesting</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://sdorsett.github.io/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://sdorsett.github.io/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="https://sdorsett.github.io/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+ 
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="https://sdorsett.github.ioimg/favicon.ico" type="image/x-icon" />
+
+  
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="https://sdorsett.github.io/"> </a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/post/"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/about/"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/contact/"><i class='fa fa-phone fa-fw'></i>Contact</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/about/">About</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://twitter.com/standorsett" target="_blank"><i class="fa fa-twitter-square fa-fw"></i>Twitter</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://linkedin.com/in/stan-dorsett-53a8827" target="_blank"><i class="fa fa-linkedin-square fa-fw"></i>LinkedIn</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/sdorsett" target="_blank"><i class="fa fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small>&copy; 2018. All rights reserved.</small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Copying our existing CentOS 6.7 template and adding the Puppet agent</h1>
+  <h2></h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>26 Dec 2015, 00:00</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://sdorsett.github.iotags/vagrant">vagrant</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://sdorsett.github.iotags/packer">packer</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  
+
+<p>This is the fifth in a series of posts on <a href="../2015-12-22-pipeline-for-creating-packer-box-files">using a Packer pipeline to generate Vagrant .box files</a>.</p>
+
+<p>In the last post we covered <a href="../2015-12-25-creating-a-packer-template-for-installing-centos-67">creating a Packer template for installing CentOS 6.7 with vmtools</a>. In this post we will be basing a new Packer template on the one we created last post and add installing the Puppet Enterprise 3.8.2 agent.</p>
+
+<p>This is an older version of the Puppet Enterprise agent, but it will let us create a Vagrant .box file that can be used for testing Puppet 3.x code.</p>
+
+<p>Let&rsquo;s get started&hellip;</p>
+
+<h3 id="1-start-off-by-connecting-by-ssh-to-centos-virtual-machine-we-have-been-using-in-previous-posts">1. Start off by connecting by SSH to CentOS virtual machine we have been using in previous posts.</h3>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sdorsett-mbp:~ sdorsett$ ssh root@192.168.1.52
+root@192.168.1.52<span style="color:#960050;background-color:#1e0010">&#39;</span>s password:
+Last login: Fri Dec <span style="color:#ae81ff">25</span> <span style="color:#ae81ff">20</span>:22:44 <span style="color:#ae81ff">2015</span> from <span style="color:#ae81ff">192</span>.168.1.253
+<span style="color:#f92672">[</span>root@packer-centos ~<span style="color:#f92672">]</span>#</code></pre></div>
+
+<h3 id="2-create-a-new-bash-script-named-centos-install-pe-puppet-382-sh-at-packer-templates-scripts-to-install-the-puppet-enterprise-3-8-2-agent">2. Create a new bash script named centos-install-pe-puppet-382.sh at packer-templates/scripts/ to install the Puppet Enterprise 3.8.2 agent:</h3>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@packer-centos ~<span style="color:#f92672">]</span><span style="color:#75715e"># cd ~/packer-templates/scripts/</span>
+<span style="color:#f92672">[</span>root@packer-centos scripts<span style="color:#f92672">]</span><span style="color:#75715e"># cat centos-install-pe-puppet-382.sh</span>
+<span style="color:#75715e">#!/bin/bash
+</span><span style="color:#75715e"></span>
+VERSION<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;3.8.2&#39;</span>
+PKGNAME<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;puppet-enterprise-</span><span style="color:#e6db74">${</span>VERSION<span style="color:#e6db74">}</span><span style="color:#e6db74">-el-6-x86_64&#34;</span>
+TARFILE<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>PKGNAME<span style="color:#e6db74">}</span><span style="color:#e6db74">.tar.gz&#34;</span>
+URL<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://pm.puppetlabs.com/puppet-enterprise/</span><span style="color:#e6db74">${</span>VERSION<span style="color:#e6db74">}</span><span style="color:#e6db74">/</span><span style="color:#e6db74">${</span>TARFILE<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+
+TMPDIR<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;/tmp&#39;</span>
+HOSTNAME<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>hostname<span style="color:#e6db74">`</span>
+cd $TMPDIR
+echo <span style="color:#e6db74">&#34;Fetching </span><span style="color:#e6db74">${</span>TARFILE<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+<span style="color:#f92672">[</span> -e $TARFILE <span style="color:#f92672">]</span> <span style="color:#f92672">||</span> curl -fLO $URL
+echo <span style="color:#e6db74">&#34;Extracting </span><span style="color:#e6db74">${</span>TARFILE<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+<span style="color:#f92672">[</span> -d $PKGNAME <span style="color:#f92672">]</span> <span style="color:#f92672">||</span> tar -xf $TARFILE
+cd $PKGNAME
+
+cat &gt; agent.ans <span style="color:#e6db74">&lt;&lt;EOF
+</span><span style="color:#e6db74">q_all_in_one_install=n
+</span><span style="color:#e6db74">q_database_install=n
+</span><span style="color:#e6db74">q_pe_database=n
+</span><span style="color:#e6db74">q_puppetca_install=n
+</span><span style="color:#e6db74">q_puppetdb_install=n
+</span><span style="color:#e6db74">q_puppetmaster_install=n
+</span><span style="color:#e6db74">q_puppet_enterpriseconsole_install=n
+</span><span style="color:#e6db74">q_run_updtvpkg=n
+</span><span style="color:#e6db74">q_continue_or_reenter_master_hostname=c
+</span><span style="color:#e6db74">q_fail_on_unsuccessful_master_lookup=n
+</span><span style="color:#e6db74">q_puppetagent_certname=$HOSTNAME
+</span><span style="color:#e6db74">q_puppetagent_install=y
+</span><span style="color:#e6db74">q_puppetagent_server=puppet
+</span><span style="color:#e6db74">q_puppet_cloud_install=y
+</span><span style="color:#e6db74">q_puppet_symlinks_install=y
+</span><span style="color:#e6db74">q_vendor_packages_install=y
+</span><span style="color:#e6db74">q_install=y
+</span><span style="color:#e6db74">EOF</span>
+
+./puppet-enterprise-installer -a agent.ans
+
+<span style="color:#75715e"># Remove certname so the system will use host FQDN</span>
+sed -i <span style="color:#e6db74">&#39;/certname =/d&#39;</span> /etc/puppetlabs/puppet/puppet.conf
+
+<span style="color:#75715e"># Symlink so puppet is in vagrant provisioner PATH</span>
+ln -s /opt/puppet/bin/facter /usr/bin/facter
+ln -s /opt/puppet/bin/puppet /usr/bin/puppet
+
+<span style="color:#f92672">[</span>root@packer-deploy scripts<span style="color:#f92672">]</span>#</code></pre></div>
+
+<h3 id="3-copy-the-packer-template-we-created-previously-as-the-starting-point-for-a-new-centos-6-7-template-that-will-have-puppet-enterprise-3-8-2-installed">3. Copy the Packer template we created previously, as the starting point for a new CentOS 6.7 template that will have Puppet Enterprise 3.8.2 installed</h3>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@packer-centos ~<span style="color:#f92672">]</span><span style="color:#75715e"># cd ~/packer-templates/templates/</span>
+<span style="color:#f92672">[</span>root@packer-centos templates<span style="color:#f92672">]</span><span style="color:#75715e"># ls</span>
+centos67.json
+<span style="color:#f92672">[</span>root@packer-centos templates<span style="color:#f92672">]</span><span style="color:#75715e"># cp centos67.json centos67-pe-puppet-382.json</span>
+<span style="color:#f92672">[</span>root@packer-centos templates<span style="color:#f92672">]</span>#
+<span style="color:#f92672">[</span>root@packer-deploy scripts<span style="color:#f92672">]</span>#</code></pre></div>
+
+<h3 id="4-update-the-provisioners-blocker-to-include-the-scripts-centos-install-pe-puppet-382-sh-bash-script">4. Update the provisioners blocker to include the &ldquo;scripts/centos-install-pe-puppet-382.sh&rdquo; bash script.</h3>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@packer-centos templates<span style="color:#f92672">]</span><span style="color:#75715e"># cat centos67-pe-puppet-382.json</span>
+<span style="color:#f92672">{</span>
+  <span style="color:#e6db74">&#34;variables&#34;</span>: <span style="color:#f92672">{</span>
+    <span style="color:#e6db74">&#34;version&#34;</span>: <span style="color:#e6db74">&#34;1.0&#34;</span>
+  <span style="color:#f92672">}</span>,
+  <span style="color:#e6db74">&#34;builders&#34;</span>: <span style="color:#f92672">[</span>
+    <span style="color:#f92672">{</span>
+      <span style="color:#e6db74">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;centos67-pe-puppet-382&#34;</span>,
+      <span style="color:#e6db74">&#34;vm_name&#34;</span>: <span style="color:#e6db74">&#34;centos67-pe-puppet-382&#34;</span>,
+      <span style="color:#e6db74">&#34;vmdk_name&#34;</span>: <span style="color:#e6db74">&#34;centos67-pe-puppet-382&#34;</span>,
+      <span style="color:#e6db74">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;vmware-iso&#34;</span>,
+      <span style="color:#e6db74">&#34;communicator&#34;</span>: <span style="color:#e6db74">&#34;ssh&#34;</span>,
+      <span style="color:#e6db74">&#34;ssh_pty&#34;</span>: <span style="color:#e6db74">&#34;true&#34;</span>,
+      <span style="color:#e6db74">&#34;headless&#34;</span>: false,
+      <span style="color:#e6db74">&#34;disk_size&#34;</span>: <span style="color:#ae81ff">16384</span>,
+      <span style="color:#e6db74">&#34;guest_os_type&#34;</span>: <span style="color:#e6db74">&#34;rhel6-64&#34;</span>,
+      <span style="color:#e6db74">&#34;iso_url&#34;</span>: <span style="color:#e6db74">&#34;./iso/CentOS-6.7-x86_64-minimal.iso&#34;</span>,
+      <span style="color:#e6db74">&#34;iso_checksum&#34;</span>: <span style="color:#e6db74">&#34;2ed5ea551dffc3e4b82847b3cee1f6cd748e8071&#34;</span>,
+      <span style="color:#e6db74">&#34;iso_checksum_type&#34;</span>: <span style="color:#e6db74">&#34;sha1&#34;</span>,
+      <span style="color:#e6db74">&#34;shutdown_command&#34;</span>: <span style="color:#e6db74">&#34;echo &#39;vagrant&#39; | sudo -S /sbin/shutdown -P now&#34;</span>,
+
+      <span style="color:#e6db74">&#34;remote_host&#34;</span>: <span style="color:#e6db74">&#34;{{user `packer_remote_host`}}&#34;</span>,
+      <span style="color:#e6db74">&#34;remote_datastore&#34;</span>: <span style="color:#e6db74">&#34;{{user `packer_remote_datastore`}}&#34;</span>,
+      <span style="color:#e6db74">&#34;remote_username&#34;</span>: <span style="color:#e6db74">&#34;{{user `packer_remote_username`}}&#34;</span>,
+      <span style="color:#e6db74">&#34;remote_password&#34;</span>: <span style="color:#e6db74">&#34;{{user `packer_remote_password`}}&#34;</span>,
+      <span style="color:#e6db74">&#34;remote_type&#34;</span>: <span style="color:#e6db74">&#34;esx5&#34;</span>,
+      <span style="color:#e6db74">&#34;ssh_username&#34;</span>: <span style="color:#e6db74">&#34;root&#34;</span>,
+      <span style="color:#e6db74">&#34;ssh_password&#34;</span>: <span style="color:#e6db74">&#34;vagrant&#34;</span>,
+      <span style="color:#e6db74">&#34;ssh_wait_timeout&#34;</span>: <span style="color:#e6db74">&#34;60m&#34;</span>,
+      <span style="color:#e6db74">&#34;tools_upload_flavor&#34;</span>: <span style="color:#e6db74">&#34;linux&#34;</span>,
+      <span style="color:#e6db74">&#34;http_directory&#34;</span>: <span style="color:#e6db74">&#34;.&#34;</span>,
+      <span style="color:#e6db74">&#34;boot_wait&#34;</span>: <span style="color:#e6db74">&#34;5s&#34;</span>,
+      <span style="color:#e6db74">&#34;vmx_data&#34;</span>: <span style="color:#f92672">{</span>
+        <span style="color:#e6db74">&#34;memsize&#34;</span>: <span style="color:#e6db74">&#34;4096&#34;</span>,
+        <span style="color:#e6db74">&#34;numvcpus&#34;</span>: <span style="color:#e6db74">&#34;2&#34;</span>,
+        <span style="color:#e6db74">&#34;ethernet0.networkName&#34;</span>: <span style="color:#e6db74">&#34;{{user `packer_remote_network`}}&#34;</span>,
+        <span style="color:#e6db74">&#34;ethernet0.present&#34;</span>: <span style="color:#e6db74">&#34;TRUE&#34;</span>,
+        <span style="color:#e6db74">&#34;ethernet0.startConnected&#34;</span>: <span style="color:#e6db74">&#34;TRUE&#34;</span>,
+        <span style="color:#e6db74">&#34;ethernet0.virtualDev&#34;</span>: <span style="color:#e6db74">&#34;e1000&#34;</span>,
+        <span style="color:#e6db74">&#34;ethernet0.addressType&#34;</span>: <span style="color:#e6db74">&#34;generated&#34;</span>,
+        <span style="color:#e6db74">&#34;ethernet0.generatedAddressOffset&#34;</span>: <span style="color:#e6db74">&#34;0&#34;</span>,
+        <span style="color:#e6db74">&#34;ethernet0.wakeOnPcktRcv&#34;</span>: <span style="color:#e6db74">&#34;FALSE&#34;</span>
+
+      <span style="color:#f92672">}</span>,
+      <span style="color:#e6db74">&#34;vmx_data_post&#34;</span>: <span style="color:#f92672">{</span>
+        <span style="color:#e6db74">&#34;ide1:0.startConnected&#34;</span>: <span style="color:#e6db74">&#34;FALSE&#34;</span>,
+        <span style="color:#e6db74">&#34;ide1:0.clientDevice&#34;</span>: <span style="color:#e6db74">&#34;TRUE&#34;</span>,
+        <span style="color:#e6db74">&#34;ide1:0.fileName&#34;</span>: <span style="color:#e6db74">&#34;emptyBackingString&#34;</span>,
+        <span style="color:#e6db74">&#34;ethernet0.virtualDev&#34;</span>: <span style="color:#e6db74">&#34;vmxnet3&#34;</span>
+      <span style="color:#f92672">}</span>,
+      <span style="color:#e6db74">&#34;boot_command&#34;</span>: <span style="color:#f92672">[</span>
+        <span style="color:#e6db74">&#34;&lt;tab&gt; text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/scripts/centos-6-kickstart.cfg&lt;enter&gt;&lt;wait&gt;&#34;</span>
+      <span style="color:#f92672">]</span>
+    <span style="color:#f92672">}</span>
+  <span style="color:#f92672">]</span>,
+  <span style="color:#e6db74">&#34;provisioners&#34;</span>: <span style="color:#f92672">[</span>
+    <span style="color:#f92672">{</span>
+      <span style="color:#e6db74">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;file&#34;</span>,
+      <span style="color:#e6db74">&#34;source&#34;</span>: <span style="color:#e6db74">&#34;iso/vmware-tools-linux.iso&#34;</span>,
+      <span style="color:#e6db74">&#34;destination&#34;</span>: <span style="color:#e6db74">&#34;/tmp/vmware-tools-linux.iso&#34;</span>
+    <span style="color:#f92672">}</span>,
+    <span style="color:#f92672">{</span>
+      <span style="color:#e6db74">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;shell&#34;</span>,
+      <span style="color:#e6db74">&#34;execute_command&#34;</span>: <span style="color:#e6db74">&#34;echo &#39;vagrant&#39; | {{ .Vars }} sudo -E -S sh &#39;{{ .Path }}&#39;&#34;</span>,
+      <span style="color:#e6db74">&#34;script&#34;</span>: <span style="color:#e6db74">&#34;scripts/centos-vagrant-settings.sh&#34;</span>
+    <span style="color:#f92672">}</span>,
+    <span style="color:#f92672">{</span>
+      <span style="color:#e6db74">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;shell&#34;</span>,
+      <span style="color:#e6db74">&#34;execute_command&#34;</span>: <span style="color:#e6db74">&#34;echo &#39;vagrant&#39; | {{ .Vars }} sudo -E -S sh &#39;{{ .Path }}&#39;&#34;</span>,
+      <span style="color:#e6db74">&#34;script&#34;</span>: <span style="color:#e6db74">&#34;scripts/centos-vmware-tools_install.sh&#34;</span>
+    <span style="color:#f92672">}</span>,
+    <span style="color:#f92672">{</span>
+      <span style="color:#e6db74">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;shell&#34;</span>,
+      <span style="color:#e6db74">&#34;execute_command&#34;</span>: <span style="color:#e6db74">&#34;echo &#39;vagrant&#39; | {{ .Vars }} sudo -E -S sh &#39;{{ .Path }}&#39;&#34;</span>,
+      <span style="color:#e6db74">&#34;script&#34;</span>: <span style="color:#e6db74">&#34;scripts/centos-install-pe-puppet-382.sh&#34;</span>
+    <span style="color:#f92672">}</span>,
+    <span style="color:#f92672">{</span>
+      <span style="color:#e6db74">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;shell&#34;</span>,
+      <span style="color:#e6db74">&#34;execute_command&#34;</span>: <span style="color:#e6db74">&#34;echo &#39;vagrant&#39; | {{ .Vars }} sudo -E -S sh &#39;{{ .Path }}&#39;&#34;</span>,
+      <span style="color:#e6db74">&#34;script&#34;</span>: <span style="color:#e6db74">&#34;scripts/centos-vmware-cleanup.sh&#34;</span>
+    <span style="color:#f92672">}</span>
+  <span style="color:#f92672">]</span>
+<span style="color:#f92672">}</span></code></pre></div>
+
+<h3 id="5-the-packer-templates-directory-should-now-contain-the-following-directories-and-files">5. The packer-templates directory should now contain the following directories and files:</h3>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@packer-centos packer-templates<span style="color:#f92672">]</span><span style="color:#75715e"># tree /root/packer-templates/</span>
+/root/packer-templates/
+├── iso
+│   ├── CentOS-6.7-x86_64-minimal.iso
+│   ├── linux.iso
+│   └── vmware-tools-linux.iso -&gt; ./linux.iso
+├── packer_cache
+├── packer-remote-info.json
+├── README.md
+├── scripts
+│   ├── centos-6-kickstart.cfg
+│   ├── centos-install-pe-puppet-382.sh
+│   ├── centos-vagrant-settings.sh
+│   ├── centos-vmware-cleanup.sh
+│   └── centos-vmware-tools_install.sh
+└── templates
+    ├── centos67.json
+    └── centos67-pe-puppet-382.json
+
+<span style="color:#ae81ff">4</span> directories, <span style="color:#ae81ff">12</span> files
+<span style="color:#f92672">[</span>root@packer-centos packer-templates<span style="color:#f92672">]</span>#</code></pre></div>
+
+<h3 id="6-push-the-changes-we-have-made-to-a-github-repository">6. Push the changes we have made to a github repository</h3>
+
+<p>During this step pushed the two new files to the <a href="https://github.com/sdorsett/packer-templates/tree/adding-second-packer-template">adding-second-packer-template branch</a> of the github repository I have created for this series of blog posts:</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@packer-centos packer-templates<span style="color:#f92672">]</span><span style="color:#75715e"># git status</span>
+<span style="color:#75715e"># On branch first-packer-template</span>
+<span style="color:#75715e"># Untracked files:</span>
+<span style="color:#75715e">#   (use &#34;git add &lt;file&gt;...&#34; to include in what will be committed)</span>
+#
+<span style="color:#75715e">#	scripts/centos-install-pe-puppet-382.sh</span>
+<span style="color:#75715e">#	templates/centos67-pe-puppet-382.json</span>
+nothing added to commit but untracked files present <span style="color:#f92672">(</span>use <span style="color:#e6db74">&#34;git add&#34;</span> to track<span style="color:#f92672">)</span>
+<span style="color:#f92672">[</span>root@packer-centos packer-templates<span style="color:#f92672">]</span><span style="color:#75715e"># git add .</span>
+<span style="color:#f92672">[</span>root@packer-centos packer-templates<span style="color:#f92672">]</span><span style="color:#75715e"># git commit -m &#34;adding templates/centos67-pe-puppet-382.json and scripts/centos-install-pe-puppet-382.sh&#34;</span>
+<span style="color:#f92672">[</span>first-packer-template 75bb98e<span style="color:#f92672">]</span> adding templates/centos67-pe-puppet-382.json and scripts/centos-install-pe-puppet-382.sh
+ <span style="color:#ae81ff">2</span> files changed, <span style="color:#ae81ff">125</span> insertions<span style="color:#f92672">(</span>+<span style="color:#f92672">)</span>, <span style="color:#ae81ff">0</span> deletions<span style="color:#f92672">(</span>-<span style="color:#f92672">)</span>
+ create mode <span style="color:#ae81ff">100644</span> scripts/centos-install-pe-puppet-382.sh
+ create mode <span style="color:#ae81ff">100644</span> templates/centos67-pe-puppet-382.json
+<span style="color:#f92672">[</span>root@packer-centos packer-templates<span style="color:#f92672">]</span><span style="color:#75715e"># git checkout -b adding-second-packer-template</span>
+Switched to a new branch <span style="color:#e6db74">&#39;adding-second-packer-template&#39;</span>
+<span style="color:#f92672">[</span>root@packer-centos packer-templates<span style="color:#f92672">]</span><span style="color:#75715e"># git push origin adding-second-packer-template</span>
+Password:
+Counting objects: <span style="color:#ae81ff">9</span>, <span style="color:#66d9ef">done</span>.
+Delta compression using up to <span style="color:#ae81ff">2</span> threads.
+Compressing objects: <span style="color:#ae81ff">100</span>% <span style="color:#f92672">(</span><span style="color:#ae81ff">6</span>/6<span style="color:#f92672">)</span>, <span style="color:#66d9ef">done</span>.
+Writing objects: <span style="color:#ae81ff">100</span>% <span style="color:#f92672">(</span><span style="color:#ae81ff">6</span>/6<span style="color:#f92672">)</span>, <span style="color:#ae81ff">1</span>.95 KiB, <span style="color:#66d9ef">done</span>.
+Total <span style="color:#ae81ff">6</span> <span style="color:#f92672">(</span>delta <span style="color:#ae81ff">1</span><span style="color:#f92672">)</span>, reused <span style="color:#ae81ff">0</span> <span style="color:#f92672">(</span>delta <span style="color:#ae81ff">0</span><span style="color:#f92672">)</span>
+To https://sdorsett@github.com/sdorsett/packer-templates.git
+ * <span style="color:#f92672">[</span>new branch<span style="color:#f92672">]</span>      adding-second-packer-template -&gt; adding-second-packer-template
+<span style="color:#f92672">[</span>root@packer-centos packer-templates<span style="color:#f92672">]</span>#</code></pre></div>
+
+<h3 id="7-have-packer-build-the-new-template-we-created">7. Have Packer build the new template we created</h3>
+
+<p>Now that we have updated the new template file and created the script file that will install the Puppet Enterprise 3.8.2 agent, we can test our build. In order to use the values in the packer-remote-info.json file, we will use the -var-file parameter to specify this file.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">root@packer-centos packer-templates<span style="color:#f92672">]</span><span style="color:#75715e"># packer build -var-file=./packer-remote-info.json templates/centos67-pe-puppet-382.json</span>
+centos67-pe-puppet-382 output will be in this color.
+
+<span style="color:#f92672">==</span>&gt; centos67-pe-puppet-382: Downloading or copying ISO
+    centos67-pe-puppet-382: Downloading or copying: file:///root/packer-templates/iso/CentOS-6.7-x86_64-minimal.iso
+<span style="color:#f92672">==</span>&gt; centos67-pe-puppet-382: Uploading ISO to remote machine...
+<span style="color:#f92672">==</span>&gt; centos67-pe-puppet-382: Creating virtual machine disk
+<span style="color:#f92672">==</span>&gt; centos67-pe-puppet-382: Building and writing VMX file
+<span style="color:#f92672">==</span>&gt; centos67-pe-puppet-382: Starting HTTP server on port 8019
+<span style="color:#f92672">==</span>&gt; centos67-pe-puppet-382: Registering remote VM...
+<span style="color:#f92672">==</span>&gt; centos67-pe-puppet-382: Starting virtual machine...
+<span style="color:#f92672">==</span>&gt; centos67-pe-puppet-382: Waiting 7s <span style="color:#66d9ef">for</span> boot...
+<span style="color:#f92672">==</span>&gt; centos67-pe-puppet-382: Connecting to VM via VNC
+<span style="color:#f92672">==</span>&gt; centos67-pe-puppet-382: Typing the boot command over VNC...
+<span style="color:#f92672">==</span>&gt; centos67-pe-puppet-382: Waiting <span style="color:#66d9ef">for</span> SSH to become available...</code></pre></div>
+
+<p>At this point you should see a centos67 virtual machine in the embedded host client of the ESXi virtual machine.</p>
+
+<p><img src="https://sdorsett.github.io/static/01-centos-67-pe-puppet-382-virtual-machine.png" alt="screenshot" /></p>
+
+<p>Once the CentOS 6.7 install completes and the virtual machine reboots, you will see the packer build output continue with the provisioners block of the Packer template.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">==</span>&gt; centos67-pe-puppet-382: Connected to SSH!</code></pre></div>
+
+<p>The first provisioner is the file provisioner that will copy iso/vmware-tools-linux.iso to /tmp/vmware-tools-linux.iso within the CentOS 6.7 virtual machine.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">==</span>&gt; centos67-pe-puppet-382: Uploading iso/vmware-tools-linux.iso <span style="color:#f92672">=</span>&gt; /tmp/vmware-tools-linux.iso</code></pre></div>
+
+<p>The second provisioner is a shell provisioner that will run the scripts/centos-vagrant-settings.sh bash script. This script will added the necessary changes for this Packer image to be used by Vagrant.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">==</span>&gt; centos67-pe-puppet-382: Provisioning with shell script: scripts/centos-vagrant-settings.sh</code></pre></div>
+
+<p>The third provisioner is a shell provisioner that will run the scripts/centos-vmware-tools_install.sh bash script. This script will install all the needed dependencies for vmtools and then install vmtools using an answer file.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">==</span>&gt; centos67-pe-puppet-382: Provisioning with shell script: scripts/centos-vmware-tools_install.sh
+    centos67-pe-puppet-382: Loaded plugins: fastestmirror
+    centos67-pe-puppet-382: Setting up Upgrade Process
+    centos67-pe-puppet-382: Determining fastest mirrors
+    centos67-pe-puppet-382: * base: centos.unixheads.org
+    centos67-pe-puppet-382: * extras: mirror.rackspace.com
+    centos67-pe-puppet-382: * updates: centos-mirror.jchost.net
+    centos67-pe-puppet-382: No Packages marked <span style="color:#66d9ef">for</span> Update
+    centos67-pe-puppet-382: Loaded plugins: fastestmirror
+    centos67-pe-puppet-382: Setting up Install Process
+    centos67-pe-puppet-382: Loading mirror speeds from cached hostfile
+    centos67-pe-puppet-382: * base: centos.unixheads.org
+    centos67-pe-puppet-382: * extras: mirror.rackspace.com
+    centos67-pe-puppet-382: * updates: centos-mirror.jchost.net
+    centos67-pe-puppet-382: Package <span style="color:#ae81ff">4</span>:perl-5.10.1-141.el6_7.1.x86_64 already installed and latest version
+    centos67-pe-puppet-382: Resolving Dependencies
+    centos67-pe-puppet-382: --&gt; Running transaction check
+    centos67-pe-puppet-382: ---&gt; Package fuse-libs.x86_64 <span style="color:#ae81ff">0</span>:2.8.3-4.el6 will be installed
+    centos67-pe-puppet-382: --&gt; Finished Dependency Resolution
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: Dependencies Resolved
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: <span style="color:#f92672">========================================</span>
+    centos67-pe-puppet-382: Package  Arch   Version     Repository
+    centos67-pe-puppet-382: Size
+    centos67-pe-puppet-382: <span style="color:#f92672">========================================</span>
+    centos67-pe-puppet-382: Installing:
+    centos67-pe-puppet-382: fuse-libs
+    centos67-pe-puppet-382: x86_64 <span style="color:#ae81ff">2</span>.8.3-4.el6 base  <span style="color:#ae81ff">74</span> k
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: Transaction Summary
+    centos67-pe-puppet-382: <span style="color:#f92672">========================================</span>
+    centos67-pe-puppet-382: Install       <span style="color:#ae81ff">1</span> Package<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: Total download size: <span style="color:#ae81ff">74</span> k
+    centos67-pe-puppet-382: Installed size: <span style="color:#ae81ff">251</span> k
+    centos67-pe-puppet-382: Downloading Packages:
+    centos67-pe-puppet-382: fuse-libs-2.8.3- |  <span style="color:#ae81ff">74</span> kB     <span style="color:#ae81ff">00</span>:00
+    centos67-pe-puppet-382: Running rpm_check_debug
+    centos67-pe-puppet-382: Running Transaction Test
+    centos67-pe-puppet-382: Transaction Test Succeeded
+    centos67-pe-puppet-382: Running Transaction
+    centos67-pe-puppet-382:   Installing : fuse-libs-2.8.3-4.   <span style="color:#ae81ff">1</span>/1
+    centos67-pe-puppet-382: Verifying  : fuse-libs-2.8.3-4.   <span style="color:#ae81ff">1</span>/1
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: Installed:
+    centos67-pe-puppet-382: fuse-libs.x86_64 <span style="color:#ae81ff">0</span>:2.8.3-4.el6
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: Complete!
+    centos67-pe-puppet-382: total <span style="color:#ae81ff">488</span>
+    centos67-pe-puppet-382: drwxr-xr-x   <span style="color:#ae81ff">7</span> root root   <span style="color:#ae81ff">4096</span> Oct <span style="color:#ae81ff">30</span> <span style="color:#ae81ff">07</span>:10 .
+    centos67-pe-puppet-382: drwxrwxrwt.  <span style="color:#ae81ff">4</span> root root   <span style="color:#ae81ff">4096</span> Dec <span style="color:#ae81ff">26</span> <span style="color:#ae81ff">20</span>:56 ..
+    centos67-pe-puppet-382: drwxr-xr-x   <span style="color:#ae81ff">2</span> root root   <span style="color:#ae81ff">4096</span> Oct <span style="color:#ae81ff">30</span> <span style="color:#ae81ff">07</span>:10 bin
+    centos67-pe-puppet-382: drwxr-xr-x   <span style="color:#ae81ff">2</span> root root   <span style="color:#ae81ff">4096</span> Oct <span style="color:#ae81ff">30</span> <span style="color:#ae81ff">07</span>:10 doc
+    centos67-pe-puppet-382: drwxr-xr-x   <span style="color:#ae81ff">5</span> root root   <span style="color:#ae81ff">4096</span> Oct <span style="color:#ae81ff">30</span> <span style="color:#ae81ff">07</span>:10 etc
+    centos67-pe-puppet-382: -rw-r--r--   <span style="color:#ae81ff">1</span> root root <span style="color:#ae81ff">269196</span> Oct <span style="color:#ae81ff">30</span> <span style="color:#ae81ff">07</span>:10 FILES
+    centos67-pe-puppet-382: -rw-r--r--   <span style="color:#ae81ff">1</span> root root   <span style="color:#ae81ff">2538</span> Oct <span style="color:#ae81ff">30</span> <span style="color:#ae81ff">07</span>:10 INSTALL
+    centos67-pe-puppet-382: drwxr-xr-x   <span style="color:#ae81ff">2</span> root root   <span style="color:#ae81ff">4096</span> Oct <span style="color:#ae81ff">30</span> <span style="color:#ae81ff">07</span>:10 installer
+    centos67-pe-puppet-382: drwxr-xr-x  <span style="color:#ae81ff">15</span> root root   <span style="color:#ae81ff">4096</span> Oct <span style="color:#ae81ff">30</span> <span style="color:#ae81ff">07</span>:10 lib
+    centos67-pe-puppet-382: -rwxr-xr-x   <span style="color:#ae81ff">1</span> root root <span style="color:#ae81ff">196237</span> Oct <span style="color:#ae81ff">30</span> <span style="color:#ae81ff">07</span>:10 vmware-install.pl
+    centos67-pe-puppet-382: Creating a new VMware Tools installer database using the tar4 format.
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: Installing VMware Tools.
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: In which directory <span style="color:#66d9ef">do</span> you want to install the binary files?
+    centos67-pe-puppet-382: <span style="color:#f92672">[</span>/usr/bin<span style="color:#f92672">]</span>
+    centos67-pe-puppet-382: The path <span style="color:#e6db74">&#34;yes&#34;</span> is a relative path. Please enter an absolute path.
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: In which directory <span style="color:#66d9ef">do</span> you want to install the binary files?
+    centos67-pe-puppet-382: <span style="color:#f92672">[</span>/usr/bin<span style="color:#f92672">]</span>
+    centos67-pe-puppet-382: What is the directory that contains the init directories <span style="color:#f92672">(</span>rc0.d/ to rc6.d/<span style="color:#f92672">)</span>?
+    centos67-pe-puppet-382: <span style="color:#f92672">[</span>/etc/rc.d<span style="color:#f92672">]</span>
+    centos67-pe-puppet-382: What is the directory that contains the init scripts?
+    centos67-pe-puppet-382: <span style="color:#f92672">[</span>/etc/init.d<span style="color:#f92672">]</span>
+    centos67-pe-puppet-382: In which directory <span style="color:#66d9ef">do</span> you want to install the daemon files?
+    centos67-pe-puppet-382: <span style="color:#f92672">[</span>/usr/sbin<span style="color:#f92672">]</span>
+    centos67-pe-puppet-382: In which directory <span style="color:#66d9ef">do</span> you want to install the library files?
+    centos67-pe-puppet-382: <span style="color:#f92672">[</span>/usr/lib/vmware-tools<span style="color:#f92672">]</span>
+    centos67-pe-puppet-382: The path <span style="color:#e6db74">&#34;/usr/lib/vmware-tools&#34;</span> does not exist currently. This program is
+    centos67-pe-puppet-382: going to create it, including needed parent directories. Is this what you want?
+    centos67-pe-puppet-382: <span style="color:#f92672">[</span>yes<span style="color:#f92672">]</span>
+    centos67-pe-puppet-382: In which directory <span style="color:#66d9ef">do</span> you want to install the documentation files?
+    centos67-pe-puppet-382: <span style="color:#f92672">[</span>/usr/share/doc/vmware-tools<span style="color:#f92672">]</span>
+    centos67-pe-puppet-382: The path <span style="color:#e6db74">&#34;/usr/share/doc/vmware-tools&#34;</span> does not exist currently. This program
+    centos67-pe-puppet-382: is going to create it, including needed parent directories. Is this what you
+    centos67-pe-puppet-382: want? <span style="color:#f92672">[</span>yes<span style="color:#f92672">]</span>
+    centos67-pe-puppet-382: The installation of VMware Tools <span style="color:#ae81ff">9</span>.9.4 build-3193940 <span style="color:#66d9ef">for</span> Linux completed
+    centos67-pe-puppet-382: successfully. You can decide to remove this software from your system at any
+    centos67-pe-puppet-382: time by invoking the following command: <span style="color:#e6db74">&#34;/usr/bin/vmware-uninstall-tools.pl&#34;</span>.
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: Before running VMware Tools <span style="color:#66d9ef">for</span> the first time, you need to configure it by
+    centos67-pe-puppet-382: invoking the following command: <span style="color:#e6db74">&#34;/usr/bin/vmware-config-tools.pl&#34;</span>. Do you want
+    centos67-pe-puppet-382: this program to invoke the command <span style="color:#66d9ef">for</span> you now? <span style="color:#f92672">[</span>yes<span style="color:#f92672">]</span>
+    centos67-pe-puppet-382: Initializing...
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: Making sure services <span style="color:#66d9ef">for</span> VMware Tools are stopped.
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: Found a compatible pre-built module <span style="color:#66d9ef">for</span> vmci.  Installing it...
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: Found a compatible pre-built module <span style="color:#66d9ef">for</span> vsock.  Installing it...
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: The module vmxnet3 has already been installed on this system by another
+    centos67-pe-puppet-382: installer or package and will not be modified by this installer.
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: The module pvscsi has already been installed on this system by another
+    centos67-pe-puppet-382: installer or package and will not be modified by this installer.
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: The module vmmemctl has already been installed on this system by another
+    centos67-pe-puppet-382: installer or package and will not be modified by this installer.
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: The VMware Host-Guest Filesystem allows <span style="color:#66d9ef">for</span> shared folders between the host OS
+    centos67-pe-puppet-382: and the guest OS in a Fusion or Workstation virtual environment.  Do you wish
+    centos67-pe-puppet-382: to enable this feature? <span style="color:#f92672">[</span>no<span style="color:#f92672">]</span>
+    centos67-pe-puppet-382: Found a compatible pre-built module <span style="color:#66d9ef">for</span> vmhgfs.  Installing it...
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: Found a compatible pre-built module <span style="color:#66d9ef">for</span> vmxnet.  Installing it...
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: The vmblock enables dragging or copying files between host and guest in a
+    centos67-pe-puppet-382: Fusion or Workstation virtual environment.  Do you wish to enable this feature?
+    centos67-pe-puppet-382: <span style="color:#f92672">[</span>no<span style="color:#f92672">]</span>
+    centos67-pe-puppet-382: VMware automatic kernel modules enables automatic building and installation of
+    centos67-pe-puppet-382: VMware kernel modules at boot that are not already present. This feature can be
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: enabled/disabled by re-running vmware-config-tools.pl.
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: Would you like to enable VMware automatic kernel modules?
+    centos67-pe-puppet-382: <span style="color:#f92672">[</span>no<span style="color:#f92672">]</span>
+    centos67-pe-puppet-382: Do you want to enable Guest Authentication <span style="color:#f92672">(</span>vgauth<span style="color:#f92672">)</span>? <span style="color:#f92672">[</span>yes<span style="color:#f92672">]</span>
+    centos67-pe-puppet-382: No X install found.
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: Creating a new initrd boot image <span style="color:#66d9ef">for</span> the kernel.
+    centos67-pe-puppet-382: vmware-tools-thinprint start/running
+    centos67-pe-puppet-382: vmware-tools start/running
+    centos67-pe-puppet-382: The configuration of VMware Tools <span style="color:#ae81ff">9</span>.9.4 build-3193940 <span style="color:#66d9ef">for</span> Linux <span style="color:#66d9ef">for</span> this
+    centos67-pe-puppet-382: running kernel completed successfully.
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: You must restart your X session before any mouse or graphics changes take
+    centos67-pe-puppet-382: effect.
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: You can now run VMware Tools by invoking <span style="color:#e6db74">&#34;/usr/bin/vmware-toolbox-cmd&#34;</span> from the
+    centos67-pe-puppet-382: command line.
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: To enable advanced X features <span style="color:#f92672">(</span>e.g., guest resolution fit, drag and drop, and
+    centos67-pe-puppet-382: file and text copy/paste<span style="color:#f92672">)</span>, you will need to <span style="color:#66d9ef">do</span> one <span style="color:#f92672">(</span>or more<span style="color:#f92672">)</span> of the following:
+    centos67-pe-puppet-382: <span style="color:#ae81ff">1</span>. Manually start /usr/bin/vmware-user
+    centos67-pe-puppet-382: <span style="color:#ae81ff">2</span>. Log out and log back into your desktop session; and,
+    centos67-pe-puppet-382: <span style="color:#ae81ff">3</span>. Restart your X session.
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: Enjoy,
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: --the VMware team
+    centos67-pe-puppet-382:</code></pre></div>
+
+<p>The fourth provisioner is the shell provisioner that will run the scripts/centos-install-pe-puppet-382.sh bash script. This is the script we added to the Packer template to install the Puppet Enterprise 3.8.2 agent.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">==</span>&gt; centos67-pe-puppet-382: Provisioning with shell script: scripts/centos-install-pe-puppet-382.sh
+    centos67-pe-puppet-382: Fetching puppet-enterprise-3.8.2-el-6-x86_64.tar.gz
+    centos67-pe-puppet-382: % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+    centos67-pe-puppet-382: Dload  Upload   Total   Spent    Left  Speed
+    centos67-pe-puppet-382: <span style="color:#ae81ff">100</span>  437M  <span style="color:#ae81ff">100</span>  437M    <span style="color:#ae81ff">0</span>     <span style="color:#ae81ff">0</span>  6688k      <span style="color:#ae81ff">0</span>  <span style="color:#ae81ff">0</span>:01:06  <span style="color:#ae81ff">0</span>:01:06 --:--:-- 6879k
+    centos67-pe-puppet-382: Extracting puppet-enterprise-3.8.2-el-6-x86_64.tar.gz
+    centos67-pe-puppet-382: <span style="color:#f92672">========================================================================</span>
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: Puppet Enterprise v3.8.2 installer
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: Puppet Enterprise documentation can be found at http://docs.puppetlabs.com/pe/3.8/
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: ------------------------------------------------------------------------
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: STEP <span style="color:#ae81ff">1</span>: READ ANSWERS FROM FILE
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: <span style="color:#75715e">## Reading answers from file: ./agent.ans</span>
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: ------------------------------------------------------------------------
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: STEP <span style="color:#ae81ff">2</span>: SELECT AND CONFIGURE ROLES
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: This installer lets you <span style="color:#66d9ef">select</span> and install the various roles
+    centos67-pe-puppet-382: required in a Puppet Enterprise deployment: puppet master,
+    centos67-pe-puppet-382: console, database, cloud provisioner, and puppet agent.
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: NOTE: when specifying hostnames during installation, use the fully-qualified domain name <span style="color:#f92672">(</span>foo.example.com<span style="color:#f92672">)</span> rather than a shortened name <span style="color:#f92672">(</span>foo<span style="color:#f92672">)</span>.
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: -&gt; puppet master
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: The puppet master serves configurations to a group of puppet
+    centos67-pe-puppet-382: agent nodes. This role also provides MCollective<span style="color:#e6db74">&#39;s message queue
+</span><span style="color:#e6db74">    centos67-pe-puppet-382: and client interface. It should be installed on a robust,
+</span><span style="color:#e6db74">    centos67-pe-puppet-382: dedicated server.
+</span><span style="color:#e6db74">    centos67-pe-puppet-382:
+</span><span style="color:#e6db74">    centos67-pe-puppet-382: ?? Install puppet master? [y/N] n
+</span><span style="color:#e6db74">    centos67-pe-puppet-382: ?? Puppet master hostname to connect to? [Default: puppet] puppet
+</span><span style="color:#e6db74">    centos67-pe-puppet-382:
+</span><span style="color:#e6db74">    centos67-pe-puppet-382: -&gt; database support
+</span><span style="color:#e6db74">    centos67-pe-puppet-382:
+</span><span style="color:#e6db74">    centos67-pe-puppet-382: This role provides database support for PuppetDB and PE&#39;</span>s
+    centos67-pe-puppet-382: console. PuppetDB is a centralized data service that caches data
+    centos67-pe-puppet-382: generated by Puppet and provides access to it via a robust API.
+    centos67-pe-puppet-382: The console uses data provided by a PostgreSQL server and
+    centos67-pe-puppet-382: database both of which will be installed along with PuppetDB on
+    centos67-pe-puppet-382: the node you specify.
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: IMPORTANT: If you choose not to install PuppetDB at this time,
+    centos67-pe-puppet-382: you will be prompted <span style="color:#66d9ef">for</span> the host name of the node you intend to
+    centos67-pe-puppet-382: use to provide database services. Note that you must install
+    centos67-pe-puppet-382: database support on that node <span style="color:#66d9ef">for</span> the console to <span style="color:#66d9ef">function</span>. When
+    centos67-pe-puppet-382: using a separate node, you should install database support on it
+    centos67-pe-puppet-382: BEFORE installing the console role.
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: ?? Install PuppetDB? <span style="color:#f92672">[</span>y/N<span style="color:#f92672">]</span> n
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: -&gt; console
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: The console is a web interface where you can view reports,
+    centos67-pe-puppet-382: classify nodes, control Puppet runs, and invoke MCollective
+    centos67-pe-puppet-382: agents. It can be installed on the puppet master<span style="color:#e6db74">&#39;s node, but for
+</span><span style="color:#e6db74">    centos67-pe-puppet-382: performance considerations, especially in larger deployments, it
+</span><span style="color:#e6db74">    centos67-pe-puppet-382: can also be installed on a separate node.
+</span><span style="color:#e6db74">    centos67-pe-puppet-382:
+</span><span style="color:#e6db74">    centos67-pe-puppet-382: ?? Install the console? [y/N] n
+</span><span style="color:#e6db74">    centos67-pe-puppet-382:
+</span><span style="color:#e6db74">    centos67-pe-puppet-382: -&gt; cloud provisioner
+</span><span style="color:#e6db74">    centos67-pe-puppet-382:
+</span><span style="color:#e6db74">    centos67-pe-puppet-382: The cloud provisioner can create and bootstrap new machine
+</span><span style="color:#e6db74">    centos67-pe-puppet-382: instances and add them to your Puppet infrastructure. It should
+</span><span style="color:#e6db74">    centos67-pe-puppet-382: be installed on a trusted node where site administrators have
+</span><span style="color:#e6db74">    centos67-pe-puppet-382: shell access.
+</span><span style="color:#e6db74">    centos67-pe-puppet-382:
+</span><span style="color:#e6db74">    centos67-pe-puppet-382: ?? Install the cloud provisioner? [y/N] y
+</span><span style="color:#e6db74">    centos67-pe-puppet-382:
+</span><span style="color:#e6db74">    centos67-pe-puppet-382: -&gt; puppet agent
+</span><span style="color:#e6db74">    centos67-pe-puppet-382:
+</span><span style="color:#e6db74">    centos67-pe-puppet-382: The puppet agent role is automatically installed with the
+</span><span style="color:#e6db74">    centos67-pe-puppet-382: console, puppet master, puppetdb, and cloud provisioner roles.
+</span><span style="color:#e6db74">    centos67-pe-puppet-382:
+</span><span style="color:#e6db74">    centos67-pe-puppet-382: ?? Puppet agent needs a unique name (&#34;certname&#34;) for its
+</span><span style="color:#e6db74">    centos67-pe-puppet-382: certificate; this can be an arbitrary string. Certname for this
+</span><span style="color:#e6db74">    centos67-pe-puppet-382: node? [Default: localhost] localhost.localdomain
+</span><span style="color:#e6db74">    centos67-pe-puppet-382:
+</span><span style="color:#e6db74">    centos67-pe-puppet-382: -&gt; Vendor Packages
+</span><span style="color:#e6db74">    centos67-pe-puppet-382:
+</span><span style="color:#e6db74">    centos67-pe-puppet-382: The installer has detected that Puppet Enterprise requires
+</span><span style="color:#e6db74">    centos67-pe-puppet-382: additional packages from your operating system vendor&#39;</span>s
+    centos67-pe-puppet-382: repositories, and can automatically install them. If you choose
+    centos67-pe-puppet-382: not to install these packages automatically, the installer will
+    centos67-pe-puppet-382: exit so you can install them manually.
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: Additional vendor packages required <span style="color:#66d9ef">for</span> installation:
+    centos67-pe-puppet-382: * dmidecode
+    centos67-pe-puppet-382: * libxslt
+    centos67-pe-puppet-382: * pciutils
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: ?? Install these packages automatically? <span style="color:#f92672">[</span>Y/n<span style="color:#f92672">]</span> y
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: ------------------------------------------------------------------------
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: STEP <span style="color:#ae81ff">3</span>: CONFIRM PLAN
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: You have selected to install the following components <span style="color:#f92672">(</span>and their dependencies<span style="color:#f92672">)</span>
+    centos67-pe-puppet-382: * Cloud Provisioner
+    centos67-pe-puppet-382: * Puppet Agent
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: ?? Perform installation? <span style="color:#f92672">[</span>Y/n<span style="color:#f92672">]</span> y
+    centos67-pe-puppet-382: <span style="color:#75715e">## Answers saved in the following files: /tmp/puppet-enterprise-3.8.2-el-6-x86_64/answers.lastrun.localhost and /etc/puppetlabs/installer/answers.install</span>
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: <span style="color:#f92672">========================================================================</span>
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: ------------------------------------------------------------------------
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: STEP <span style="color:#ae81ff">4</span>: INSTALL PACKAGES
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: <span style="color:#75715e">## Installing packages from repositories...</span>
+    centos67-pe-puppet-382: Loaded plugins: fastestmirror
+    centos67-pe-puppet-382: Setting up Install Process
+    centos67-pe-puppet-382: Loading mirror speeds from cached hostfile
+    centos67-pe-puppet-382: * base: centos.unixheads.org
+    centos67-pe-puppet-382: * extras: mirror.rackspace.com
+    centos67-pe-puppet-382: * updates: centos-mirror.jchost.net
+    centos67-pe-puppet-382: Package zlib-1.2.3-29.el6.x86_64 already installed and latest version
+    centos67-pe-puppet-382: Package which-2.19-6.el6.x86_64 already installed and latest version
+    centos67-pe-puppet-382: Package net-tools-1.60-110.el6_2.x86_64 already installed and latest version
+    centos67-pe-puppet-382: Resolving Dependencies
+    centos67-pe-puppet-382: --&gt; Running transaction check
+    centos67-pe-puppet-382: ---&gt; Package cronie.x86_64 <span style="color:#ae81ff">0</span>:1.4.4-15.el6 will be updated
+    centos67-pe-puppet-382: --&gt; Processing Dependency: cronie <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>.4.4-15.el6 <span style="color:#66d9ef">for</span> package: cronie-anacron-1.4.4-15.el6.x86_64
+    centos67-pe-puppet-382: ---&gt; Package cronie.x86_64 <span style="color:#ae81ff">0</span>:1.4.4-15.el6_7.1 will be an update
+    centos67-pe-puppet-382: ---&gt; Package dmidecode.x86_64 <span style="color:#ae81ff">1</span>:2.12-6.el6 will be installed
+    centos67-pe-puppet-382: ---&gt; Package libxml2.x86_64 <span style="color:#ae81ff">0</span>:2.7.6-20.el6 will be updated
+    centos67-pe-puppet-382: ---&gt; Package libxml2.x86_64 <span style="color:#ae81ff">0</span>:2.7.6-20.el6_7.1 will be an update
+    centos67-pe-puppet-382: ---&gt; Package libxslt.x86_64 <span style="color:#ae81ff">0</span>:1.1.26-2.el6_3.1 will be installed
+    centos67-pe-puppet-382: ---&gt; Package pciutils.x86_64 <span style="color:#ae81ff">0</span>:3.1.10-4.el6 will be installed
+    centos67-pe-puppet-382: ---&gt; Package pe-agent.noarch <span style="color:#ae81ff">0</span>:3.8.2-1.pe.el6 will be installed
+    centos67-pe-puppet-382: --&gt; Processing Dependency: pe-virt-what &gt;<span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>.13-1.el6 <span style="color:#66d9ef">for</span> package: pe-agent-3.8.2-1.pe.el6.noarch
+    centos67-pe-puppet-382: --&gt; Processing Dependency: pe-rubygem-deep-merge &gt;<span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>.0.0-3.pe.el6 <span style="color:#66d9ef">for</span> package: pe-agent-3.8.2-1.pe.el6.noarch
+    centos67-pe-puppet-382: --&gt; Processing Dependency: pe-ruby-stomp &gt;<span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>.3.3-1.pe.el6 <span style="color:#66d9ef">for</span> package: pe-agent-3.8.2-1.pe.el6.noarch
+    centos67-pe-puppet-382: --&gt; Processing Dependency: pe-ruby-shadow &gt;<span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>.2.0-3.pe.el6 <span style="color:#66d9ef">for</span> package: pe-agent-3.8.2-1.pe.el6.noarch
+    centos67-pe-puppet-382: --&gt; Processing Dependency: pe-ruby-selinux &gt;<span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>.0.94-4.pe.el6 <span style="color:#66d9ef">for</span> package: pe-agent-3.8.2-1.pe.el6.noarch
+    centos67-pe-puppet-382: --&gt; Processing Dependency: pe-ruby-rgen &gt;<span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>.6.5-1.pe.el6 <span style="color:#66d9ef">for</span> package: pe-agent-3.8.2-1.pe.el6.noarch
+    centos67-pe-puppet-382: --&gt; Processing Dependency: pe-ruby-augeas &gt;<span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>.5.0-7.pe.el6 <span style="color:#66d9ef">for</span> package: pe-agent-3.8.2-1.pe.el6.noarch
+    centos67-pe-puppet-382: --&gt; Processing Dependency: pe-ruby &gt;<span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>.9.3.551-2.pe.el6 <span style="color:#66d9ef">for</span> package: pe-agent-3.8.2-1.pe.el6.noarch
+    centos67-pe-puppet-382: --&gt; Processing Dependency: pe-puppet-enterprise-release &gt;<span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>.8.2.0-1.pe.el6 <span style="color:#66d9ef">for</span> package: pe-agent-3.8.2-1.pe.el6.noarch
+    centos67-pe-puppet-382: --&gt; Processing Dependency: pe-puppet &gt;<span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>.8.2.0-1.pe.el6 <span style="color:#66d9ef">for</span> package: pe-agent-3.8.2-1.pe.el6.noarch
+    centos67-pe-puppet-382: --&gt; Processing Dependency: pe-openssl &gt;<span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>.0.0s-1.pe.el6 <span style="color:#66d9ef">for</span> package: pe-agent-3.8.2-1.pe.el6.noarch
+    centos67-pe-puppet-382: --&gt; Processing Dependency: pe-mcollective-common &gt;<span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>.7.0.1-1.pe.el6 <span style="color:#66d9ef">for</span> package: pe-agent-3.8.2-1.pe.el6.noarch
+    centos67-pe-puppet-382: --&gt; Processing Dependency: pe-mcollective &gt;<span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>.7.0.1-1.pe.el6 <span style="color:#66d9ef">for</span> package: pe-agent-3.8.2-1.pe.el6.noarch
+    centos67-pe-puppet-382: --&gt; Processing Dependency: pe-libyaml &gt;<span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>.1.6-5.el6 <span style="color:#66d9ef">for</span> package: pe-agent-3.8.2-1.pe.el6.noarch
+    centos67-pe-puppet-382: --&gt; Processing Dependency: pe-libldap &gt;<span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>.4.39-5.pe.el6 <span style="color:#66d9ef">for</span> package: pe-agent-3.8.2-1.pe.el6.noarch
+    centos67-pe-puppet-382: --&gt; Processing Dependency: pe-hiera &gt;<span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>.3.4.5-1.pe.el6 <span style="color:#66d9ef">for</span> package: pe-agent-3.8.2-1.pe.el6.noarch
+    centos67-pe-puppet-382: --&gt; Processing Dependency: pe-facter &gt;<span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>.4.4.0-1.pe.el6 <span style="color:#66d9ef">for</span> package: pe-agent-3.8.2-1.pe.el6.noarch
+    centos67-pe-puppet-382: --&gt; Processing Dependency: pe-augeas &gt;<span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>.3.0-2.pe.el6 <span style="color:#66d9ef">for</span> package: pe-agent-3.8.2-1.pe.el6.noarch
+    centos67-pe-puppet-382: ---&gt; Package pe-cloud-provisioner.noarch <span style="color:#ae81ff">0</span>:1.2.0-1.el6 will be installed
+    centos67-pe-puppet-382: ---&gt; Package pe-cloud-provisioner-libs.x86_64 <span style="color:#ae81ff">0</span>:0.3.2-2.pe.el6 will be installed
+    centos67-pe-puppet-382: ---&gt; Package pe-ruby-ldap.x86_64 <span style="color:#ae81ff">0</span>:0.9.12-7.pe.el6 will be installed
+    centos67-pe-puppet-382: ---&gt; Package pe-rubygem-net-ssh.noarch <span style="color:#ae81ff">0</span>:2.1.4-2.pe.el6 will be installed
+    centos67-pe-puppet-382: --&gt; Running transaction check
+    centos67-pe-puppet-382: ---&gt; Package cronie-anacron.x86_64 <span style="color:#ae81ff">0</span>:1.4.4-15.el6 will be updated
+    centos67-pe-puppet-382: ---&gt; Package cronie-anacron.x86_64 <span style="color:#ae81ff">0</span>:1.4.4-15.el6_7.1 will be an update
+    centos67-pe-puppet-382: ---&gt; Package pe-augeas.x86_64 <span style="color:#ae81ff">0</span>:1.3.0-2.pe.el6 will be installed
+    centos67-pe-puppet-382: ---&gt; Package pe-facter.x86_64 <span style="color:#ae81ff">0</span>:2.4.4.0-1.pe.el6 will be installed
+    centos67-pe-puppet-382: ---&gt; Package pe-hiera.noarch <span style="color:#ae81ff">0</span>:1.3.4.5-1.pe.el6 will be installed
+    centos67-pe-puppet-382: ---&gt; Package pe-libldap.x86_64 <span style="color:#ae81ff">0</span>:2.4.39-5.pe.el6 will be installed
+    centos67-pe-puppet-382: ---&gt; Package pe-libyaml.x86_64 <span style="color:#ae81ff">0</span>:0.1.6-5.el6 will be installed
+    centos67-pe-puppet-382: ---&gt; Package pe-mcollective.noarch <span style="color:#ae81ff">0</span>:2.7.0.1-1.pe.el6 will be installed
+    centos67-pe-puppet-382: ---&gt; Package pe-mcollective-common.noarch <span style="color:#ae81ff">0</span>:2.7.0.1-1.pe.el6 will be installed
+    centos67-pe-puppet-382: ---&gt; Package pe-openssl.x86_64 <span style="color:#ae81ff">0</span>:1.0.0s-1.pe.el6 will be installed
+    centos67-pe-puppet-382: ---&gt; Package pe-puppet.noarch <span style="color:#ae81ff">0</span>:3.8.2.0-1.pe.el6 will be installed
+    centos67-pe-puppet-382: ---&gt; Package pe-puppet-enterprise-release.noarch <span style="color:#ae81ff">0</span>:3.8.2.0-1.pe.el6 will be installed
+    centos67-pe-puppet-382: ---&gt; Package pe-ruby.x86_64 <span style="color:#ae81ff">0</span>:1.9.3.551-2.pe.el6 will be installed
+    centos67-pe-puppet-382: ---&gt; Package pe-ruby-augeas.x86_64 <span style="color:#ae81ff">0</span>:0.5.0-7.pe.el6 will be installed
+    centos67-pe-puppet-382: ---&gt; Package pe-ruby-rgen.noarch <span style="color:#ae81ff">0</span>:0.6.5-1.pe.el6 will be installed
+    centos67-pe-puppet-382: ---&gt; Package pe-ruby-selinux.x86_64 <span style="color:#ae81ff">0</span>:2.0.94-4.pe.el6 will be installed
+    centos67-pe-puppet-382: ---&gt; Package pe-ruby-shadow.x86_64 <span style="color:#ae81ff">0</span>:2.2.0-3.pe.el6 will be installed
+    centos67-pe-puppet-382: ---&gt; Package pe-ruby-stomp.noarch <span style="color:#ae81ff">0</span>:1.3.3-1.pe.el6 will be installed
+    centos67-pe-puppet-382: ---&gt; Package pe-rubygem-deep-merge.noarch <span style="color:#ae81ff">0</span>:1.0.0-3.pe.el6 will be installed
+    centos67-pe-puppet-382: ---&gt; Package pe-virt-what.x86_64 <span style="color:#ae81ff">0</span>:1.13-1.el6 will be installed
+    centos67-pe-puppet-382: --&gt; Finished Dependency Resolution
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: Dependencies Resolved
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: <span style="color:#f92672">================================================================================</span>
+    centos67-pe-puppet-382: Package            Arch   Version            Repository                   Size
+    centos67-pe-puppet-382: <span style="color:#f92672">================================================================================</span>
+    centos67-pe-puppet-382: Installing:
+    centos67-pe-puppet-382: dmidecode          x86_64 <span style="color:#ae81ff">1</span>:2.12-6.el6       base                         <span style="color:#ae81ff">74</span> k
+    centos67-pe-puppet-382: libxslt            x86_64 <span style="color:#ae81ff">1</span>.1.26-2.el6_3.1   base                        <span style="color:#ae81ff">452</span> k
+    centos67-pe-puppet-382: pciutils           x86_64 <span style="color:#ae81ff">3</span>.1.10-4.el6       base                         <span style="color:#ae81ff">85</span> k
+    centos67-pe-puppet-382: pe-agent           noarch <span style="color:#ae81ff">3</span>.8.2-1.pe.el6     puppet-enterprise-installer <span style="color:#ae81ff">3</span>.7 k
+    centos67-pe-puppet-382: pe-cloud-provisioner
+    centos67-pe-puppet-382: noarch <span style="color:#ae81ff">1</span>.2.0-1.el6        puppet-enterprise-installer  <span style="color:#ae81ff">51</span> k
+    centos67-pe-puppet-382: pe-cloud-provisioner-libs
+    centos67-pe-puppet-382: x86_64 <span style="color:#ae81ff">0</span>.3.2-2.pe.el6     puppet-enterprise-installer <span style="color:#ae81ff">4</span>.6 M
+    centos67-pe-puppet-382: pe-ruby-ldap       x86_64 <span style="color:#ae81ff">0</span>.9.12-7.pe.el6    puppet-enterprise-installer  <span style="color:#ae81ff">46</span> k
+    centos67-pe-puppet-382: pe-rubygem-net-ssh noarch <span style="color:#ae81ff">2</span>.1.4-2.pe.el6     puppet-enterprise-installer <span style="color:#ae81ff">227</span> k
+    centos67-pe-puppet-382: Updating:
+    centos67-pe-puppet-382: cronie             x86_64 <span style="color:#ae81ff">1</span>.4.4-15.el6_7.1   updates                      <span style="color:#ae81ff">74</span> k
+    centos67-pe-puppet-382: libxml2            x86_64 <span style="color:#ae81ff">2</span>.7.6-20.el6_7.1   updates                     <span style="color:#ae81ff">803</span> k
+    centos67-pe-puppet-382: Installing <span style="color:#66d9ef">for</span> dependencies:
+    centos67-pe-puppet-382: pe-augeas          x86_64 <span style="color:#ae81ff">1</span>.3.0-2.pe.el6     puppet-enterprise-installer <span style="color:#ae81ff">523</span> k
+    centos67-pe-puppet-382: pe-facter          x86_64 <span style="color:#ae81ff">2</span>.4.4.0-1.pe.el6   puppet-enterprise-installer  <span style="color:#ae81ff">99</span> k
+    centos67-pe-puppet-382: pe-hiera           noarch <span style="color:#ae81ff">1</span>.3.4.5-1.pe.el6   puppet-enterprise-installer  <span style="color:#ae81ff">18</span> k
+    centos67-pe-puppet-382: pe-libldap         x86_64 <span style="color:#ae81ff">2</span>.4.39-5.pe.el6    puppet-enterprise-installer <span style="color:#ae81ff">776</span> k
+    centos67-pe-puppet-382: pe-libyaml         x86_64 <span style="color:#ae81ff">0</span>.1.6-5.el6        puppet-enterprise-installer <span style="color:#ae81ff">193</span> k
+    centos67-pe-puppet-382: pe-mcollective     noarch <span style="color:#ae81ff">2</span>.7.0.1-1.pe.el6   puppet-enterprise-installer <span style="color:#ae81ff">8</span>.0 k
+    centos67-pe-puppet-382: pe-mcollective-common
+    centos67-pe-puppet-382: noarch <span style="color:#ae81ff">2</span>.7.0.1-1.pe.el6   puppet-enterprise-installer <span style="color:#ae81ff">129</span> k
+    centos67-pe-puppet-382: pe-openssl         x86_64 <span style="color:#ae81ff">1</span>.0.0s-1.pe.el6    puppet-enterprise-installer <span style="color:#ae81ff">6</span>.7 M
+    centos67-pe-puppet-382: pe-puppet          noarch <span style="color:#ae81ff">3</span>.8.2.0-1.pe.el6   puppet-enterprise-installer <span style="color:#ae81ff">1</span>.6 M
+    centos67-pe-puppet-382: pe-puppet-enterprise-release
+    centos67-pe-puppet-382: noarch <span style="color:#ae81ff">3</span>.8.2.0-1.pe.el6   puppet-enterprise-installer  <span style="color:#ae81ff">12</span> k
+    centos67-pe-puppet-382: pe-ruby            x86_64 <span style="color:#ae81ff">1</span>.9.3.551-2.pe.el6 puppet-enterprise-installer <span style="color:#ae81ff">8</span>.1 M
+    centos67-pe-puppet-382: pe-ruby-augeas     x86_64 <span style="color:#ae81ff">0</span>.5.0-7.pe.el6     puppet-enterprise-installer  <span style="color:#ae81ff">22</span> k
+    centos67-pe-puppet-382: pe-ruby-rgen       noarch <span style="color:#ae81ff">0</span>.6.5-1.pe.el6     puppet-enterprise-installer <span style="color:#ae81ff">238</span> k
+    centos67-pe-puppet-382: pe-ruby-selinux    x86_64 <span style="color:#ae81ff">2</span>.0.94-4.pe.el6    puppet-enterprise-installer  <span style="color:#ae81ff">57</span> k
+    centos67-pe-puppet-382: pe-ruby-shadow     x86_64 <span style="color:#ae81ff">2</span>.2.0-3.pe.el6     puppet-enterprise-installer  <span style="color:#ae81ff">11</span> k
+    centos67-pe-puppet-382: pe-ruby-stomp      noarch <span style="color:#ae81ff">1</span>.3.3-1.pe.el6     puppet-enterprise-installer  <span style="color:#ae81ff">54</span> k
+    centos67-pe-puppet-382: pe-rubygem-deep-merge
+    centos67-pe-puppet-382: noarch <span style="color:#ae81ff">1</span>.0.0-3.pe.el6     puppet-enterprise-installer  <span style="color:#ae81ff">74</span> k
+    centos67-pe-puppet-382: pe-virt-what       x86_64 <span style="color:#ae81ff">1</span>.13-1.el6         puppet-enterprise-installer  <span style="color:#ae81ff">22</span> k
+    centos67-pe-puppet-382: Updating <span style="color:#66d9ef">for</span> dependencies:
+    centos67-pe-puppet-382: cronie-anacron     x86_64 <span style="color:#ae81ff">1</span>.4.4-15.el6_7.1   updates                      <span style="color:#ae81ff">31</span> k
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: Transaction Summary
+    centos67-pe-puppet-382: <span style="color:#f92672">================================================================================</span>
+    centos67-pe-puppet-382: Install      <span style="color:#ae81ff">26</span> Package<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>
+    centos67-pe-puppet-382: Upgrade       <span style="color:#ae81ff">3</span> Package<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: Total download size: <span style="color:#ae81ff">25</span> M
+    centos67-pe-puppet-382: Downloading Packages:
+    centos67-pe-puppet-382: --------------------------------------------------------------------------------
+    centos67-pe-puppet-382: Total                                            <span style="color:#ae81ff">11</span> MB/s |  <span style="color:#ae81ff">25</span> MB     <span style="color:#ae81ff">00</span>:02
+    centos67-pe-puppet-382: Running rpm_check_debug
+    centos67-pe-puppet-382: Running Transaction Test
+    centos67-pe-puppet-382: Transaction Test Succeeded
+    centos67-pe-puppet-382: Running Transaction
+    centos67-pe-puppet-382: Installing : pe-puppet-enterprise-release-3.8.2.0-1.pe.el6.noarch        <span style="color:#ae81ff">1</span>/32
+    centos67-pe-puppet-382: Installing : pe-openssl-1.0.0s-1.pe.el6.x86_64                           <span style="color:#ae81ff">2</span>/32
+    centos67-pe-puppet-382: Installing : pe-libldap-2.4.39-5.pe.el6.x86_64                           <span style="color:#ae81ff">3</span>/32
+    centos67-pe-puppet-382: Installing : pe-libyaml-0.1.6-5.el6.x86_64                               <span style="color:#ae81ff">4</span>/32
+    centos67-pe-puppet-382: Installing : pe-ruby-1.9.3.551-2.pe.el6.x86_64                           <span style="color:#ae81ff">5</span>/32
+    centos67-pe-puppet-382: Installing : pe-rubygem-net-ssh-2.1.4-2.pe.el6.noarch                    <span style="color:#ae81ff">6</span>/32
+    centos67-pe-puppet-382: Installing : pe-ruby-stomp-1.3.3-1.pe.el6.noarch                         <span style="color:#ae81ff">7</span>/32
+    centos67-pe-puppet-382: Installing : pe-mcollective-common-2.7.0.1-1.pe.el6.noarch               <span style="color:#ae81ff">8</span>/32
+    centos67-pe-puppet-382: Installing : pe-ruby-selinux-2.0.94-4.pe.el6.x86_64                      <span style="color:#ae81ff">9</span>/32
+    centos67-pe-puppet-382: Installing : pe-ruby-rgen-0.6.5-1.pe.el6.noarch                         <span style="color:#ae81ff">10</span>/32
+    centos67-pe-puppet-382: Installing : pe-rubygem-deep-merge-1.0.0-3.pe.el6.noarch                <span style="color:#ae81ff">11</span>/32
+    centos67-pe-puppet-382: Installing : pe-hiera-1.3.4.5-1.pe.el6.noarch                           <span style="color:#ae81ff">12</span>/32
+    centos67-pe-puppet-382: Installing : pe-augeas-1.3.0-2.pe.el6.x86_64                            <span style="color:#ae81ff">13</span>/32
+    centos67-pe-puppet-382: Installing : pe-ruby-augeas-0.5.0-7.pe.el6.x86_64                       <span style="color:#ae81ff">14</span>/32
+    centos67-pe-puppet-382: Updating   : libxml2-2.7.6-20.el6_7.1.x86_64                            <span style="color:#ae81ff">15</span>/32
+    centos67-pe-puppet-382: Installing : <span style="color:#ae81ff">1</span>:dmidecode-2.12-6.el6.x86_64                              <span style="color:#ae81ff">16</span>/32
+    centos67-pe-puppet-382: Installing : pe-virt-what-1.13-1.el6.x86_64                             <span style="color:#ae81ff">17</span>/32
+    centos67-pe-puppet-382: Installing : libxslt-1.1.26-2.el6_3.1.x86_64                            <span style="color:#ae81ff">18</span>/32
+    centos67-pe-puppet-382: Installing : pe-cloud-provisioner-libs-0.3.2-2.pe.el6.x86_64            <span style="color:#ae81ff">19</span>/32
+    centos67-pe-puppet-382: Installing : pe-mcollective-2.7.0.1-1.pe.el6.noarch                     <span style="color:#ae81ff">20</span>/32
+    centos67-pe-puppet-382: Installing : pe-ruby-ldap-0.9.12-7.pe.el6.x86_64                        <span style="color:#ae81ff">21</span>/32
+    centos67-pe-puppet-382: Installing : pe-ruby-shadow-2.2.0-3.pe.el6.x86_64                       <span style="color:#ae81ff">22</span>/32
+    centos67-pe-puppet-382: Updating   : cronie-anacron-1.4.4-15.el6_7.1.x86_64                     <span style="color:#ae81ff">23</span>/32
+    centos67-pe-puppet-382: Updating   : cronie-1.4.4-15.el6_7.1.x86_64                             <span style="color:#ae81ff">24</span>/32
+    centos67-pe-puppet-382: Installing : pciutils-3.1.10-4.el6.x86_64                               <span style="color:#ae81ff">25</span>/32
+    centos67-pe-puppet-382: Installing : pe-facter-2.4.4.0-1.pe.el6.x86_64                          <span style="color:#ae81ff">26</span>/32
+    centos67-pe-puppet-382: Installing : pe-puppet-3.8.2.0-1.pe.el6.noarch                          <span style="color:#ae81ff">27</span>/32
+    centos67-pe-puppet-382: Installing : pe-agent-3.8.2-1.pe.el6.noarch                             <span style="color:#ae81ff">28</span>/32
+    centos67-pe-puppet-382: Installing : pe-cloud-provisioner-1.2.0-1.el6.noarch                    <span style="color:#ae81ff">29</span>/32
+    centos67-pe-puppet-382: Cleanup    : cronie-anacron-1.4.4-15.el6.x86_64                         <span style="color:#ae81ff">30</span>/32
+    centos67-pe-puppet-382: Cleanup    : cronie-1.4.4-15.el6.x86_64                                 <span style="color:#ae81ff">31</span>/32
+    centos67-pe-puppet-382: Cleanup    : libxml2-2.7.6-20.el6.x86_64                                <span style="color:#ae81ff">32</span>/32
+    centos67-pe-puppet-382: Verifying  : pe-puppet-enterprise-release-3.8.2.0-1.pe.el6.noarch        <span style="color:#ae81ff">1</span>/32
+    centos67-pe-puppet-382: Verifying  : pe-hiera-1.3.4.5-1.pe.el6.noarch                            <span style="color:#ae81ff">2</span>/32
+    centos67-pe-puppet-382: Verifying  : pe-mcollective-common-2.7.0.1-1.pe.el6.noarch               <span style="color:#ae81ff">3</span>/32
+    centos67-pe-puppet-382: Verifying  : pciutils-3.1.10-4.el6.x86_64                                <span style="color:#ae81ff">4</span>/32
+    centos67-pe-puppet-382: Verifying  : pe-libldap-2.4.39-5.pe.el6.x86_64                           <span style="color:#ae81ff">5</span>/32
+    centos67-pe-puppet-382: Verifying  : pe-ruby-augeas-0.5.0-7.pe.el6.x86_64                        <span style="color:#ae81ff">6</span>/32
+    centos67-pe-puppet-382: Verifying  : pe-agent-3.8.2-1.pe.el6.noarch                              <span style="color:#ae81ff">7</span>/32
+    centos67-pe-puppet-382: Verifying  : pe-ruby-ldap-0.9.12-7.pe.el6.x86_64                         <span style="color:#ae81ff">8</span>/32
+    centos67-pe-puppet-382: Verifying  : <span style="color:#ae81ff">1</span>:dmidecode-2.12-6.el6.x86_64                               <span style="color:#ae81ff">9</span>/32
+    centos67-pe-puppet-382: Verifying  : pe-mcollective-2.7.0.1-1.pe.el6.noarch                     <span style="color:#ae81ff">10</span>/32
+    centos67-pe-puppet-382: Verifying  : pe-cloud-provisioner-libs-0.3.2-2.pe.el6.x86_64            <span style="color:#ae81ff">11</span>/32
+    centos67-pe-puppet-382: Verifying  : cronie-1.4.4-15.el6_7.1.x86_64                             <span style="color:#ae81ff">12</span>/32
+    centos67-pe-puppet-382: Verifying  : pe-rubygem-net-ssh-2.1.4-2.pe.el6.noarch                   <span style="color:#ae81ff">13</span>/32
+    centos67-pe-puppet-382: Verifying  : pe-openssl-1.0.0s-1.pe.el6.x86_64                          <span style="color:#ae81ff">14</span>/32
+    centos67-pe-puppet-382: Verifying  : pe-facter-2.4.4.0-1.pe.el6.x86_64                          <span style="color:#ae81ff">15</span>/32
+    centos67-pe-puppet-382: Verifying  : pe-ruby-selinux-2.0.94-4.pe.el6.x86_64                     <span style="color:#ae81ff">16</span>/32
+    centos67-pe-puppet-382: Verifying  : pe-ruby-stomp-1.3.3-1.pe.el6.noarch                        <span style="color:#ae81ff">17</span>/32
+    centos67-pe-puppet-382: Verifying  : pe-ruby-shadow-2.2.0-3.pe.el6.x86_64                       <span style="color:#ae81ff">18</span>/32
+    centos67-pe-puppet-382: Verifying  : libxslt-1.1.26-2.el6_3.1.x86_64                            <span style="color:#ae81ff">19</span>/32
+    centos67-pe-puppet-382: Verifying  : pe-ruby-rgen-0.6.5-1.pe.el6.noarch                         <span style="color:#ae81ff">20</span>/32
+    centos67-pe-puppet-382: Verifying  : pe-rubygem-deep-merge-1.0.0-3.pe.el6.noarch                <span style="color:#ae81ff">21</span>/32
+    centos67-pe-puppet-382: Verifying  : pe-puppet-3.8.2.0-1.pe.el6.noarch                          <span style="color:#ae81ff">22</span>/32
+    centos67-pe-puppet-382: Verifying  : cronie-anacron-1.4.4-15.el6_7.1.x86_64                     <span style="color:#ae81ff">23</span>/32
+    centos67-pe-puppet-382: Verifying  : pe-libyaml-0.1.6-5.el6.x86_64                              <span style="color:#ae81ff">24</span>/32
+    centos67-pe-puppet-382: Verifying  : pe-virt-what-1.13-1.el6.x86_64                             <span style="color:#ae81ff">25</span>/32
+    centos67-pe-puppet-382: Verifying  : pe-augeas-1.3.0-2.pe.el6.x86_64                            <span style="color:#ae81ff">26</span>/32
+    centos67-pe-puppet-382: Verifying  : pe-cloud-provisioner-1.2.0-1.el6.noarch                    <span style="color:#ae81ff">27</span>/32
+    centos67-pe-puppet-382: Verifying  : pe-ruby-1.9.3.551-2.pe.el6.x86_64                          <span style="color:#ae81ff">28</span>/32
+    centos67-pe-puppet-382: Verifying  : libxml2-2.7.6-20.el6_7.1.x86_64                            <span style="color:#ae81ff">29</span>/32
+    centos67-pe-puppet-382: Verifying  : libxml2-2.7.6-20.el6.x86_64                                <span style="color:#ae81ff">30</span>/32
+    centos67-pe-puppet-382: Verifying  : cronie-1.4.4-15.el6.x86_64                                 <span style="color:#ae81ff">31</span>/32
+    centos67-pe-puppet-382: Verifying  : cronie-anacron-1.4.4-15.el6.x86_64                         <span style="color:#ae81ff">32</span>/32
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: Installed:
+    centos67-pe-puppet-382: dmidecode.x86_64 <span style="color:#ae81ff">1</span>:2.12-6.el6
+    centos67-pe-puppet-382: libxslt.x86_64 <span style="color:#ae81ff">0</span>:1.1.26-2.el6_3.1
+    centos67-pe-puppet-382: pciutils.x86_64 <span style="color:#ae81ff">0</span>:3.1.10-4.el6
+    centos67-pe-puppet-382: pe-agent.noarch <span style="color:#ae81ff">0</span>:3.8.2-1.pe.el6
+    centos67-pe-puppet-382: pe-cloud-provisioner.noarch <span style="color:#ae81ff">0</span>:1.2.0-1.el6
+    centos67-pe-puppet-382: pe-cloud-provisioner-libs.x86_64 <span style="color:#ae81ff">0</span>:0.3.2-2.pe.el6
+    centos67-pe-puppet-382: pe-ruby-ldap.x86_64 <span style="color:#ae81ff">0</span>:0.9.12-7.pe.el6
+    centos67-pe-puppet-382: pe-rubygem-net-ssh.noarch <span style="color:#ae81ff">0</span>:2.1.4-2.pe.el6
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: Dependency Installed:
+    centos67-pe-puppet-382: pe-augeas.x86_64 <span style="color:#ae81ff">0</span>:1.3.0-2.pe.el6
+    centos67-pe-puppet-382: pe-facter.x86_64 <span style="color:#ae81ff">0</span>:2.4.4.0-1.pe.el6
+    centos67-pe-puppet-382: pe-hiera.noarch <span style="color:#ae81ff">0</span>:1.3.4.5-1.pe.el6
+    centos67-pe-puppet-382: pe-libldap.x86_64 <span style="color:#ae81ff">0</span>:2.4.39-5.pe.el6
+    centos67-pe-puppet-382: pe-libyaml.x86_64 <span style="color:#ae81ff">0</span>:0.1.6-5.el6
+    centos67-pe-puppet-382: pe-mcollective.noarch <span style="color:#ae81ff">0</span>:2.7.0.1-1.pe.el6
+    centos67-pe-puppet-382: pe-mcollective-common.noarch <span style="color:#ae81ff">0</span>:2.7.0.1-1.pe.el6
+    centos67-pe-puppet-382: pe-openssl.x86_64 <span style="color:#ae81ff">0</span>:1.0.0s-1.pe.el6
+    centos67-pe-puppet-382: pe-puppet.noarch <span style="color:#ae81ff">0</span>:3.8.2.0-1.pe.el6
+    centos67-pe-puppet-382: pe-puppet-enterprise-release.noarch <span style="color:#ae81ff">0</span>:3.8.2.0-1.pe.el6
+    centos67-pe-puppet-382: pe-ruby.x86_64 <span style="color:#ae81ff">0</span>:1.9.3.551-2.pe.el6
+    centos67-pe-puppet-382: pe-ruby-augeas.x86_64 <span style="color:#ae81ff">0</span>:0.5.0-7.pe.el6
+    centos67-pe-puppet-382: pe-ruby-rgen.noarch <span style="color:#ae81ff">0</span>:0.6.5-1.pe.el6
+    centos67-pe-puppet-382: pe-ruby-selinux.x86_64 <span style="color:#ae81ff">0</span>:2.0.94-4.pe.el6
+    centos67-pe-puppet-382: pe-ruby-shadow.x86_64 <span style="color:#ae81ff">0</span>:2.2.0-3.pe.el6
+    centos67-pe-puppet-382: pe-ruby-stomp.noarch <span style="color:#ae81ff">0</span>:1.3.3-1.pe.el6
+    centos67-pe-puppet-382: pe-rubygem-deep-merge.noarch <span style="color:#ae81ff">0</span>:1.0.0-3.pe.el6
+    centos67-pe-puppet-382: pe-virt-what.x86_64 <span style="color:#ae81ff">0</span>:1.13-1.el6
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: Updated:
+    centos67-pe-puppet-382: cronie.x86_64 <span style="color:#ae81ff">0</span>:1.4.4-15.el6_7.1       libxml2.x86_64 <span style="color:#ae81ff">0</span>:2.7.6-20.el6_7.1
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: Dependency Updated:
+    centos67-pe-puppet-382: cronie-anacron.x86_64 <span style="color:#ae81ff">0</span>:1.4.4-15.el6_7.1
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: Complete!
+    centos67-pe-puppet-382: Loaded plugins: fastestmirror
+    centos67-pe-puppet-382: Cleaning repos: puppet-enterprise-installer
+    centos67-pe-puppet-382: Cleaning up Everything
+    centos67-pe-puppet-382: Cleaning up list of fastest mirrors
+    centos67-pe-puppet-382: <span style="color:#75715e">## Checking the agent certificate name detection...</span>
+    centos67-pe-puppet-382: <span style="color:#75715e">## Setting up puppet agent...</span>
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: ------------------------------------------------------------------------
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: STEP <span style="color:#ae81ff">5</span>: DONE
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: Thanks <span style="color:#66d9ef">for</span> installing Puppet Enterprise!
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: To learn more and get started using Puppet Enterprise, refer to
+    centos67-pe-puppet-382: the Puppet Enterprise Quick Start Guide
+    centos67-pe-puppet-382: <span style="color:#f92672">(</span>http://docs.puppetlabs.com/pe/latest/quick_start.html<span style="color:#f92672">)</span> and the
+    centos67-pe-puppet-382: Puppet Enterprise Deployment Guide
+    centos67-pe-puppet-382: <span style="color:#f92672">(</span>http://docs.puppetlabs.com/guides/deployment_guide/index.html<span style="color:#f92672">)</span>.
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: <span style="color:#f92672">========================================================================</span>
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: <span style="color:#75715e">## NOTES</span>
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: Puppet Enterprise has been installed to <span style="color:#e6db74">&#34;/opt/puppet,&#34;</span> and its
+    centos67-pe-puppet-382: configuration files are located in <span style="color:#e6db74">&#34;/etc/puppetlabs&#34;</span>.
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: Answers from this session saved to
+    centos67-pe-puppet-382: <span style="color:#e6db74">&#39;/tmp/puppet-enterprise-3.8.2-el-6-x86_64/answers.lastrun.localhost&#39;</span>
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: If you have a firewall running, please ensure outbound
+    centos67-pe-puppet-382: connections are allowed to the following TCP ports: <span style="color:#ae81ff">8140</span>, <span style="color:#ae81ff">61613</span>
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: ------------------------------------------------------------------------
+    centos67-pe-puppet-382:</code></pre></div>
+
+<p>The final provisioner is a shell provisioner that will run the scripts/centos-vmware-cleanup.sh bash script. This script will clean up the centos67 virtual machine and zero out all unused disk space to reduce the size of the image.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">    
+<span style="color:#f92672">==</span>&gt; centos67-pe-puppet-382: Provisioning with shell script: scripts/centos-vmware-cleanup.sh
+    centos67-pe-puppet-382: <span style="color:#f92672">==</span>&gt; Pausing <span style="color:#66d9ef">for</span> <span style="color:#ae81ff">0</span> seconds...
+    centos67-pe-puppet-382: <span style="color:#f92672">==</span>&gt; erasing unused packages to free up space
+    centos67-pe-puppet-382: Loaded plugins: fastestmirror
+    centos67-pe-puppet-382: Setting up Remove Process
+    centos67-pe-puppet-382: No Match <span style="color:#66d9ef">for</span> argument: gtk2
+    centos67-pe-puppet-382: Determining fastest mirrors
+    centos67-pe-puppet-382: * base: centos.unixheads.org
+    centos67-pe-puppet-382: * extras: centos.unixheads.org
+    centos67-pe-puppet-382: * updates: centos-mirror.jchost.net
+    centos67-pe-puppet-382: Package<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span> gtk2 available, but not installed.
+    centos67-pe-puppet-382: No Match <span style="color:#66d9ef">for</span> argument: libX11
+    centos67-pe-puppet-382: Package<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span> libX11 available, but not installed.
+    centos67-pe-puppet-382: No Match <span style="color:#66d9ef">for</span> argument: hicolor-icon-theme
+    centos67-pe-puppet-382: Package<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span> hicolor-icon-theme available, but not installed.
+    centos67-pe-puppet-382: No Match <span style="color:#66d9ef">for</span> argument: avahi
+    centos67-pe-puppet-382: Package<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span> avahi available, but not installed.
+    centos67-pe-puppet-382: No Match <span style="color:#66d9ef">for</span> argument: freetype
+    centos67-pe-puppet-382: Package<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span> freetype available, but not installed.
+    centos67-pe-puppet-382: No Match <span style="color:#66d9ef">for</span> argument: bitstream-vera-fonts
+    centos67-pe-puppet-382: No Packages marked <span style="color:#66d9ef">for</span> removal
+    centos67-pe-puppet-382: <span style="color:#f92672">==</span>&gt; Cleaning up yum cache
+    centos67-pe-puppet-382: Loaded plugins: fastestmirror
+    centos67-pe-puppet-382: Cleaning repos: base extras updates
+    centos67-pe-puppet-382: Cleaning up Everything
+    centos67-pe-puppet-382: Cleaning up list of fastest mirrors
+    centos67-pe-puppet-382: <span style="color:#f92672">==</span>&gt; Force logs to rotate
+    centos67-pe-puppet-382: <span style="color:#f92672">==</span>&gt; Clear audit log and wtmp
+    centos67-pe-puppet-382: <span style="color:#f92672">==</span>&gt; Cleaning up udev rules
+    centos67-pe-puppet-382: <span style="color:#f92672">==</span>&gt; Remove the traces of the template MAC address and UUIDs
+    centos67-pe-puppet-382: <span style="color:#f92672">==</span>&gt; Cleaning up tmp
+    centos67-pe-puppet-382: <span style="color:#f92672">==</span>&gt; Remove the SSH host keys
+    centos67-pe-puppet-382: <span style="color:#f92672">==</span>&gt; Remove the root user’s shell history
+    centos67-pe-puppet-382: <span style="color:#f92672">==</span>&gt; yum -y clean all
+    centos67-pe-puppet-382: Loaded plugins: fastestmirror
+    centos67-pe-puppet-382: Cleaning repos: base extras updates
+    centos67-pe-puppet-382: Cleaning up Everything
+    centos67-pe-puppet-382: /
+    centos67-pe-puppet-382: <span style="color:#ae81ff">24828344</span>
+    centos67-pe-puppet-382: /tmp/script_7943.sh: line <span style="color:#ae81ff">59</span>: bc: command not found
+    centos67-pe-puppet-382:
+    centos67-pe-puppet-382: dd: invalid number <span style="color:#e6db74">`</span><span style="color:#e6db74">&#39;
+</span><span style="color:#e6db74">    centos67-pe-puppet-382: /boot
+</span><span style="color:#e6db74">    centos67-pe-puppet-382: 60502
+</span><span style="color:#e6db74">    centos67-pe-puppet-382: /tmp/script_7943.sh: line 59: bc: command not found
+</span><span style="color:#e6db74">    centos67-pe-puppet-382:
+</span><span style="color:#e6db74">    centos67-pe-puppet-382: dd: invalid number `&#39;</span>
+    centos67-pe-puppet-382: /tmp/script_7943.sh: line <span style="color:#ae81ff">67</span>: /usr/sbin/vgdisplay: No such file or directory
+    centos67-pe-puppet-382: <span style="color:#f92672">==</span>&gt; Zero out the free space to save space in the final image
+    centos67-pe-puppet-382: dd: writing <span style="color:#e6db74">`</span>/EMPTY<span style="color:#960050;background-color:#1e0010">&#39;</span>: No space left on device
+    centos67-pe-puppet-382: <span style="color:#ae81ff">12783</span>+0 records in
+    centos67-pe-puppet-382: <span style="color:#ae81ff">12782</span>+0 records out
+    centos67-pe-puppet-382: <span style="color:#ae81ff">13403570176</span> bytes <span style="color:#f92672">(</span><span style="color:#ae81ff">13</span> GB<span style="color:#f92672">)</span> copied, <span style="color:#ae81ff">428</span>.651 s, <span style="color:#ae81ff">31</span>.3 MB/s</code></pre></div>
+
+<p>With the provisioners block having been completed, Packer will now shutdown the centos67-pe-puppet-382 virtual machine and unregister it from the ESXi virtual machine.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">==</span>&gt; centos67-pe-puppet-382: Gracefully halting virtual machine...
+    centos67-pe-puppet-382: Waiting <span style="color:#66d9ef">for</span> VMware to clean up after itself...
+<span style="color:#f92672">==</span>&gt; centos67-pe-puppet-382: Deleting unnecessary VMware files...
+    centos67-pe-puppet-382: Deleting: /vmfs/volumes/datastore1/output-centos67-pe-puppet-382/vmware.log
+<span style="color:#f92672">==</span>&gt; centos67-pe-puppet-382: Cleaning VMX prior to finishing up...
+    centos67-pe-puppet-382: Unmounting floppy from VMX...
+    centos67-pe-puppet-382: Detaching ISO from CD-ROM device...
+    centos67-pe-puppet-382: Disabling VNC server...
+<span style="color:#f92672">==</span>&gt; centos67-pe-puppet-382: Compacting the disk image
+<span style="color:#f92672">==</span>&gt; centos67-pe-puppet-382: Unregistering virtual machine...
+Build <span style="color:#e6db74">&#39;centos67-pe-puppet-382&#39;</span> finished.
+
+<span style="color:#f92672">==</span>&gt; Builds finished. The artifacts of successful builds are:
+--&gt; centos67-pe-puppet-382: VM files in directory: /vmfs/volumes/datastore1/output-centos67-pe-puppet-382
+<span style="color:#f92672">[</span>root@packer-centos packer-templates<span style="color:#f92672">]</span>#    </code></pre></div>
+
+<p>The output of the packer build command shows that the template was successfully created at /vmfs/volumes/datastore1/output-centos67-pe-puppet-382 on the ESXi virtual machine.</p>
+
+<h4 id="this-brings-us-to-the-end-of-this-post-i-think-it-is-pretty-powerful-that-we-only-had-to-copy-update-the-template-and-add-another-provisioner-script-in-order-to-modify-the-packer-template-we-created-last-time-to-install-puppet-enterprise-3-8-2">This brings us to the end of this post. I think it is pretty powerful that we only had to copy/update the template and add another provisioner script, in order to modify the Packer template we created last time to install Puppet Enterprise 3.8.2.</h4>
+
+<h4 id="if-you-would-like-to-not-have-to-manually-create-the-two-files-covered-in-this-post-you-can-clone-down-this-github-repository-https-github-com-sdorsett-packer-templates-tree-adding-second-packer-template-by-running-the-following-command">If you would like to not have to manually create the two files covered in this post, you can clone down <a href="https://github.com/sdorsett/packer-templates/tree/adding-second-packer-template">this github repository</a> by running the following command:</h4>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git clone -b <span style="color:#e6db74">&#34;adding-second-packer-template&#34;</span> https://github.com/sdorsett/packer-templates.git</code></pre></div>
+
+<p>If you cloned the packer-templates repo in the last post, you can pull down the updates by running the following command:</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git fetch --all
+git pull origin <span style="color:#e6db74">&#34;adding-second-packer-template&#34;</span></code></pre></div>
+
+<h4 id="in-the-next-post-we-will-extend-what-was-covered-in-this-post-by-installing-the-puppet-agent-in-packer-image">In the next post we will extend what was covered in this post by installing the Puppet agent in Packer image.</h4>
+
+<hr />
+
+<h4 id="please-provide-any-feedback-or-suggestions-to-my-twitter-account-located-on-the-about-page">Please provide any feedback or suggestions to my twitter account located on the about page.</h4>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="https://sdorsett.github.io/post/2015-12-25-creating-a-packer-template-for-installing-centos-67/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="https://sdorsett.github.io/post/2015-12-25-creating-a-packer-template-for-installing-centos-67/">Creating our first Packer template for installing CentOS 6.7 with vmtools</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="next">
+      <a href="https://sdorsett.github.io/post/2015-12-27-using-ovftool-to-export-packer-generated-virtual-machines/">Using ovftool to convert Packer generated virtual machines into Vagrant .box files</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+    <a href="https://sdorsett.github.io/post/2015-12-27-using-ovftool-to-export-packer-generated-virtual-machines/"><i class="fa fa-chevron-right"></i></a>
+    
+  </div>
+</div>
+
+
+
+  
+
+</div>
+
+</div>
+</div>
+<script src="https://sdorsett.github.iojs/ui.js"></script>
+<script src="https://sdorsett.github.iojs/menus.js"></script>
+
+
+
+
+
+
+</body>
+</html>
+

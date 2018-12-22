@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Puppet on Things I find interesting</title>
+    <link>https://sdorsett.github.io/tags/puppet/</link>
+    <description>Recent content in Puppet on Things I find interesting</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2018. All rights reserved.</copyright>
+    <lastBuildDate>Tue, 06 May 2014 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://sdorsett.github.io/tags/puppet/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Creating a Puppet manifest and integrating it with Vagrant</title>
+      <link>https://sdorsett.github.io/post/2014-05-06-vagrant-and-puppet/</link>
+      <pubDate>Tue, 06 May 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/post/2014-05-06-vagrant-and-puppet/</guid>
+      <description>This post will cover configuring Vagrant to automatically run a Puppet manifest on the vm created by &amp;ldquo;vagrant up.&amp;rdquo; This capability allows you to test your Puppet manifests, make changes and test again, all quickly and easily. Let&amp;rsquo;s get started:
+1. Create the Puppet manifest &amp;amp; modules we will be using for our Vagrant tests. For testing purposes we will be creating a Puppet manifest that ensures NTP is installed and is configured to use the following NTP servers:</description>
+    </item>
+    
+  </channel>
+</rss>

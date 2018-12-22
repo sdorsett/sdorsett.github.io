@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.52" />
+
+  <title>Installing Vagrant and the vagrant-vcloud plugin on CentOS 6.x &middot; Things I find interesting</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://sdorsett.github.io/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://sdorsett.github.io/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="https://sdorsett.github.io/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+ 
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="https://sdorsett.github.ioimg/favicon.ico" type="image/x-icon" />
+
+  
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="https://sdorsett.github.io/"> </a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/post/"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/about/"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/contact/"><i class='fa fa-phone fa-fw'></i>Contact</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/about/">About</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://twitter.com/standorsett" target="_blank"><i class="fa fa-twitter-square fa-fw"></i>Twitter</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://linkedin.com/in/stan-dorsett-53a8827" target="_blank"><i class="fa fa-linkedin-square fa-fw"></i>LinkedIn</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/sdorsett" target="_blank"><i class="fa fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small>&copy; 2018. All rights reserved.</small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Installing Vagrant and the vagrant-vcloud plugin on CentOS 6.x</h1>
+  <h2></h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>26 May 2014, 00:00</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://sdorsett.github.iotags/vagrant">vagrant</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://sdorsett.github.iotags/vagrant-vcloud">vagrant-vcloud</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  
+
+<p>In this post I&rsquo;m setting out to explain how to create a CentOS 6.4 vm, from template, in vCHS (or a vCloud Director instance) and then install vagrant-vcloud on that.</p>
+
+<h3 id="1-create-a-centos-6-x-minimal-virtual-machine-from-a-template-in-a-vchs-organization">1. Create a CentOS 6.x minimal virtual machine from a template in a vCHS organization.</h3>
+
+<p>I will demonstrate creating a new CentOS vm in vCHS using a template, but you could just as easily create a new CentOS virtual machine from scratch in vCloud Director.</p>
+
+<ul>
+<li><p>Log into vCHS using your credentials and click on your virtual datacenter.</p></li>
+
+<li><p>Next click on the &ldquo;Virtual Machines&rdquo; tab and then click the &ldquo;Deploy a Virtual Machine&rdquo; button:</p></li>
+</ul>
+
+<p><img src="https://sdorsett.github.io/static/01-create-centos-64-vm.png" alt="screenshot" /></p>
+
+<ul>
+<li>Select the &ldquo;CentOS 6.4 64 Bit&rdquo; template and click &ldquo;Continue&rdquo;</li>
+</ul>
+
+<p><img src="https://sdorsett.github.io/static/02-select-centos-64-template.png" alt="screenshot" /></p>
+
+<ul>
+<li>Name the virtual machine and set the guest OS name of your new virtual machine. Click &ldquo;Deploy This Virtual Machine&rdquo;:</li>
+</ul>
+
+<p>I named my virtual machine and set the guest OS name both to &ldquo;vagrant&rdquo;, but you can change these to what ever you prefer.</p>
+
+<p><img src="https://sdorsett.github.io/static/03-virtual-machine-resource-settings.png" alt="screenshot" /></p>
+
+<ul>
+<li>Power on and then click the name of the virtual machine you just created:</li>
+</ul>
+
+<p><img src="https://sdorsett.github.io/static/04-centos-vm-created.png" alt="screenshot" /></p>
+
+<ul>
+<li>Click the &ldquo;Launch Console&rdquo; link to open the console of the virtual machine you just created.</li>
+</ul>
+
+<p>Notice that the guest OS password created by guest customization is displayed on the left. Log into the virtual machine, using &ldquo;root&rdquo; and the displayed password, then change this password immediately to something else:</p>
+
+<p><img src="https://sdorsett.github.io/static/05-open-console-and-log-in.png" alt="screenshot" /></p>
+
+<h3 id="2-modify-etc-resolv-conf">2. Modify /etc/resolv.conf</h3>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span><span style="color:#75715e"># cat /etc/resolv.conf</span>
+nameserver <span style="color:#ae81ff">8</span>.8.8.8 
+nameserver <span style="color:#ae81ff">8</span>.8.4.4</code></pre></div>
+
+<p>At this point you should have network connectivity to your new vagrant vapp. While I won&rsquo;t cover it in the post, you can now either setup a DNAT rule to forward SSH to the vagrant vapp or continue the configuration using the vapp console.</p>
+
+<h3 id="3-install-ruby-1-9-3-using-ruby-build">3. Install Ruby 1.9.3 using ruby-build:</h3>
+
+<ul>
+<li>Use yum to install the packages we&rsquo;ll need to get ruby, rubygems and vagrant installed:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span><span style="color:#75715e"># yum install -y gcc-c++ glibc-headers openssl-devel readline libyaml-devel readline-devel zlib zlib-devel iconv-devel libxml2 libxml2-devel libxslt libxslt-devel wget git</span></code></pre></div>
+
+<ul>
+<li>Pull down the latest version of ruby-build using git:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span><span style="color:#75715e"># git clone https://github.com/sstephenson/ruby-build.git</span></code></pre></div>
+
+<ul>
+<li>Change to the directory the previous command created:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span><span style="color:#75715e"># cd ruby-build/</span></code></pre></div>
+
+<ul>
+<li>Run the &lsquo;install.sh&rsquo; script to install ruby-build:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant ruby-build<span style="color:#f92672">]</span><span style="color:#75715e"># ./install.sh</span></code></pre></div>
+
+<ul>
+<li>I would recommend installing Ruby version 1.9.3-p545 with the following command:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant ruby-build<span style="color:#f92672">]</span><span style="color:#75715e"># ruby-build --definitionsruby-build 1.9.3-p545 /usr/local/</span>
+Downloading yaml-0.1.6.tar.gz...
+-&gt; http://dqw8nmjcqpjn7.cloudfront.net/5fe00cda18ca5daeb43762b80c38e06e
+Installing yaml-0.1.6...
+Installed yaml-0.1.6 to /usr/local/
+
+Downloading ruby-1.9.3-p545.tar.gz...
+-&gt; http://dqw8nmjcqpjn7.cloudfront.net/8e8f6e4d7d0bb54e0edf8d9c4120f40c
+Installing ruby-1.9.3-p545...
+
+Installed ruby-1.9.3-p545 to /usr/local/</code></pre></div>
+
+<h3 id="4-install-rubygems-by-downloading-the-latest-version-from-rubygems-org-https-rubygems-org-pages-download-and-install-it">4. Install rubygems by downloading the latest version from <a href="https://rubygems.org/pages/download">rubygems.org</a> and install it:</h3>
+
+<ul>
+<li>Use wget to download the latest version listed on the rubygems download page:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant ruby-build<span style="color:#f92672">]</span><span style="color:#75715e"># cd ~/</span>
+<span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span><span style="color:#75715e"># wget http://production.cf.rubygems.org/rubygems/rubygems-2.2.2.tgz</span></code></pre></div>
+
+<ul>
+<li>Use tar to unzip the tar-gzipped file we downloaded:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span><span style="color:#75715e"># tar xvzf rubygems-2.2.2.tgz</span>
+<span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span><span style="color:#75715e"># cd rubygems-2.2.2</span></code></pre></div>
+
+<ul>
+<li>Install rubygems by running the &lsquo;setup.rb&rsquo; script:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant rubygems-2.2.2<span style="color:#f92672">]</span><span style="color:#75715e"># ruby setup.rb</span></code></pre></div>
+
+<h3 id="5-install-vagrant">5. Install Vagrant</h3>
+
+<ul>
+<li>Use wget to download the latest version listed on the <a href="https://www.vagrantup.com/downloads.html">Vagrant download</a> page:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant rubygems-2.2.2<span style="color:#f92672">]</span><span style="color:#75715e"># cd ~/</span>
+<span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span><span style="color:#75715e"># wget https://dl.bintray.com/mitchellh/vagrant/vagrant_1.6.2_x86_64.rpm</span></code></pre></div>
+
+<ul>
+<li>Use the &lsquo;rpm&rsquo; command to install the RPM package we downloaded in the previous step:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span><span style="color:#75715e"># rpm -i vagrant_1.6.2_x86_64.rpm</span></code></pre></div>
+
+<ul>
+<li>Export the directory that the vagrant executable was install to, in order to make it easier to run:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span><span style="color:#75715e"># export PATH=$PATH:/opt/vagrant/bin/</span></code></pre></div>
+
+<h3 id="6-installing-the-vagrant-vcloud-plugin">6. Installing the vagrant-vcloud plugin</h3>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant blog<span style="color:#f92672">]</span><span style="color:#75715e"># vagrant plugin install vagrant-vcloud</span>
+Installing the <span style="color:#e6db74">&#39;vagrant-vcloud&#39;</span> plugin. This can take a few minutes...
+Installed the plugin <span style="color:#e6db74">&#39;vagrant-vcloud (0.3.3)&#39;</span>!</code></pre></div>
+
+<h3 id="7-creating-a-vagrantfile-for-testing-vagrant-vcloud-install">7. Creating a Vagrantfile for testing vagrant-vcloud install</h3>
+
+<ul>
+<li>We need to create a directory structure and Vagrantfile to test that the vagrant-vcloud provider is properly working. For the .box file we will use a sample precise32 (Ubuntu 12.04 32bit) vagrant .box file created for the vcloud provider by <a href="http://blog.tsugliani.fr/">Timo Sugliani</a>:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span><span style="color:#75715e"># mkdir -p ~/vagrant-vms/precise32-test</span>
+<span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span><span style="color:#75715e"># cat ~/vagrant-vms/precise32-test/Vagrantfile</span> 
+precise32_vm_box_url <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;http://vagrant.tsugliani.fr/precise32.box&#34;</span>
+
+nodes <span style="color:#f92672">=</span> <span style="color:#f92672">[</span>
+  <span style="color:#f92672">{</span> :hostname <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;test-vm&#34;</span>,  
+    :box <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;precise32&#34;</span>, 
+    :box_url <span style="color:#f92672">=</span>&gt; precise32_vm_box_url <span style="color:#f92672">}</span>
+<span style="color:#f92672">]</span>
+
+Vagrant.configure<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;2&#34;</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">do</span> |config|
+
+  <span style="color:#75715e"># vCloud Director provider settings</span>
+  config.vm.provider :vcloud <span style="color:#66d9ef">do</span> |vcloud|
+
+    vcloud.hostname <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;https://[Your_vCD_URL]:443&#39;</span>
+    vcloud.username <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;[Your_vCHS_username@somedomain.com]&#39;</span>
+    vcloud.password <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;[Your_vCHS_password]&#39;</span>
+
+    vcloud.org_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;[Your_vCHS_org_name]&#39;</span>
+    vcloud.vdc_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;[Your_vCHS_vdc_name]&#39;</span>
+    vcloud.catalog_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;[Your_vCHS_org_catalog]&#39;</span>
+    vcloud.network_bridge <span style="color:#f92672">=</span> true
+    vcloud.vdc_network_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;[Your_vCHS_vdc_name]-default-routed&#39;</span>
+
+  end
+
+  nodes.each <span style="color:#66d9ef">do</span> |node|
+    config.vm.define node<span style="color:#f92672">[</span>:hostname<span style="color:#f92672">]</span> <span style="color:#66d9ef">do</span> |node_config|
+      node_config.vm.box <span style="color:#f92672">=</span> node<span style="color:#f92672">[</span>:box<span style="color:#f92672">]</span>
+      node_config.vm.hostname <span style="color:#f92672">=</span> node<span style="color:#f92672">[</span>:hostname<span style="color:#f92672">]</span>
+      node_config.vm.box_url <span style="color:#f92672">=</span> node<span style="color:#f92672">[</span>:box_url<span style="color:#f92672">]</span>
+    end
+  end
+end</code></pre></div>
+
+<p>In this configuration file:</p>
+
+<ul>
+<li>&ldquo;vcloud.hostname&rdquo; is your vCloud Director FQDN or IP address. This should be the base URL and not by the specific URL for your org.</li>
+<li>&ldquo;vcloud.username&rdquo; is the username we will be using to connect to vCHS or vCloud Director</li>
+<li>&ldquo;vcloud.password&rdquo; is the password we will be using to connect to vCHS or vCloud Director</li>
+<li>&ldquo;vcloud.org_name&rdquo; will be the name of your vCHS or vCloud Director organization</li>
+<li>&ldquo;vcloud.vdc_name&rdquo; will be the name of your vCHS or vCloud Director virtual datacenter</li>
+<li>&ldquo;vcloud.catalog_name&rdquo; will be the name of your organization catalog a template derived from the .box file will be created in</li>
+
+<li><p>&ldquo;vcloud.dc_network_name&rdquo; is the organization network the vagrant vapp will be connected to</p></li>
+
+<li><p>Now we can change directory to that directory and test everything with a &ldquo;vagrant up &ndash;provider=vcloud&rdquo;:</p></li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span><span style="color:#75715e"># cd ~/vagrant-vms/precise32-test</span>
+oot@vagrant precise32-test<span style="color:#f92672">]</span><span style="color:#75715e"># vagrant up --provider=vcloud</span>
+Bringing machine <span style="color:#e6db74">&#39;test-vm&#39;</span> up with <span style="color:#e6db74">&#39;vcloud&#39;</span> provider...
+<span style="color:#f92672">==</span>&gt; test-vm: Box <span style="color:#e6db74">&#39;precise32&#39;</span> could not be found. Attempting to find and install...
+    test-vm: Box Provider: vcloud
+    test-vm: Box Version: &gt;<span style="color:#f92672">=</span> 0
+<span style="color:#f92672">==</span>&gt; test-vm: Adding box <span style="color:#e6db74">&#39;precise32&#39;</span> <span style="color:#f92672">(</span>v0<span style="color:#f92672">)</span> <span style="color:#66d9ef">for</span> provider: vcloud
+    test-vm: Downloading: http://vagrant.tsugliani.fr/precise32.box
+<span style="color:#f92672">==</span>&gt; test-vm: Successfully added box <span style="color:#e6db74">&#39;precise32&#39;</span> <span style="color:#f92672">(</span>v0<span style="color:#f92672">)</span> <span style="color:#66d9ef">for</span> <span style="color:#e6db74">&#39;vcloud&#39;</span>!
+<span style="color:#f92672">==</span>&gt; test-vm: Catalog item <span style="color:#f92672">[</span>precise32<span style="color:#f92672">]</span> in Catalog <span style="color:#f92672">[</span>Org Private Catalog<span style="color:#f92672">]</span> does not exist!
+    test-vm: Would you like to upload the <span style="color:#f92672">[</span>precise32<span style="color:#f92672">]</span> box to <span style="color:#f92672">[</span>Org Private Catalog<span style="color:#f92672">]</span> Catalog?
+    test-vm: Choice <span style="color:#f92672">(</span>yes/no<span style="color:#f92672">)</span>: yes
+<span style="color:#f92672">==</span>&gt; test-vm: Uploading <span style="color:#f92672">[</span>precise32<span style="color:#f92672">]</span>...
+Uploading Box...
+Uploading Box...
+Uploading Box... Progress: <span style="color:#ae81ff">22</span>%  ETA: <span style="color:#ae81ff">00</span>:02:16                                          </code></pre></div>
+
+<p>Once the .box files has started uploading, you can check the progress in the org catalog of your vCloud Director instance:</p>
+
+<p><img src="https://sdorsett.github.io/static/06-precise32-upload.png" alt="screenshot" /></p>
+
+<ul>
+<li>The uploading progress will get to 100% and you will see the vApp getting created, powered on and SSH access achieved:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">Uploading Box...
+Uploading Box... Progress: <span style="color:#ae81ff">100</span>% Time: <span style="color:#ae81ff">00</span>:02:32                                                                                                   
+<span style="color:#f92672">==</span>&gt; test-vm: Adding <span style="color:#f92672">[</span>precise32<span style="color:#f92672">]</span> to Catalog <span style="color:#f92672">[</span>Org Private Catalog<span style="color:#f92672">]</span>
+<span style="color:#f92672">==</span>&gt; test-vm: Building vApp...
+<span style="color:#f92672">==</span>&gt; test-vm: vApp Vagrant-root-vagrant-8b9115d1 successfully created.
+<span style="color:#f92672">==</span>&gt; test-vm: Powering on VM...
+<span style="color:#f92672">==</span>&gt; test-vm: Waiting <span style="color:#66d9ef">for</span> SSH Access on <span style="color:#ae81ff">192</span>.168.109.4:22 ... 
+<span style="color:#f92672">==</span>&gt; test-vm: Waiting <span style="color:#66d9ef">for</span> SSH Access on <span style="color:#ae81ff">192</span>.168.109.4:22 ... 
+<span style="color:#f92672">==</span>&gt; test-vm: Waiting <span style="color:#66d9ef">for</span> SSH Access on <span style="color:#ae81ff">192</span>.168.109.4:22 ... 
+<span style="color:#f92672">==</span>&gt; test-vm: Rsyncing folder: /root/vagrant-vms/precise32-test/ <span style="color:#f92672">=</span>&gt; /vagrant
+<span style="color:#f92672">[</span>root@vagrant precise32-test<span style="color:#f92672">]</span><span style="color:#75715e"># root@vagrant precise32-test]#</span></code></pre></div>
+
+<ul>
+<li>Test network connectivity by running &ldquo;vagrant ssh&rdquo;:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">root@vagrant precise32-test<span style="color:#f92672">]</span><span style="color:#75715e"># vagrant ssh</span>
+<span style="color:#f92672">==</span>&gt; test-vm: External IP <span style="color:#66d9ef">for</span> test-vm: <span style="color:#ae81ff">192</span>.168.109.4
+Welcome to Ubuntu <span style="color:#ae81ff">12</span>.04 LTS <span style="color:#f92672">(</span>GNU/Linux <span style="color:#ae81ff">3</span>.2.0-23-generic-pae i686<span style="color:#f92672">)</span>
+
+ * Documentation:  https://help.ubuntu.com/
+Welcome to your Vagrant-built virtual machine.
+Last login: Thu Jul <span style="color:#ae81ff">18</span> <span style="color:#ae81ff">11</span>:20:25 <span style="color:#ae81ff">2013</span>
+vagrant@test-vm:~$ hostname -f
+test-vm</code></pre></div>
+
+<ul>
+<li>Run &ldquo;vagrant vcloud &ndash;status&rdquo; to validate the vCloud Director status of your vagrant vapp:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">root@vagrant precise32-test<span style="color:#f92672">]</span><span style="color:#75715e"># vagrant vcloud --status</span>
+Initializing vCloud Director provider...
+Fetching vCloud Director status...
++-------------------------------+-----------------------------------------+
+|  Vagrant vCloud Director Status : https://<span style="color:#f92672">[</span>Your_vCD_URL<span style="color:#f92672">]</span>:443            |
++-------------------------------+-----------------------------------------+
+| Organization Name             | <span style="color:#f92672">[</span>Your_vCHS_org_name<span style="color:#f92672">]</span>                    |
+| Organization vDC Name         | vCHS-vagrant-demo                       |
+| Organization vDC ID           | b9494d6a-ebda-4368-8f76-0e93b7edcb17    |
+| Organization vDC Network Name | <span style="color:#f92672">[</span>Your_vCHS_vdc_name<span style="color:#f92672">]</span>-default-routed     |
++-------------------------------+-----------------------------------------+
+| vApp Name                     | Vagrant-root-vagrant-8b9115d1           |
+| vAppID                        | ec918e84-6026-42b2-8639-5390d8c88b0c    |
+| -&gt; test-vm                    | 4fc82b9b-c79d-483b-9a71-a87d22289102    |
++-------------------------------+-----------------------------------------+</code></pre></div>
+
+<ul>
+<li>Run &ldquo;vagrant vcloud &ndash;network&rdquo; to validate the vCloud Director network mapping of your vagrant vapp:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant precise32-test<span style="color:#f92672">]</span><span style="color:#75715e"># vagrant vcloud --network</span>
+Initializing vCloud Director provider...
+Fetching vCloud Director network settings ...
++---------+---------------+------------+
+|             Network Map              |
++---------+---------------+------------+
+| VM Name | IP Address    | Connection |
++---------+---------------+------------+
+| test-vm | <span style="color:#ae81ff">192</span>.168.109.4 | Direct     |
++---------+---------------+------------+</code></pre></div>
+
+<ul>
+<li>Destroy the cloned vm by running &ldquo;vagrant destroy&rdquo; command:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant precise32-test<span style="color:#f92672">]</span><span style="color:#75715e"># vagrant destroy</span>
+    test-vm: Are you sure you want to destroy the <span style="color:#e6db74">&#39;test-vm&#39;</span> VM? <span style="color:#f92672">[</span>y/N<span style="color:#f92672">]</span> y
+<span style="color:#f92672">==</span>&gt; test-vm: Powering off VM...
+<span style="color:#f92672">==</span>&gt; test-vm: Single VM left in the vApp, Powering off vApp...
+<span style="color:#f92672">==</span>&gt; test-vm: Destroying vApp...
+<span style="color:#f92672">[</span>root@vagrant precise32-test<span style="color:#f92672">]</span># </code></pre></div>
+
+<p>You should see &ldquo;Power Off vapp&rdquo; and &ldquo;Delete vapp&rdquo; tasks being run and then completing on your organizations vapps.</p>
+
+<h4 id="hopefully-you-found-this-post-helpful-in-getting-vagrant-and-the-vagrant-cloud-plugin-installed-and-configured-the-next-blog-post-will-be-covering-how-to-modify-the-vagrantfile-to-create-a-vapp-in-a-vchs-or-vcloud-director-instance-that-doesn-t-contain-the-vagrant-vm">Hopefully you found this post helpful in getting vagrant and the vagrant-cloud plugin installed and configured. The next blog post will be covering how to modify the Vagrantfile to create a vapp in a vCHS or vCloud Director instance that doesn&rsquo;t contain the vagrant vm.</h4>
+
+<hr />
+
+<h4 id="please-provide-any-feedback-or-suggestions-to-my-twitter-account-located-on-the-about-page">Please provide any feedback or suggestions to my twitter account located on the about page.</h4>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="https://sdorsett.github.io/post/2014-05-25-vagrant-vcloud/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="https://sdorsett.github.io/post/2014-05-25-vagrant-vcloud/">Introducing the vagrant-vcloud provider</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="next">
+      <a href="https://sdorsett.github.io/post/2014-12-28-getting-packer-installed-on-os-x/">Using packer on OS X to create an ESXi .box template for vagrant deployment</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+    <a href="https://sdorsett.github.io/post/2014-12-28-getting-packer-installed-on-os-x/"><i class="fa fa-chevron-right"></i></a>
+    
+  </div>
+</div>
+
+
+
+  
+
+</div>
+
+</div>
+</div>
+<script src="https://sdorsett.github.iojs/ui.js"></script>
+<script src="https://sdorsett.github.iojs/menus.js"></script>
+
+
+
+
+
+
+</body>
+</html>
+

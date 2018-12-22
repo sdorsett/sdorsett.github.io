@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.52" />
+
+  <title>Creating our first Packer template for installing CentOS 6.7 with vmtools &middot; Things I find interesting</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://sdorsett.github.io/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://sdorsett.github.io/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="https://sdorsett.github.io/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+ 
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="https://sdorsett.github.ioimg/favicon.ico" type="image/x-icon" />
+
+  
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="https://sdorsett.github.io/"> </a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/post/"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/about/"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/contact/"><i class='fa fa-phone fa-fw'></i>Contact</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/about/">About</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://twitter.com/standorsett" target="_blank"><i class="fa fa-twitter-square fa-fw"></i>Twitter</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://linkedin.com/in/stan-dorsett-53a8827" target="_blank"><i class="fa fa-linkedin-square fa-fw"></i>LinkedIn</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/sdorsett" target="_blank"><i class="fa fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small>&copy; 2018. All rights reserved.</small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Creating our first Packer template for installing CentOS 6.7 with vmtools</h1>
+  <h2></h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>25 Dec 2015, 00:00</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://sdorsett.github.iotags/vagrant">vagrant</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://sdorsett.github.iotags/packer">packer</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  
+
+<p>This is the fourth in a series of posts on <a href="../2015-12-22-pipeline-for-creating-packer-box-files">using a Packer pipeline to generate Vagrant .box files</a>.</p>
+
+<p>In the last two posts we covered <a href="../2015-12-23-installing-esxi-virtual-machine-for-packer-depolyment">installing a ESXi virtual machine for use with Packer</a> and <a href="../2015-12-24-installing-packer-and-ovftool-on-centos">Setting up Packer, ovftool and Apache web server on a CentOS virtual machine</a>. In this post we will be putting all this prep work to use in order to install a CentOS 6.7 image using Packer.</p>
+
+<p>Before we get started I would like to mentioned that many of the configuration files I am using have been influenced by or directly copied from the following github repositories:</p>
+
+<p><a href="https://github.com/frapposelli/packer-templates/">https://github.com/frapposelli/packer-templates</a><br />
+<a href="https://github.com/nanliu/packer-templates/">https://github.com/nanliu/packer-templates/</a></p>
+
+<p>These public repositories by Fabio and Nan have been extremely helpful in my own understanding of how Packer works.
+ Well&hellip;enough talking, let&rsquo;s get started&hellip;</p>
+
+<h3 id="1-start-off-by-connecting-by-ssh-to-centos-virtual-machine-we-created-in-the-previous-post">1. Start off by connecting by SSH to CentOS virtual machine we created in the previous post.</h3>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sdorsett-mbp:~ sdorsett$ ssh root@192.168.1.52
+root@192.168.1.52<span style="color:#960050;background-color:#1e0010">&#39;</span>s password:
+Last login: Wed Dec <span style="color:#ae81ff">23</span> <span style="color:#ae81ff">16</span>:58:41 <span style="color:#ae81ff">2015</span> from <span style="color:#ae81ff">192</span>.168.1.163
+<span style="color:#f92672">[</span>root@packer-centos ~<span style="color:#f92672">]</span>#</code></pre></div>
+
+<h3 id="2-create-a-new-folder-for-our-packer-templates-and-run-git-init-to-start-tracking-changes">2. Create a new folder for our packer-templates and run &ldquo;git init&rdquo; to start tracking changes.</h3>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@packer-centos ~<span style="color:#f92672">]</span><span style="color:#75715e"># mkdir packer-templates</span>
+<span style="color:#f92672">[</span>root@packer-centos ~<span style="color:#f92672">]</span><span style="color:#75715e"># cd packer-templates/</span>
+<span style="color:#f92672">[</span>root@packer-centos packer-templates<span style="color:#f92672">]</span><span style="color:#75715e"># git init</span>
+Initialized empty Git repository in /root/packer-templates/.git/
+<span style="color:#f92672">[</span>root@packer-centos packer-templates<span style="color:#f92672">]</span>#</code></pre></div>
+
+<h3 id="3-create-directory-structure-for-the-iso-files-scripts-and-templates-we-will-be-using-with-packer">3. Create directory structure for the .iso files, scripts and templates we will be using with Packer.</h3>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@packer-centos packer-templates<span style="color:#f92672">]</span><span style="color:#75715e"># mkdir -p ~/packer-templates/{iso,scripts,templates}</span>
+<span style="color:#f92672">[</span>root@packer-centos packer-templates<span style="color:#f92672">]</span><span style="color:#75715e"># ls</span>
+iso  scripts  templates
+<span style="color:#f92672">[</span>root@packer-centos packer-templates<span style="color:#f92672">]</span>#</code></pre></div>
+
+<h3 id="4-download-the-centos-6-7-minimal-iso-and-place-it-in-the-packer-templates-iso-folder">4. Download the CentOS 6.7 minimal .iso and place it in the packer-templates/iso/ folder</h3>
+
+<p>Open <a href="http://isoredirect.centos.org/centos/6/isos/x86_64/">http://isoredirect.centos.org/centos/6/isos/x86_64/</a> in a browser and pick a mirror to download the .iso from. Copy the URL to the CentOS-6.7-x86_64-minimal.iso image file and use wget to pull the image down in the CentOS virtual machine</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@packer-centos packer-templates<span style="color:#f92672">]</span><span style="color:#75715e"># cd ~/packer-templates/iso/</span>
+<span style="color:#f92672">[</span>root@packer-centos iso<span style="color:#f92672">]</span><span style="color:#75715e"># wget http://mirror.cs.pitt.edu/centos/6.7/isos/x86_64/CentOS-6.7-x86_64-minimal.iso</span>
+--2015-12-23 <span style="color:#ae81ff">20</span>:04:30--  http://mirror.cs.pitt.edu/centos/6.7/isos/x86_64/CentOS-6.7-x86_64-minimal.iso
+Resolving mirror.cs.pitt.edu... <span style="color:#ae81ff">136</span>.142.23.206
+Connecting to mirror.cs.pitt.edu|<span style="color:#ae81ff">136</span>.142.23.206|:80... connected.
+HTTP request sent, awaiting response... <span style="color:#ae81ff">200</span> OK
+Length: <span style="color:#ae81ff">414187520</span> <span style="color:#f92672">(</span>395M<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>application/octet-stream<span style="color:#f92672">]</span>
+Saving to: “CentOS-6.7-x86_64-minimal.iso”
+
+<span style="color:#ae81ff">100</span>%<span style="color:#f92672">[========================================================</span>&gt;<span style="color:#f92672">]</span> <span style="color:#ae81ff">414</span>,187,520 <span style="color:#ae81ff">7</span>.01M/s   in 58s
+
+<span style="color:#ae81ff">2015</span>-12-23 <span style="color:#ae81ff">20</span>:05:28 <span style="color:#f92672">(</span><span style="color:#ae81ff">6</span>.77 MB/s<span style="color:#f92672">)</span> - “CentOS-6.7-x86_64-minimal.iso” saved <span style="color:#f92672">[</span><span style="color:#ae81ff">414187520</span>/414187520<span style="color:#f92672">]</span>
+
+<span style="color:#f92672">[</span>root@packer-centos iso<span style="color:#f92672">]</span>#</code></pre></div>
+
+<h3 id="5-compare-the-sha1sum-of-the-downloaded-centos-6-7-x86-64-minimal-iso-file-to-what-is-listed-on-the-centos-mirror">5. Compare the sha1sum of the downloaded CentOS-6.7-x86_64-minimal.iso file to what is listed on the CentOS mirror.</h3>
+
+<p>Open the sha1sum.txt file from the CentOS mirror you chose in your browser. It should show the following:</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">7bb8c1c23a4fdef93e6f0a6347d570e5764d0b38  CentOS-6.7-x86_64-bin-DVD1.iso
+79f58df5723f723fc62d5e8831ada38072096a46  CentOS-6.7-x86_64-bin-DVD2.iso
+2ed5ea551dffc3e4b82847b3cee1f6cd748e8071  CentOS-6.7-x86_64-minimal.iso
+c3678c6b72cbf2ed9b4e8a1ddb190fd262db8b7f  CentOS-6.7-x86_64-netinstall.iso
+a7c05a7c0a4c6bdef8dd1cf8310613c154c2b9d5  CentOS-6.7-x86_64-LiveCD.iso
+aebd4c2e81ace92ebda2bc909aca34a139ff2cea  CentOS-6.7-x86_64-LiveDVD.iso</code></pre></div>
+
+<p>Compare the sha1sum from above to the actual sha1sum of the downloaded .iso</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@packer-centos iso<span style="color:#f92672">]</span><span style="color:#75715e"># sha1sum CentOS-6.7-x86_64-minimal.iso</span>
+2ed5ea551dffc3e4b82847b3cee1f6cd748e8071  CentOS-6.7-x86_64-minimal.iso
+<span style="color:#f92672">[</span>root@packer-centos iso<span style="color:#f92672">]</span>#</code></pre></div>
+
+<p>The two hashes match so we know the file was downloaded without any corruption.</p>
+
+<h3 id="6-download-patched-vmtools-from-https-github-com-rasa-vmware-tools-patches-https-github-com-rasa-vmware-tools-patches-and-place-the-iso-file-in-the-packer-templates-iso-folder">6. Download patched vmtools from <a href="https://github.com/rasa/vmware-tools-patches">https://github.com/rasa/vmware-tools-patches</a> and place the .iso file in the packer-templates/iso/ folder.</h3>
+
+<p>I have had issues with the VMware issued vmtools, specifically around CentOS 7 and trying to get hgfs (host guest file system) functional on Fusion. During that troubleshooting I discovered the patched vmware tools listed above and found installing those, rather than the VMware issue vmtools installer, resolved my issues.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@packer-centos ~<span style="color:#f92672">]</span><span style="color:#75715e"># wget https://softwareupdate.vmware.com/cds/vmw-desktop/fusion/7.1.3/3204469/packages/com.vmware.fusion.tools.linux.zip.tar</span>
+--2015-12-23 <span style="color:#ae81ff">21</span>:20:55--  https://softwareupdate.vmware.com/cds/vmw-desktop/fusion/7.1.3/3204469/packages/com.vmware.fusion.tools.linux.zip.tar
+Resolving softwareupdate.vmware.com... <span style="color:#ae81ff">23</span>.64.167.143, <span style="color:#ae81ff">2600</span>:1404:a:589::2ef, <span style="color:#ae81ff">2600</span>:1404:a:59a::2ef
+Connecting to softwareupdate.vmware.com|<span style="color:#ae81ff">23</span>.64.167.143|:443... connected.
+HTTP request sent, awaiting response... <span style="color:#ae81ff">200</span> OK
+Length: <span style="color:#ae81ff">62074880</span> <span style="color:#f92672">(</span>59M<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>application/x-tar<span style="color:#f92672">]</span>
+Saving to: “com.vmware.fusion.tools.linux.zip.tar”
+
+<span style="color:#ae81ff">100</span>%<span style="color:#f92672">[========================================================</span>&gt;<span style="color:#f92672">]</span> <span style="color:#ae81ff">62</span>,074,880  <span style="color:#ae81ff">6</span>.95M/s   in <span style="color:#ae81ff">8</span>.6s
+
+<span style="color:#ae81ff">2015</span>-12-23 <span style="color:#ae81ff">21</span>:21:04 <span style="color:#f92672">(</span><span style="color:#ae81ff">6</span>.91 MB/s<span style="color:#f92672">)</span> - “com.vmware.fusion.tools.linux.zip.tar” saved <span style="color:#f92672">[</span><span style="color:#ae81ff">62074880</span>/62074880<span style="color:#f92672">]</span>
+
+<span style="color:#f92672">[</span>root@packer-centos ~<span style="color:#f92672">]</span><span style="color:#75715e"># tar xf com.vmware.fusion.tools.linux.zip.tar</span>
+<span style="color:#f92672">[</span>root@packer-centos ~<span style="color:#f92672">]</span><span style="color:#75715e"># unzip com.vmware.fusion.tools.linux.zip</span>
+Archive:  com.vmware.fusion.tools.linux.zip
+  inflating: manifest.plist
+   creating: payload/
+  inflating: payload/linux.iso
+ extracting: payload/linux.iso.sig
+  inflating: payload/tools-linux.plist
+<span style="color:#f92672">[</span>root@packer-centos ~<span style="color:#f92672">]</span><span style="color:#75715e"># cp payload/linux.iso ~/packer-templates/iso/</span>
+<span style="color:#f92672">[</span>root@packer-centos ~<span style="color:#f92672">]</span><span style="color:#75715e"># cd ~/packer-templates/iso/</span>
+<span style="color:#f92672">[</span>root@packer-centos iso<span style="color:#f92672">]</span><span style="color:#75715e"># ln -s ./linux.iso vmware-tools-linux.iso</span>
+<span style="color:#f92672">[</span>root@packer-centos iso<span style="color:#f92672">]</span><span style="color:#75715e"># ls -la</span>
+total <span style="color:#ae81ff">466960</span>
+drwxr-xr-x <span style="color:#ae81ff">2</span> root root      <span style="color:#ae81ff">4096</span> Dec <span style="color:#ae81ff">23</span> <span style="color:#ae81ff">21</span>:22 .
+drwxr-xr-x <span style="color:#ae81ff">6</span> root root      <span style="color:#ae81ff">4096</span> Dec <span style="color:#ae81ff">23</span> <span style="color:#ae81ff">21</span>:22 ..
+-rw-r--r-- <span style="color:#ae81ff">1</span> root root <span style="color:#ae81ff">414187520</span> Aug  <span style="color:#ae81ff">4</span> <span style="color:#ae81ff">21</span>:59 CentOS-6.7-x86_64-minimal.iso
+-rw-r--r-- <span style="color:#ae81ff">1</span> root root  <span style="color:#ae81ff">63971328</span> Dec <span style="color:#ae81ff">23</span> <span style="color:#ae81ff">21</span>:21 linux.iso
+lrwxrwxrwx <span style="color:#ae81ff">1</span> root root        <span style="color:#ae81ff">11</span> Dec <span style="color:#ae81ff">23</span> <span style="color:#ae81ff">21</span>:22 vmware-tools-linux.iso -&gt; ./linux.iso
+<span style="color:#f92672">[</span>root@packer-centos iso<span style="color:#f92672">]</span>#</code></pre></div>
+
+<h3 id="7-create-a-packer-json-file-in-the-template-folder-for-our-image">7. Create a packer .json file in the template/ folder for our image</h3>
+
+<p>Create the following file in the packer-templates/templates/ directory. The centos67.json file contains the instructions Packer will use to install the CentOS 6.7 image.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@packer-centos packer-templates<span style="color:#f92672">]</span><span style="color:#75715e"># cat templates/centos67.json</span>
+<span style="color:#f92672">{</span>
+  <span style="color:#e6db74">&#34;variables&#34;</span>: <span style="color:#f92672">{</span>
+    <span style="color:#e6db74">&#34;version&#34;</span>: <span style="color:#e6db74">&#34;1.0&#34;</span>
+  <span style="color:#f92672">}</span>,
+  <span style="color:#e6db74">&#34;builders&#34;</span>: <span style="color:#f92672">[</span>
+    <span style="color:#f92672">{</span>
+      <span style="color:#e6db74">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;centos67&#34;</span>,
+      <span style="color:#e6db74">&#34;vm_name&#34;</span>: <span style="color:#e6db74">&#34;centos67&#34;</span>,
+      <span style="color:#e6db74">&#34;vmdk_name&#34;</span>: <span style="color:#e6db74">&#34;centos67&#34;</span>,
+      <span style="color:#e6db74">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;vmware-iso&#34;</span>,
+      <span style="color:#e6db74">&#34;communicator&#34;</span>: <span style="color:#e6db74">&#34;ssh&#34;</span>,
+      <span style="color:#e6db74">&#34;ssh_pty&#34;</span>: <span style="color:#e6db74">&#34;true&#34;</span>,
+      <span style="color:#e6db74">&#34;headless&#34;</span>: false,
+      <span style="color:#e6db74">&#34;disk_size&#34;</span>: <span style="color:#ae81ff">16384</span>,
+      <span style="color:#e6db74">&#34;guest_os_type&#34;</span>: <span style="color:#e6db74">&#34;rhel6-64&#34;</span>,
+      <span style="color:#e6db74">&#34;iso_url&#34;</span>: <span style="color:#e6db74">&#34;./iso/CentOS-6.7-x86_64-minimal.iso&#34;</span>,
+      <span style="color:#e6db74">&#34;iso_checksum&#34;</span>: <span style="color:#e6db74">&#34;2ed5ea551dffc3e4b82847b3cee1f6cd748e8071&#34;</span>,
+      <span style="color:#e6db74">&#34;iso_checksum_type&#34;</span>: <span style="color:#e6db74">&#34;sha1&#34;</span>,
+      <span style="color:#e6db74">&#34;shutdown_command&#34;</span>: <span style="color:#e6db74">&#34;echo &#39;vagrant&#39; | sudo -S /sbin/shutdown -P now&#34;</span>,
+
+      <span style="color:#e6db74">&#34;remote_host&#34;</span>: <span style="color:#f92672">{</span>% raw %<span style="color:#f92672">}</span><span style="color:#e6db74">&#34;{{user `packer_remote_host`}}&#34;</span>,<span style="color:#f92672">{</span>% endraw %<span style="color:#f92672">}</span>
+      <span style="color:#e6db74">&#34;remote_datastore&#34;</span>: <span style="color:#f92672">{</span>% raw %<span style="color:#f92672">}</span><span style="color:#e6db74">&#34;{{user `packer_remote_datastore`}}&#34;</span>,<span style="color:#f92672">{</span>% endraw %<span style="color:#f92672">}</span>
+      <span style="color:#e6db74">&#34;remote_username&#34;</span>: <span style="color:#f92672">{</span>% raw %<span style="color:#f92672">}</span><span style="color:#e6db74">&#34;{{user `packer_remote_username`}}&#34;</span>,<span style="color:#f92672">{</span>% endraw %<span style="color:#f92672">}</span>
+      <span style="color:#e6db74">&#34;remote_password&#34;</span>: <span style="color:#f92672">{</span>% raw %<span style="color:#f92672">}</span><span style="color:#e6db74">&#34;{{user `packer_remote_password`}}&#34;</span>,<span style="color:#f92672">{</span>% endraw %<span style="color:#f92672">}</span>
+      <span style="color:#e6db74">&#34;remote_type&#34;</span>: <span style="color:#e6db74">&#34;esx5&#34;</span>,
+      <span style="color:#e6db74">&#34;ssh_username&#34;</span>: <span style="color:#e6db74">&#34;root&#34;</span>,
+      <span style="color:#e6db74">&#34;ssh_password&#34;</span>: <span style="color:#e6db74">&#34;vagrant&#34;</span>,
+      <span style="color:#e6db74">&#34;ssh_wait_timeout&#34;</span>: <span style="color:#e6db74">&#34;60m&#34;</span>,
+      <span style="color:#e6db74">&#34;tools_upload_flavor&#34;</span>: <span style="color:#e6db74">&#34;linux&#34;</span>,
+      <span style="color:#e6db74">&#34;http_directory&#34;</span>: <span style="color:#e6db74">&#34;.&#34;</span>,
+      <span style="color:#e6db74">&#34;boot_wait&#34;</span>: <span style="color:#e6db74">&#34;5s&#34;</span>,
+      <span style="color:#e6db74">&#34;vmx_data&#34;</span>: <span style="color:#f92672">{</span>
+        <span style="color:#e6db74">&#34;memsize&#34;</span>: <span style="color:#e6db74">&#34;4096&#34;</span>,
+        <span style="color:#e6db74">&#34;numvcpus&#34;</span>: <span style="color:#e6db74">&#34;2&#34;</span>,
+        <span style="color:#e6db74">&#34;ethernet0.networkName&#34;</span>: <span style="color:#f92672">{</span>% raw %<span style="color:#f92672">}</span><span style="color:#e6db74">&#34;{{user `packer_remote_network`}}&#34;</span>,<span style="color:#f92672">{</span>% endraw %<span style="color:#f92672">}</span>
+        <span style="color:#e6db74">&#34;ethernet0.present&#34;</span>: <span style="color:#e6db74">&#34;TRUE&#34;</span>,
+        <span style="color:#e6db74">&#34;ethernet0.startConnected&#34;</span>: <span style="color:#e6db74">&#34;TRUE&#34;</span>,
+        <span style="color:#e6db74">&#34;ethernet0.virtualDev&#34;</span>: <span style="color:#e6db74">&#34;e1000&#34;</span>,
+        <span style="color:#e6db74">&#34;ethernet0.addressType&#34;</span>: <span style="color:#e6db74">&#34;generated&#34;</span>,
+        <span style="color:#e6db74">&#34;ethernet0.generatedAddressOffset&#34;</span>: <span style="color:#e6db74">&#34;0&#34;</span>,
+        <span style="color:#e6db74">&#34;ethernet0.wakeOnPcktRcv&#34;</span>: <span style="color:#e6db74">&#34;FALSE&#34;</span>
+
+      <span style="color:#f92672">}</span>,
+      <span style="color:#e6db74">&#34;vmx_data_post&#34;</span>: <span style="color:#f92672">{</span>
+        <span style="color:#e6db74">&#34;ide1:0.startConnected&#34;</span>: <span style="color:#e6db74">&#34;FALSE&#34;</span>,
+        <span style="color:#e6db74">&#34;ide1:0.clientDevice&#34;</span>: <span style="color:#e6db74">&#34;TRUE&#34;</span>,
+        <span style="color:#e6db74">&#34;ide1:0.fileName&#34;</span>: <span style="color:#e6db74">&#34;emptyBackingString&#34;</span>,
+        <span style="color:#e6db74">&#34;ethernet0.virtualDev&#34;</span>: <span style="color:#e6db74">&#34;vmxnet3&#34;</span>
+      <span style="color:#f92672">}</span>,
+      <span style="color:#e6db74">&#34;boot_command&#34;</span>: <span style="color:#f92672">[</span>
+        <span style="color:#e6db74">&#34;&lt;tab&gt; text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/scripts/centos-6-kickstart.cfg&lt;enter&gt;&lt;wait&gt;&#34;</span>
+      <span style="color:#f92672">]</span>
+    <span style="color:#f92672">}</span>
+  <span style="color:#f92672">]</span>,
+  <span style="color:#e6db74">&#34;provisioners&#34;</span>: <span style="color:#f92672">[</span>
+    <span style="color:#f92672">{</span>
+      <span style="color:#e6db74">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;file&#34;</span>,
+      <span style="color:#e6db74">&#34;source&#34;</span>: <span style="color:#e6db74">&#34;iso/vmware-tools-linux.iso&#34;</span>,
+      <span style="color:#e6db74">&#34;destination&#34;</span>: <span style="color:#e6db74">&#34;/tmp/vmware-tools-linux.iso&#34;</span>
+    <span style="color:#f92672">}</span>,
+    <span style="color:#f92672">{</span>
+      <span style="color:#e6db74">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;shell&#34;</span>,
+      <span style="color:#e6db74">&#34;execute_command&#34;</span>: <span style="color:#e6db74">&#34;echo &#39;vagrant&#39; | {{ .Vars }} sudo -E -S sh &#39;{{ .Path }}&#39;&#34;</span>,
+      <span style="color:#e6db74">&#34;script&#34;</span>: <span style="color:#e6db74">&#34;scripts/centos-vagrant-settings.sh&#34;</span>
+    <span style="color:#f92672">}</span>,
+    <span style="color:#f92672">{</span>
+      <span style="color:#e6db74">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;shell&#34;</span>,
+      <span style="color:#e6db74">&#34;execute_command&#34;</span>: <span style="color:#e6db74">&#34;echo &#39;vagrant&#39; | {{ .Vars }} sudo -E -S sh &#39;{{ .Path }}&#39;&#34;</span>,
+      <span style="color:#e6db74">&#34;script&#34;</span>: <span style="color:#e6db74">&#34;scripts/centos-vmware-tools_install.sh&#34;</span>
+    <span style="color:#f92672">}</span>,
+    <span style="color:#f92672">{</span>
+      <span style="color:#e6db74">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;shell&#34;</span>,
+      <span style="color:#e6db74">&#34;execute_command&#34;</span>: <span style="color:#e6db74">&#34;echo &#39;vagrant&#39; | {{ .Vars }} sudo -E -S sh &#39;{{ .Path }}&#39;&#34;</span>,
+      <span style="color:#e6db74">&#34;script&#34;</span>: <span style="color:#e6db74">&#34;scripts/centos-vmware-cleanup.sh&#34;</span>
+    <span style="color:#f92672">}</span>
+  <span style="color:#f92672">]</span>
+<span style="color:#f92672">}</span></code></pre></div>
+
+<p>Let us go over some of what&rsquo;s in this .json file</p>
+
+<ul>
+<li>the builders block</li>
+</ul>
+
+<p>This section contains builder specific instruction. We are using the vmware-iso builder so much of this is describing how we want to VMware backed virtual machine configured.</p>
+
+<p>You might notice something a little different about remote_host, remote_datastore, remote_username, remote_password and ethernet0.networkName parameters. These parameters contain information about the ESXi host we are using to create the Packer image, so rather than hard coding this info into each and every template these values can be pulled from user defined variables.</p>
+
+<p>The benefit of separating &ldquo;data from code&rdquo; is two fold. First, this prevents sensitive datacenter specific information from being included in our template, which could end up in github or some other git repository. Secondly, we only need to update one location if the password of our remote_host ever needs to be changed.</p>
+
+<ul>
+<li>the provisioners block</li>
+</ul>
+
+<p>This section contains instruction on what to do after the OS is successfully installed packer. You can use &ldquo;file&rdquo; provisioners to copy files into the Packer built OS, as well as &ldquo;shell&rdquo; provisioners to run scripts to perform additional configuration. You will get a closer look at &ldquo;shell&rdquo; provisioner scripts shortly</p>
+
+<h3 id="8-create-the-script-files-that-packer-will-use-to-install-the-centos-6-7-image">8. Create the script/ files that Packer will use to install the CentOS 6.7 image</h3>
+
+<p>The following files are referenced in the centos67.json template and need to be created in the packer-templates/scripts/ folder</p>
+
+<ul>
+<li>scripts/centos-6-kickstart.cfg - this is the CentOS 6 kickstart file that describes how CentOS 6 should be installed</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@packer-centos packer-templates<span style="color:#f92672">]</span><span style="color:#75715e"># cat scripts/centos-6-kickstart.cfg</span>
+firewall --disabled
+
+install
+cdrom
+
+lang en_US.UTF-8
+keyboard us
+timezone  Europe/Rome
+
+network --bootproto<span style="color:#f92672">=</span>dhcp
+rootpw vagrant
+authconfig --enableshadow --passalgo<span style="color:#f92672">=</span>sha512
+
+selinux —-disabled
+bootloader --location<span style="color:#f92672">=</span>mbr
+text
+skipx
+
+logging --level<span style="color:#f92672">=</span>info
+zerombr
+
+clearpart --all --initlabel
+autopart
+
+auth  --useshadow  --enablemd5
+firstboot --disabled
+reboot
+
+%packages --ignoremissing
+@Base
+@Core
+%end
+
+%post
+yum install wget git -y
+VAGRANT_USER<span style="color:#f92672">=</span>vagrant
+/usr/sbin/groupadd vagrant
+/usr/sbin/useradd vagrant -g vagrant -G wheel
+echo <span style="color:#e6db74">&#34;vagrant&#34;</span>|passwd --stdin vagrant
+echo <span style="color:#e6db74">&#34;vagrant        ALL=(ALL)       NOPASSWD: ALL&#34;</span> &gt;&gt; /etc/sudoers
+
+sed -i <span style="color:#e6db74">&#34;s/^.*requiretty/#Defaults requiretty/&#34;</span> /etc/sudoers
+<span style="color:#f92672">[</span>root@packer-centos packer-templates<span style="color:#f92672">]</span>#</code></pre></div>
+
+<ul>
+<li>scripts/centos-vagrant-settings.sh - this is a bash script that describes how vagrant speciffied settings should be configured</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@packer-centos packer-templates<span style="color:#f92672">]</span><span style="color:#75715e"># cat scripts/centos-vagrant-settings.sh</span>
+<span style="color:#75715e">#!/bin/bash -eux
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e"># Vagrant specific</span>
+date &gt; /etc/vagrant_box_build_time
+
+VAGRANT_USER<span style="color:#f92672">=</span>vagrant
+VAGRANT_HOME<span style="color:#f92672">=</span>/home/$VAGRANT_USER
+VAGRANT_KEY_URL<span style="color:#f92672">=</span>https://raw.github.com/mitchellh/vagrant/master/keys/vagrant.pub
+
+<span style="color:#75715e"># Add vagrant user (if it doesn&#39;t already exist)</span>
+<span style="color:#66d9ef">if</span> ! id -u $VAGRANT_USER &gt;/dev/null <span style="color:#ae81ff">2</span>&gt;&amp;<span style="color:#ae81ff">1</span>; <span style="color:#66d9ef">then</span>
+    /usr/sbin/groupadd $VAGRANT_USER
+    /usr/sbin/useradd $VAGRANT_USER -g $VAGRANT_USER -G wheel
+    echo <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>VAGRANT_USER<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>|passwd --stdin $VAGRANT_USER
+    echo <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>VAGRANT_USER<span style="color:#e6db74">}</span><span style="color:#e6db74">        ALL=(ALL)       NOPASSWD: ALL&#34;</span> &gt;&gt; /etc/sudoers
+<span style="color:#66d9ef">fi</span>
+
+<span style="color:#75715e"># Installing vagrant keys</span>
+mkdir -pm <span style="color:#ae81ff">700</span> $VAGRANT_HOME/.ssh
+echo <span style="color:#e6db74">&#34;ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key&#34;</span> &gt;&gt; $VAGRANT_HOME/.ssh/authorized_keys
+chmod <span style="color:#ae81ff">0600</span> $VAGRANT_HOME/.ssh/authorized_keys
+chown -R $VAGRANT_USER:$VAGRANT_USER $VAGRANT_HOME/.ssh
+<span style="color:#f92672">[</span>root@packer-centos packer-templates<span style="color:#f92672">]</span>#</code></pre></div>
+
+<ul>
+<li>scripts/centos-vmware-tools_install.sh - this is a bash script that describes how vmtools should be installed</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@packer-centos packer-templates<span style="color:#f92672">]</span><span style="color:#75715e"># cat scripts/centos-vmware-tools_install.sh</span>
+<span style="color:#75715e">#!/bin/bash
+</span><span style="color:#75715e"></span>sudo yum upgrade ca-certificates -y
+sudo yum install perl fuse-libs -y
+sudo mkdir /mnt/cdrom
+sudo mount -o loop /tmp/vmware-tools-linux.iso /mnt/cdrom
+sudo cp /mnt/cdrom/VMwareTools*.tar.gz /tmp/
+cd /tmp
+tar xfz VMwareTools*.tar.gz
+cd /tmp/vmware-tools-distrib
+ls -la
+
+<span style="color:#75715e"># from http://www.virtuallyghetto.com/2015/06/automating-silent-installation-of-vmware-tools-on-linux-wautomatic-kernel-modules.html</span>
+<span style="color:#75715e"># If you wish to change which Kernel modules get installed</span>
+<span style="color:#75715e"># The last four entries (yes,no,no,no) map to the following:</span>
+<span style="color:#75715e">#   VMware Host-Guest Filesystem</span>
+<span style="color:#75715e">#   vmblock enables dragging or copying files</span>
+<span style="color:#75715e">#   VMware automatic kernel modules</span>
+<span style="color:#75715e">#   Guest Authentication</span>
+<span style="color:#75715e"># and you can also change the other params as well</span>
+sudo cat &gt; /tmp/answer <span style="color:#e6db74">&lt;&lt; __ANSWER__
+</span><span style="color:#e6db74">yes
+</span><span style="color:#e6db74">/usr/bin
+</span><span style="color:#e6db74">/etc
+</span><span style="color:#e6db74">/etc/init.d
+</span><span style="color:#e6db74">/usr/sbin
+</span><span style="color:#e6db74">/usr/lib/vmware-tools
+</span><span style="color:#e6db74">yes
+</span><span style="color:#e6db74">/usr/share/doc/vmware-tools
+</span><span style="color:#e6db74">yes
+</span><span style="color:#e6db74">yes
+</span><span style="color:#e6db74">yes
+</span><span style="color:#e6db74">no
+</span><span style="color:#e6db74">yes
+</span><span style="color:#e6db74">no
+</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">__ANSWER__</span>
+
+sudo /tmp/vmware-tools-distrib/vmware-install.pl &lt; /tmp/answer
+
+sudo umount /mnt/cdrom
+cd /tmp
+rm -rf vmware-tools-distrib
+rm -f VMwareTools*.tar.gz
+rm /tmp/vmware-tools-linux.iso
+<span style="color:#f92672">[</span>root@packer-centos packer-templates<span style="color:#f92672">]</span>#</code></pre></div>
+
+<ul>
+<li>scripts/centos-vmware-cleanup.sh - a bash script that cleans up the Packer image prior to being exported</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@packer-centos packer-templates<span style="color:#f92672">]</span><span style="color:#75715e"># cat scripts/centos-vmware-cleanup.sh</span>
+<span style="color:#75715e">#!/bin/bash -eux
+</span><span style="color:#75715e"></span><span style="color:#75715e"># Based off the great &#34;Preparing Linux Template VMs&#34;</span>
+<span style="color:#75715e"># (http://lonesysadmin.net/2013/03/26/preparing-linux-template-vms/) article</span>
+<span style="color:#75715e"># by Bob Plankers, thanks Bob!</span>
+
+CLEANUP_PAUSE<span style="color:#f92672">=</span><span style="color:#e6db74">${</span>CLEANUP_PAUSE<span style="color:#66d9ef">:-</span>0<span style="color:#e6db74">}</span>
+echo <span style="color:#e6db74">&#34;==&gt; Pausing for </span><span style="color:#e6db74">${</span>CLEANUP_PAUSE<span style="color:#e6db74">}</span><span style="color:#e6db74"> seconds...&#34;</span>
+sleep <span style="color:#e6db74">${</span>CLEANUP_PAUSE<span style="color:#e6db74">}</span>
+
+echo <span style="color:#e6db74">&#34;==&gt; erasing unused packages to free up space&#34;</span>
+/usr/bin/yum -y erase gtk2 libX11 hicolor-icon-theme avahi freetype bitstream-vera-fonts
+
+echo <span style="color:#e6db74">&#34;==&gt; Cleaning up yum cache&#34;</span>
+/usr/bin/yum clean all
+
+echo <span style="color:#e6db74">&#34;==&gt; Force logs to rotate&#34;</span>
+/usr/sbin/logrotate -f /etc/logrotate.conf
+/bin/rm -f /var/log/*-???????? /var/log/*.gz
+
+echo <span style="color:#e6db74">&#34;==&gt; Clear audit log and wtmp&#34;</span>
+/bin/cat /dev/null &gt; /var/log/audit/audit.log
+/bin/cat /dev/null &gt; /var/log/wtmp
+
+echo <span style="color:#e6db74">&#34;==&gt; Cleaning up udev rules&#34;</span>
+/bin/rm -f /etc/udev/rules.d/70*
+
+echo <span style="color:#e6db74">&#34;==&gt; Remove the traces of the template MAC address and UUIDs&#34;</span>
+/bin/sed -i <span style="color:#e6db74">&#39;/^\(HWADDR\|UUID\)=/d&#39;</span> /etc/sysconfig/network-scripts/ifcfg-eth0
+
+echo <span style="color:#e6db74">&#34;==&gt; Cleaning up tmp&#34;</span>
+/bin/rm -rf /tmp/*
+/bin/rm -rf /var/tmp/*
+
+echo <span style="color:#e6db74">&#34;==&gt; Remove the SSH host keys&#34;</span>
+/bin/rm -f /etc/ssh/*key*
+
+echo <span style="color:#e6db74">&#34;==&gt; Remove the root user’s shell history&#34;</span>
+/bin/rm -f ~root/.bash_history
+unset HISTFILE
+
+echo <span style="color:#e6db74">&#34;==&gt; yum -y clean all&#34;</span>
+yum -y clean all
+
+<span style="color:#75715e"># Determine the version of RHEL</span>
+COND<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>grep -i Taroon /etc/redhat-release<span style="color:#e6db74">`</span>
+<span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> <span style="color:#e6db74">&#34;</span>$COND<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
+        export PREFIX<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/usr/sbin&#34;</span>
+<span style="color:#66d9ef">else</span>
+        export PREFIX<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/sbin&#34;</span>
+<span style="color:#66d9ef">fi</span>
+
+FileSystem<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>grep ext /etc/mtab| awk -F<span style="color:#e6db74">&#34; &#34;</span> <span style="color:#e6db74">&#39;{ print $2 }&#39;</span><span style="color:#e6db74">`</span>
+
+<span style="color:#66d9ef">for</span> i in $FileSystem
+<span style="color:#66d9ef">do</span>
+        echo $i
+        number<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>df -B <span style="color:#ae81ff">512</span> $i | awk -F<span style="color:#e6db74">&#34; &#34;</span> <span style="color:#e6db74">&#39;{print $3}&#39;</span> | grep -v Used<span style="color:#e6db74">`</span>
+        echo $number
+        percent<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>echo <span style="color:#e6db74">&#34;scale=0; </span>$number<span style="color:#e6db74"> * 98 / 100&#34;</span> | bc <span style="color:#66d9ef">)</span>
+        echo $percent
+        dd count<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>echo $percent<span style="color:#e6db74">`</span> <span style="color:#66d9ef">if</span><span style="color:#f92672">=</span>/dev/zero of<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>echo $i<span style="color:#e6db74">`</span>/zf
+        /bin/sync
+        sleep <span style="color:#ae81ff">15</span>
+        rm -f $i/zf
+<span style="color:#66d9ef">done</span>
+
+VolumeGroup<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>$PREFIX/vgdisplay | grep Name | awk -F<span style="color:#e6db74">&#34; &#34;</span> <span style="color:#e6db74">&#39;{ print $3 }&#39;</span><span style="color:#e6db74">`</span>
+
+<span style="color:#66d9ef">for</span> j in $VolumeGroup
+<span style="color:#66d9ef">do</span>
+        echo $j
+        $PREFIX/lvcreate -l <span style="color:#e6db74">`</span>$PREFIX/vgdisplay $j | grep Free | awk -F<span style="color:#e6db74">&#34; &#34;</span> <span style="color:#e6db74">&#39;{ print $5 }&#39;</span><span style="color:#e6db74">`</span> -n zero $j
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> -a /dev/$j/zero <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
+                cat /dev/zero &gt; /dev/$j/zero
+                /bin/sync
+                sleep <span style="color:#ae81ff">15</span>
+                $PREFIX/lvremove -f /dev/$j/zero
+        <span style="color:#66d9ef">fi</span>
+<span style="color:#66d9ef">done</span>
+
+echo <span style="color:#e6db74">&#34;==&gt; Zero out the free space to save space in the final image&#34;</span>
+dd <span style="color:#66d9ef">if</span><span style="color:#f92672">=</span>/dev/zero of<span style="color:#f92672">=</span>/EMPTY bs<span style="color:#f92672">=</span>1M
+rm -f /EMPTY
+
+<span style="color:#75715e"># Make sure we wait until all the data is written to disk, otherwise</span>
+<span style="color:#75715e"># Packer might quit too early before the large files are deleted</span>
+sync
+<span style="color:#f92672">[</span>root@packer-centos packer-templates<span style="color:#f92672">]</span>#</code></pre></div>
+
+<h3 id="9-create-packer-remote-info-json-file-that-contains-info-on-our-esxi-virtual-machine">9. Create packer-remote-info.json file that contains info on our ESXi virtual machine</h3>
+
+<p>Create the following file that will contain the ESXi virtual machine specific information used by Packer. We will also add this file to .gitignore in a future step, to ensure this information does not get stored in a git repository.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@packer-centos packer-templates<span style="color:#f92672">]</span><span style="color:#75715e"># cat &lt;&lt; EOF &gt; ~/packer-templates/packer-remote-info.json</span>
+&gt; <span style="color:#f92672">{</span>
+&gt;   <span style="color:#e6db74">&#34;packer_remote_host&#34;</span>: <span style="color:#e6db74">&#34;192.168.1.51&#34;</span>,
+&gt;   <span style="color:#e6db74">&#34;packer_remote_username&#34;</span>: <span style="color:#e6db74">&#34;root&#34;</span>,
+&gt;   <span style="color:#e6db74">&#34;packer_remote_password&#34;</span>: <span style="color:#e6db74">&#34;password&#34;</span>,
+&gt;   <span style="color:#e6db74">&#34;packer_remote_datastore&#34;</span>: <span style="color:#e6db74">&#34;datastore1&#34;</span>,
+&gt;   <span style="color:#e6db74">&#34;packer_remote_network&#34;</span>: <span style="color:#e6db74">&#34;VM Network&#34;</span>
+&gt; <span style="color:#f92672">}</span>
+&gt; EOF
+<span style="color:#f92672">[</span>root@packer-centos packer-templates<span style="color:#f92672">]</span>#</code></pre></div>
+
+<h3 id="10-use-yum-to-install-the-tree-command-so-we-can-visualize-the-packer-templates-directory-structure">10. Use yum to install the tree command so we can visualize the packer-templates directory structure</h3>
+
+<p>The tree command is helpful by allowing you to display the files and folders from a specific point in the file system. We will install this now to assist in showing the directory structure of the packer-templates directory.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@packer-centos packer-templates<span style="color:#f92672">]</span><span style="color:#75715e"># yum install -y tree</span>
+Loaded plugins: fastestmirror
+Setting up Install Process
+Loading mirror speeds from cached hostfile
+ * base: yum.tamu.edu
+ * epel: mirror.utexas.edu
+ * extras: centos.firehosted.com
+ * updates: mirrors.adams.net
+Resolving Dependencies
+--&gt; Running transaction check
+---&gt; Package tree.x86_64 <span style="color:#ae81ff">0</span>:1.5.3-3.el6 will be installed
+--&gt; Finished Dependency Resolution
+
+Dependencies Resolved
+
+<span style="color:#f92672">==========================================================</span>
+ Package      Arch      Version         Repository   Size
+<span style="color:#f92672">==========================================================</span>
+Installing:
+ tree         x86_64    <span style="color:#ae81ff">1</span>.5.3-3.el6     base         <span style="color:#ae81ff">36</span> k
+
+Transaction Summary
+<span style="color:#f92672">==========================================================</span>
+Install       <span style="color:#ae81ff">1</span> Package<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>
+
+Total download size: <span style="color:#ae81ff">36</span> k
+Installed size: <span style="color:#ae81ff">65</span> k
+Downloading Packages:
+tree-1.5.3-3.el6.x86_64.rpm              |  <span style="color:#ae81ff">36</span> kB    <span style="color:#ae81ff">00</span>:00
+Running rpm_check_debug
+Running Transaction Test
+Transaction Test Succeeded
+Running Transaction
+  Installing : tree-1.5.3-3.el6.x86_64                 <span style="color:#ae81ff">1</span>/1
+  Verifying  : tree-1.5.3-3.el6.x86_64                 <span style="color:#ae81ff">1</span>/1
+
+Installed:
+  tree.x86_64 <span style="color:#ae81ff">0</span>:1.5.3-3.el6
+
+Complete!
+<span style="color:#f92672">[</span>root@packer-centos packer-templates<span style="color:#f92672">]</span>#</code></pre></div>
+
+<p>Run the tree command to see the directory structure:</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@packer-centos packer-templates<span style="color:#f92672">]</span><span style="color:#75715e"># tree</span>
+.
+├── iso
+│   ├── CentOS-6.7-x86_64-minimal.iso
+│   ├── linux.iso
+│   └── vmware-tools-linux.iso -&gt; ./linux.iso
+├── packer-remote-info.json
+├── scripts
+│   ├── centos-6-kickstart.cfg
+│   ├── centos-vagrant-settings.sh
+│   ├── centos-vmware-cleanup.sh
+│   └── centos-vmware-tools_install.sh
+└── templates
+    └── centos67.json
+
+<span style="color:#ae81ff">3</span> directories, <span style="color:#ae81ff">9</span> files
+<span style="color:#f92672">[</span>root@packer-centos packer-templates<span style="color:#f92672">]</span>#</code></pre></div>
+
+<h3 id="11-create-gitignore-file-that-contains-everything-we-don-t-have-to-stored-in-git">11. Create .gitignore file that contains everything we don&rsquo;t have to stored in git</h3>
+
+<p>Any files or folders listed in the .gitignore will be ignored by git. We will be adding the packer-remote-info.json file, since it contains username and password information, and the iso/ directory, since we don&rsquo;t want to upload the large .iso files to our git repository.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@packer-centos packer-templates<span style="color:#f92672">]</span><span style="color:#75715e"># cat .gitignore</span>
+iso/
+packer-remote-info.json
+<span style="color:#f92672">[</span>root@packer-centos packer-templates<span style="color:#f92672">]</span><span style="color:#75715e"># git status</span>
+<span style="color:#75715e"># On branch master</span>
+#
+<span style="color:#75715e"># Initial commit</span>
+#
+<span style="color:#75715e"># Untracked files:</span>
+<span style="color:#75715e">#   (use &#34;git add &lt;file&gt;...&#34; to include in what will be committed)</span>
+#
+<span style="color:#75715e">#	.gitignore</span>
+<span style="color:#75715e">#	scripts/</span>
+<span style="color:#75715e">#	templates/</span>
+nothing added to commit but untracked files present <span style="color:#f92672">(</span>use <span style="color:#e6db74">&#34;git add&#34;</span> to track<span style="color:#f92672">)</span>
+<span style="color:#f92672">[</span>root@packer-centos packer-templates<span style="color:#f92672">]</span>#</code></pre></div>
+
+<h3 id="12-push-the-changes-we-have-made-to-a-github-repository">12. Push the changes we have made to a github repository</h3>
+
+<p>I created a public github repository for storing all the files created during this Packer series. During this step I will be pushing the current state of the files to the <a href="https://github.com/sdorsett/packer-templates/tree/first-packer-template">&ldquo;first-packer-template&rdquo; branch</a> of this github repository:</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@packer-centos packer-templates<span style="color:#f92672">]</span><span style="color:#75715e"># git remote add origin https://sdorsett@github.com/sdorsett/packer-templates.git</span>
+<span style="color:#f92672">[</span>root@packer-centos packer-templates<span style="color:#f92672">]</span><span style="color:#75715e"># git add .</span>
+<span style="color:#f92672">[</span>root@packer-centos packer-templates<span style="color:#f92672">]</span><span style="color:#75715e"># git commit -m &#34;first-packer-template&#34;</span>
+<span style="color:#f92672">[</span>master <span style="color:#f92672">(</span>root-commit<span style="color:#f92672">)</span> 3fba017<span style="color:#f92672">]</span> first-packer-template
+ <span style="color:#ae81ff">6</span> files changed, <span style="color:#ae81ff">277</span> insertions<span style="color:#f92672">(</span>+<span style="color:#f92672">)</span>, <span style="color:#ae81ff">0</span> deletions<span style="color:#f92672">(</span>-<span style="color:#f92672">)</span>
+ create mode <span style="color:#ae81ff">100644</span> .gitignore
+ create mode <span style="color:#ae81ff">100644</span> scripts/centos-6-kickstart.cfg
+ create mode <span style="color:#ae81ff">100644</span> scripts/centos-vagrant-settings.sh
+ create mode <span style="color:#ae81ff">100644</span> scripts/centos-vmware-cleanup.sh
+ create mode <span style="color:#ae81ff">100644</span> scripts/centos-vmware-tools_install.sh
+ create mode <span style="color:#ae81ff">100644</span> templates/centos67.json
+<span style="color:#f92672">[</span>root@packer-centos packer-templates<span style="color:#f92672">]</span><span style="color:#75715e"># git checkout -b first-packer-template</span>
+Switched to a new branch <span style="color:#e6db74">&#39;first-packer-template&#39;</span>
+<span style="color:#f92672">[</span>root@packer-centos packer-templates<span style="color:#f92672">]</span><span style="color:#75715e"># git push origin first-packer-template</span>
+Password:
+Counting objects: <span style="color:#ae81ff">10</span>, <span style="color:#66d9ef">done</span>.
+Delta compression using up to <span style="color:#ae81ff">2</span> threads.
+Compressing objects: <span style="color:#ae81ff">100</span>% <span style="color:#f92672">(</span><span style="color:#ae81ff">8</span>/8<span style="color:#f92672">)</span>, <span style="color:#66d9ef">done</span>.
+Writing objects: <span style="color:#ae81ff">100</span>% <span style="color:#f92672">(</span><span style="color:#ae81ff">10</span>/10<span style="color:#f92672">)</span>, <span style="color:#ae81ff">3</span>.90 KiB, <span style="color:#66d9ef">done</span>.
+Total <span style="color:#ae81ff">10</span> <span style="color:#f92672">(</span>delta <span style="color:#ae81ff">0</span><span style="color:#f92672">)</span>, reused <span style="color:#ae81ff">0</span> <span style="color:#f92672">(</span>delta <span style="color:#ae81ff">0</span><span style="color:#f92672">)</span>
+To https://sdorsett@github.com/sdorsett/packer-templates.git
+ * <span style="color:#f92672">[</span>new branch<span style="color:#f92672">]</span>      first-packer-template -&gt; first-packer-template
+<span style="color:#f92672">[</span>root@packer-centos packer-templates<span style="color:#f92672">]</span>#</code></pre></div>
+
+<h3 id="13-packer-build-the-template-we-created">13. packer build the template we created</h3>
+
+<p>Now that we have all the necessary .iso files downloaded and template/script files created, we can test our build. In order to use the values in the packer-remote-info.json file, we will use the -var-file parameter to specify this file.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@packer-centos packer-templates<span style="color:#f92672">]</span><span style="color:#75715e"># packer build -var-file=./packer-remote-info.json templates/centos67.json</span>
+centos67 output will be in this color.
+
+<span style="color:#f92672">==</span>&gt; centos67: Downloading or copying ISO
+    centos67: Downloading or copying: file:///root/packer-templates/iso/CentOS-6.7-x86_64-minimal.iso
+<span style="color:#f92672">==</span>&gt; centos67: Uploading ISO to remote machine...
+<span style="color:#f92672">==</span>&gt; centos67: Creating virtual machine disk
+<span style="color:#f92672">==</span>&gt; centos67: Building and writing VMX file
+<span style="color:#f92672">==</span>&gt; centos67: Starting HTTP server on port 8448
+<span style="color:#f92672">==</span>&gt; centos67: Registering remote VM...
+<span style="color:#f92672">==</span>&gt; centos67: Starting virtual machine...
+<span style="color:#f92672">==</span>&gt; centos67: Waiting 5s <span style="color:#66d9ef">for</span> boot...
+<span style="color:#f92672">==</span>&gt; centos67: Connecting to VM via VNC
+<span style="color:#f92672">==</span>&gt; centos67: Typing the boot command over VNC...
+<span style="color:#f92672">==</span>&gt; centos67: Waiting <span style="color:#66d9ef">for</span> SSH to become available...</code></pre></div>
+
+<p>At this point you should see a centos67 virtual machine in the embedded host client of the ESXi virtual machine.</p>
+
+<p><img src="https://sdorsett.github.io/static/01-centos67-virtual-machine.png" alt="screenshot" /></p>
+
+<p>If you open the console of the centos67 virtual machine, you can watch the automated install as it progresses.</p>
+
+<p><img src="https://sdorsett.github.io/static/02-centos67-automated-install.png" alt="screenshot" /></p>
+
+<p><img src="https://sdorsett.github.io/static/03-centos67-automated-install.png" alt="screenshot" /></p>
+
+<p><img src="https://sdorsett.github.io/static/04-centos67-automated-install.png" alt="screenshot" /></p>
+
+<p><img src="https://sdorsett.github.io/static/05-centos67-install-completed.png" alt="screenshot" /></p>
+
+<p>Once the CentOS 6.7 install completes and the virtual machine reboots, you will see the packer build output continue with the provisioners block of the Packer template.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">==</span>&gt; centos67: Connected to SSH!</code></pre></div>
+
+<p>The first provisioner is the file provisioner that will copy iso/vmware-tools-linux.iso to /tmp/vmware-tools-linux.iso within the CentOS 6.7 virtual machine.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">==</span>&gt; centos67: Uploading iso/vmware-tools-linux.iso <span style="color:#f92672">=</span>&gt; /tmp/vmware-tools-linux.iso</code></pre></div>
+
+<p>The second provisioner is a shell provisioner that will run the scripts/centos-vagrant-settings.sh bash script. This script will added the necessary changes for this Packer image to be used by Vagrant.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">==</span>&gt; centos67: Provisioning with shell script: scripts/centos-vagrant-settings.sh</code></pre></div>
+
+<p>The third provisioner is a shell provisioner that will run the scripts/centos-vmware-tools_install.sh bash script. This script will install all the needed dependencies for vmtools and then install vmtools using an answer file.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">==</span>&gt; centos67: Provisioning with shell script: scripts/centos-vmware-tools_install.sh
+    centos67: Loaded plugins: fastestmirror
+    centos67: Setting up Upgrade Process
+    centos67: Determining fastest mirrors
+    centos67: * base: dallas.tx.mirror.xygenhosting.com
+    centos67: * extras: mirror.us.oneandone.net
+    centos67: * updates: dallas.tx.mirror.xygenhosting.com
+    centos67: No Packages marked <span style="color:#66d9ef">for</span> Update
+    centos67: Loaded plugins: fastestmirror
+    centos67: Setting up Install Process
+    centos67: Loading mirror speeds from cached hostfile
+    centos67: * base: dallas.tx.mirror.xygenhosting.com
+    centos67: * extras: mirror.us.oneandone.net
+    centos67: * updates: dallas.tx.mirror.xygenhosting.com
+    centos67: Resolving Dependencies
+    centos67: --&gt; Running transaction check
+    centos67: ---&gt; Package fuse-libs.x86_64 <span style="color:#ae81ff">0</span>:2.8.3-4.el6 will be installed
+    centos67: ---&gt; Package perl.x86_64 <span style="color:#ae81ff">4</span>:5.10.1-141.el6_7.1 will be installed
+    centos67: --&gt; Processing Dependency: perl-libs <span style="color:#f92672">=</span> <span style="color:#ae81ff">4</span>:5.10.1-141.el6_7.1 <span style="color:#66d9ef">for</span> package: <span style="color:#ae81ff">4</span>:perl-5.10.1-141.el6_7.1.x86_64
+    centos67: --&gt; Processing Dependency: perl-libs <span style="color:#66d9ef">for</span> package: <span style="color:#ae81ff">4</span>:perl-5.10.1-141.el6_7.1.x86_64
+    centos67: --&gt; Processing Dependency: perl<span style="color:#f92672">(</span>version<span style="color:#f92672">)</span> <span style="color:#66d9ef">for</span> package: <span style="color:#ae81ff">4</span>:perl-5.10.1-141.el6_7.1.x86_64
+    centos67: --&gt; Processing Dependency: perl<span style="color:#f92672">(</span>Pod::Simple<span style="color:#f92672">)</span> <span style="color:#66d9ef">for</span> package: <span style="color:#ae81ff">4</span>:perl-5.10.1-141.el6_7.1.x86_64
+    centos67: --&gt; Processing Dependency: perl<span style="color:#f92672">(</span>Module::Pluggable<span style="color:#f92672">)</span> <span style="color:#66d9ef">for</span> package: <span style="color:#ae81ff">4</span>:perl-5.10.1-141.el6_7.1.x86_64
+    centos67: --&gt; Processing Dependency: libperl.so<span style="color:#f92672">()(</span>64bit<span style="color:#f92672">)</span> <span style="color:#66d9ef">for</span> package: <span style="color:#ae81ff">4</span>:perl-5.10.1-141.el6_7.1.x86_64
+    centos67: --&gt; Running transaction check
+    centos67: ---&gt; Package perl-Module-Pluggable.x86_64 <span style="color:#ae81ff">1</span>:3.90-141.el6_7.1 will be installed
+    centos67: ---&gt; Package perl-Pod-Simple.x86_64 <span style="color:#ae81ff">1</span>:3.13-141.el6_7.1 will be installed
+    centos67: --&gt; Processing Dependency: perl<span style="color:#f92672">(</span>Pod::Escapes<span style="color:#f92672">)</span> &gt;<span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>.04 <span style="color:#66d9ef">for</span> package: <span style="color:#ae81ff">1</span>:perl-Pod-Simple-3.13-141.el6_7.1.x86_64
+    centos67: ---&gt; Package perl-libs.x86_64 <span style="color:#ae81ff">4</span>:5.10.1-141.el6_7.1 will be installed
+    centos67: ---&gt; Package perl-version.x86_64 <span style="color:#ae81ff">3</span>:0.77-141.el6_7.1 will be installed
+    centos67: --&gt; Running transaction check
+    centos67: ---&gt; Package perl-Pod-Escapes.x86_64 <span style="color:#ae81ff">1</span>:1.04-141.el6_7.1 will be installed
+    centos67: --&gt; Finished Dependency Resolution
+    centos67:
+    centos67: Dependencies Resolved
+    centos67:
+    centos67: <span style="color:#f92672">========================================</span>
+    centos67: Package         Arch   Version
+    centos67: Repository
+    centos67: Size
+    centos67: <span style="color:#f92672">========================================</span>
+    centos67: Installing:
+    centos67: fuse-libs       x86_64 <span style="color:#ae81ff">2</span>.8.3-4.el6
+    centos67: base     <span style="color:#ae81ff">74</span> k
+    centos67: perl            x86_64 <span style="color:#ae81ff">4</span>:5.10.1-141.el6_7.1
+    centos67: updates  <span style="color:#ae81ff">10</span> M
+    centos67: Installing <span style="color:#66d9ef">for</span> dependencies:
+    centos67: perl-Module-Pluggable
+    centos67: x86_64 <span style="color:#ae81ff">1</span>:3.90-141.el6_7.1
+    centos67: updates  <span style="color:#ae81ff">40</span> k
+    centos67: perl-Pod-Escapes
+    centos67: x86_64 <span style="color:#ae81ff">1</span>:1.04-141.el6_7.1
+    centos67: updates  <span style="color:#ae81ff">33</span> k
+    centos67: perl-Pod-Simple x86_64 <span style="color:#ae81ff">1</span>:3.13-141.el6_7.1
+    centos67: updates <span style="color:#ae81ff">213</span> k
+    centos67: perl-libs       x86_64 <span style="color:#ae81ff">4</span>:5.10.1-141.el6_7.1
+    centos67: updates <span style="color:#ae81ff">579</span> k
+    centos67: perl-version    x86_64 <span style="color:#ae81ff">3</span>:0.77-141.el6_7.1
+    centos67: updates  <span style="color:#ae81ff">52</span> k
+    centos67:
+    centos67: Transaction Summary
+    centos67: <span style="color:#f92672">========================================</span>
+    centos67: Install       <span style="color:#ae81ff">7</span> Package<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>
+    centos67:
+    centos67: Total size: <span style="color:#ae81ff">11</span> M
+    centos67: Total download size: <span style="color:#ae81ff">74</span> k
+    centos67: Installed size: <span style="color:#ae81ff">36</span> M
+    centos67: Downloading Packages:
+    centos67: fuse-libs-2.8.3- |  <span style="color:#ae81ff">74</span> kB     <span style="color:#ae81ff">00</span>:00
+    centos67: warning: rpmts_HdrFromFdno: Header V3 RSA/SHA1 Signature, key ID c105b9de: NOKEY
+    centos67: Retrieving key from file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
+    centos67: Importing GPG key 0xC105B9DE:
+    centos67: Userid : CentOS-6 Key <span style="color:#f92672">(</span>CentOS <span style="color:#ae81ff">6</span> Official Signing Key<span style="color:#f92672">)</span> &lt;centos-6-key@centos.org&gt;
+    centos67: Package: centos-release-6-7.el6.centos.12.3.x86_64 <span style="color:#f92672">(</span>@anaconda-CentOS-201508042137.x86_64/6.7<span style="color:#f92672">)</span>
+    centos67: From   : /etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
+    centos67: Running rpm_check_debug
+    centos67: Running Transaction Test
+    centos67: Transaction Test Succeeded
+    centos67: Running Transaction
+    centos67:   Installing : <span style="color:#ae81ff">1</span>:perl-Pod-Escapes   <span style="color:#ae81ff">1</span>/7
+    centos67:   Installing : <span style="color:#ae81ff">1</span>:perl-Module-Plug   <span style="color:#ae81ff">2</span>/7
+    centos67:   Installing : <span style="color:#ae81ff">3</span>:perl-version-0.7   <span style="color:#ae81ff">3</span>/7
+    centos67:   Installing : <span style="color:#ae81ff">4</span>:perl-libs-5.10.1   <span style="color:#ae81ff">4</span>/7
+    centos67:   Installing : <span style="color:#ae81ff">1</span>:perl-Pod-Simple-   <span style="color:#ae81ff">5</span>/7
+    centos67:   Installing : <span style="color:#ae81ff">4</span>:perl-5.10.1-141.   <span style="color:#ae81ff">6</span>/7
+    centos67:   Installing : fuse-libs-2.8.3-4.   <span style="color:#ae81ff">7</span>/7
+    centos67: Verifying  : <span style="color:#ae81ff">1</span>:perl-Pod-Simple-   <span style="color:#ae81ff">1</span>/7
+    centos67: Verifying  : <span style="color:#ae81ff">1</span>:perl-Pod-Escapes   <span style="color:#ae81ff">2</span>/7
+    centos67: Verifying  : fuse-libs-2.8.3-4.   <span style="color:#ae81ff">3</span>/7
+    centos67: Verifying  : <span style="color:#ae81ff">1</span>:perl-Module-Plug   <span style="color:#ae81ff">4</span>/7
+    centos67: Verifying  : <span style="color:#ae81ff">3</span>:perl-version-0.7   <span style="color:#ae81ff">5</span>/7
+    centos67: Verifying  : <span style="color:#ae81ff">4</span>:perl-libs-5.10.1   <span style="color:#ae81ff">6</span>/7
+    centos67: Verifying  : <span style="color:#ae81ff">4</span>:perl-5.10.1-141.   <span style="color:#ae81ff">7</span>/7
+    centos67:
+    centos67: Installed:
+    centos67: fuse-libs.x86_64 <span style="color:#ae81ff">0</span>:2.8.3-4.el6
+    centos67: perl.x86_64 <span style="color:#ae81ff">4</span>:5.10.1-141.el6_7.1
+    centos67:
+    centos67: Dependency Installed:
+    centos67: perl-Module-Pluggable.x86_64 <span style="color:#ae81ff">1</span>:3.90-141.el6_7.1
+    centos67: perl-Pod-Escapes.x86_64 <span style="color:#ae81ff">1</span>:1.04-141.el6_7.1
+    centos67: perl-Pod-Simple.x86_64 <span style="color:#ae81ff">1</span>:3.13-141.el6_7.1
+    centos67: perl-libs.x86_64 <span style="color:#ae81ff">4</span>:5.10.1-141.el6_7.1
+    centos67: perl-version.x86_64 <span style="color:#ae81ff">3</span>:0.77-141.el6_7.1
+    centos67:
+    centos67: Complete!
+    centos67: total <span style="color:#ae81ff">488</span>
+    centos67: drwxr-xr-x   <span style="color:#ae81ff">7</span> root root   <span style="color:#ae81ff">4096</span> Oct <span style="color:#ae81ff">30</span> <span style="color:#ae81ff">07</span>:10 .
+    centos67: drwxrwxrwt.  <span style="color:#ae81ff">4</span> root root   <span style="color:#ae81ff">4096</span> Dec <span style="color:#ae81ff">24</span> <span style="color:#ae81ff">02</span>:34 ..
+    centos67: drwxr-xr-x   <span style="color:#ae81ff">2</span> root root   <span style="color:#ae81ff">4096</span> Oct <span style="color:#ae81ff">30</span> <span style="color:#ae81ff">07</span>:10 bin
+    centos67: drwxr-xr-x   <span style="color:#ae81ff">2</span> root root   <span style="color:#ae81ff">4096</span> Oct <span style="color:#ae81ff">30</span> <span style="color:#ae81ff">07</span>:10 doc
+    centos67: drwxr-xr-x   <span style="color:#ae81ff">5</span> root root   <span style="color:#ae81ff">4096</span> Oct <span style="color:#ae81ff">30</span> <span style="color:#ae81ff">07</span>:10 etc
+    centos67: -rw-r--r--   <span style="color:#ae81ff">1</span> root root <span style="color:#ae81ff">269196</span> Oct <span style="color:#ae81ff">30</span> <span style="color:#ae81ff">07</span>:10 FILES
+    centos67: -rw-r--r--   <span style="color:#ae81ff">1</span> root root   <span style="color:#ae81ff">2538</span> Oct <span style="color:#ae81ff">30</span> <span style="color:#ae81ff">07</span>:10 INSTALL
+    centos67: drwxr-xr-x   <span style="color:#ae81ff">2</span> root root   <span style="color:#ae81ff">4096</span> Oct <span style="color:#ae81ff">30</span> <span style="color:#ae81ff">07</span>:10 installer
+    centos67: drwxr-xr-x  <span style="color:#ae81ff">15</span> root root   <span style="color:#ae81ff">4096</span> Oct <span style="color:#ae81ff">30</span> <span style="color:#ae81ff">07</span>:10 lib
+    centos67: -rwxr-xr-x   <span style="color:#ae81ff">1</span> root root <span style="color:#ae81ff">196237</span> Oct <span style="color:#ae81ff">30</span> <span style="color:#ae81ff">07</span>:10 vmware-install.pl
+    centos67: Creating a new VMware Tools installer database using the tar4 format.
+    centos67:
+    centos67: Installing VMware Tools.
+    centos67:
+    centos67: In which directory <span style="color:#66d9ef">do</span> you want to install the binary files?
+    centos67: <span style="color:#f92672">[</span>/usr/bin<span style="color:#f92672">]</span>
+    centos67: The path <span style="color:#e6db74">&#34;yes&#34;</span> is a relative path. Please enter an absolute path.
+    centos67:
+    centos67: In which directory <span style="color:#66d9ef">do</span> you want to install the binary files?
+    centos67: <span style="color:#f92672">[</span>/usr/bin<span style="color:#f92672">]</span>
+    centos67: What is the directory that contains the init directories <span style="color:#f92672">(</span>rc0.d/ to rc6.d/<span style="color:#f92672">)</span>?
+    centos67: <span style="color:#f92672">[</span>/etc/rc.d<span style="color:#f92672">]</span>
+    centos67: What is the directory that contains the init scripts?
+    centos67: <span style="color:#f92672">[</span>/etc/init.d<span style="color:#f92672">]</span>
+    centos67: In which directory <span style="color:#66d9ef">do</span> you want to install the daemon files?
+    centos67: <span style="color:#f92672">[</span>/usr/sbin<span style="color:#f92672">]</span>
+    centos67: In which directory <span style="color:#66d9ef">do</span> you want to install the library files?
+    centos67: <span style="color:#f92672">[</span>/usr/lib/vmware-tools<span style="color:#f92672">]</span>
+    centos67: The path <span style="color:#e6db74">&#34;/usr/lib/vmware-tools&#34;</span> does not exist currently. This program is
+    centos67: going to create it, including needed parent directories. Is this what you want?
+    centos67: <span style="color:#f92672">[</span>yes<span style="color:#f92672">]</span>
+    centos67: In which directory <span style="color:#66d9ef">do</span> you want to install the documentation files?
+    centos67: <span style="color:#f92672">[</span>/usr/share/doc/vmware-tools<span style="color:#f92672">]</span>
+    centos67: The path <span style="color:#e6db74">&#34;/usr/share/doc/vmware-tools&#34;</span> does not exist currently. This program
+    centos67: is going to create it, including needed parent directories. Is this what you
+    centos67: want? <span style="color:#f92672">[</span>yes<span style="color:#f92672">]</span>
+    centos67: The installation of VMware Tools <span style="color:#ae81ff">9</span>.9.4 build-3193940 <span style="color:#66d9ef">for</span> Linux completed
+    centos67: successfully. You can decide to remove this software from your system at any
+    centos67: time by invoking the following command: <span style="color:#e6db74">&#34;/usr/bin/vmware-uninstall-tools.pl&#34;</span>.
+    centos67:
+    centos67: Before running VMware Tools <span style="color:#66d9ef">for</span> the first time, you need to configure it by
+    centos67: invoking the following command: <span style="color:#e6db74">&#34;/usr/bin/vmware-config-tools.pl&#34;</span>. Do you want
+    centos67: this program to invoke the command <span style="color:#66d9ef">for</span> you now? <span style="color:#f92672">[</span>yes<span style="color:#f92672">]</span>
+    centos67: Initializing...
+    centos67:
+    centos67:
+    centos67: Making sure services <span style="color:#66d9ef">for</span> VMware Tools are stopped.
+    centos67:
+    centos67:
+    centos67:
+    centos67: Found a compatible pre-built module <span style="color:#66d9ef">for</span> vmci.  Installing it...
+    centos67:
+    centos67:
+    centos67: Found a compatible pre-built module <span style="color:#66d9ef">for</span> vsock.  Installing it...
+    centos67:
+    centos67:
+    centos67: The module vmxnet3 has already been installed on this system by another
+    centos67: installer or package and will not be modified by this installer.
+    centos67:
+    centos67: The module pvscsi has already been installed on this system by another
+    centos67: installer or package and will not be modified by this installer.
+    centos67:
+    centos67: The module vmmemctl has already been installed on this system by another
+    centos67: installer or package and will not be modified by this installer.
+    centos67:
+    centos67: The VMware Host-Guest Filesystem allows <span style="color:#66d9ef">for</span> shared folders between the host OS
+    centos67: and the guest OS in a Fusion or Workstation virtual environment.  Do you wish
+    centos67: to enable this feature? <span style="color:#f92672">[</span>no<span style="color:#f92672">]</span>
+    centos67: Found a compatible pre-built module <span style="color:#66d9ef">for</span> vmhgfs.  Installing it...
+    centos67:
+    centos67:
+    centos67: Found a compatible pre-built module <span style="color:#66d9ef">for</span> vmxnet.  Installing it...
+    centos67:
+    centos67:
+    centos67: The vmblock enables dragging or copying files between host and guest in a
+    centos67: Fusion or Workstation virtual environment.  Do you wish to enable this feature?
+    centos67: <span style="color:#f92672">[</span>no<span style="color:#f92672">]</span>
+    centos67: VMware automatic kernel modules enables automatic building and installation of
+    centos67: VMware kernel modules at boot that are not already present. This feature can be
+    centos67:
+    centos67: enabled/disabled by re-running vmware-config-tools.pl.
+    centos67:
+    centos67: Would you like to enable VMware automatic kernel modules?
+    centos67: <span style="color:#f92672">[</span>no<span style="color:#f92672">]</span>
+    centos67: Do you want to enable Guest Authentication <span style="color:#f92672">(</span>vgauth<span style="color:#f92672">)</span>? <span style="color:#f92672">[</span>yes<span style="color:#f92672">]</span>
+    centos67: No X install found.
+    centos67:
+    centos67: Creating a new initrd boot image <span style="color:#66d9ef">for</span> the kernel.
+    centos67: vmware-tools-thinprint start/running
+    centos67: vmware-tools start/running
+    centos67: The configuration of VMware Tools <span style="color:#ae81ff">9</span>.9.4 build-3193940 <span style="color:#66d9ef">for</span> Linux <span style="color:#66d9ef">for</span> this
+    centos67: running kernel completed successfully.
+    centos67:
+    centos67: You must restart your X session before any mouse or graphics changes take
+    centos67: effect.
+    centos67:
+    centos67: You can now run VMware Tools by invoking <span style="color:#e6db74">&#34;/usr/bin/vmware-toolbox-cmd&#34;</span> from the
+    centos67: command line.
+    centos67:
+    centos67: To enable advanced X features <span style="color:#f92672">(</span>e.g., guest resolution fit, drag and drop, and
+    centos67: file and text copy/paste<span style="color:#f92672">)</span>, you will need to <span style="color:#66d9ef">do</span> one <span style="color:#f92672">(</span>or more<span style="color:#f92672">)</span> of the following:
+    centos67: <span style="color:#ae81ff">1</span>. Manually start /usr/bin/vmware-user
+    centos67: <span style="color:#ae81ff">2</span>. Log out and log back into your desktop session; and,
+    centos67: <span style="color:#ae81ff">3</span>. Restart your X session.
+    centos67:
+    centos67: Enjoy,
+    centos67:
+    centos67: --the VMware team
+    centos67:</code></pre></div>
+
+<p>The final provisioner is a shell provisioner that will run the scripts/centos-vmware-cleanup.sh bash script. This script will clean up the centos67 virtual machine and zero out all unused disk space to reduce the size of the image.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">==</span>&gt; centos67: Provisioning with shell script: scripts/centos-vmware-cleanup.sh
+    centos67: <span style="color:#f92672">==</span>&gt; Pausing <span style="color:#66d9ef">for</span> <span style="color:#ae81ff">0</span> seconds...
+    centos67: <span style="color:#f92672">==</span>&gt; erasing unused packages to free up space
+    centos67: Loaded plugins: fastestmirror
+    centos67: Setting up Remove Process
+    centos67: No Match <span style="color:#66d9ef">for</span> argument: gtk2
+    centos67: Loading mirror speeds from cached hostfile
+    centos67: * base: dallas.tx.mirror.xygenhosting.com
+    centos67: * extras: mirror.us.oneandone.net
+    centos67: * updates: dallas.tx.mirror.xygenhosting.com
+    centos67: Package<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span> gtk2 available, but not installed.
+    centos67: No Match <span style="color:#66d9ef">for</span> argument: libX11
+    centos67: Package<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span> libX11 available, but not installed.
+    centos67: No Match <span style="color:#66d9ef">for</span> argument: hicolor-icon-theme
+    centos67: Package<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span> hicolor-icon-theme available, but not installed.
+    centos67: No Match <span style="color:#66d9ef">for</span> argument: avahi
+    centos67: Package<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span> avahi available, but not installed.
+    centos67: No Match <span style="color:#66d9ef">for</span> argument: freetype
+    centos67: Package<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span> freetype available, but not installed.
+    centos67: No Match <span style="color:#66d9ef">for</span> argument: bitstream-vera-fonts
+    centos67: No Packages marked <span style="color:#66d9ef">for</span> removal
+    centos67: <span style="color:#f92672">==</span>&gt; Cleaning up yum cache
+    centos67: Loaded plugins: fastestmirror
+    centos67: Cleaning repos: base extras updates
+    centos67: Cleaning up Everything
+    centos67: Cleaning up list of fastest mirrors
+    centos67: <span style="color:#f92672">==</span>&gt; Force logs to rotate
+    centos67: <span style="color:#f92672">==</span>&gt; Clear audit log and wtmp
+    centos67: <span style="color:#f92672">==</span>&gt; Cleaning up udev rules
+    centos67: <span style="color:#f92672">==</span>&gt; Remove the traces of the template MAC address and UUIDs
+    centos67: <span style="color:#f92672">==</span>&gt; Cleaning up tmp
+    centos67: <span style="color:#f92672">==</span>&gt; Remove the SSH host keys
+    centos67: <span style="color:#f92672">==</span>&gt; Remove the root user’s shell history
+    centos67: <span style="color:#f92672">==</span>&gt; yum -y clean all
+    centos67: Loaded plugins: fastestmirror
+    centos67: Cleaning repos: base extras updates
+    centos67: Cleaning up Everything
+    centos67: /
+    centos67: <span style="color:#ae81ff">25211696</span>
+    centos67: /tmp/script_7943.sh: line <span style="color:#ae81ff">62</span>: bc: command not found
+    centos67:
+    centos67: dd: invalid number <span style="color:#e6db74">`</span><span style="color:#e6db74">&#39;
+</span><span style="color:#e6db74">    centos67: /boot
+</span><span style="color:#e6db74">    centos67: 60474
+</span><span style="color:#e6db74">    centos67: /tmp/script_7943.sh: line 62: bc: command not found
+</span><span style="color:#e6db74">    centos67:
+</span><span style="color:#e6db74">    centos67: dd: invalid number `&#39;</span>
+    centos67: /tmp/script_7943.sh: line <span style="color:#ae81ff">70</span>: /usr/sbin/vgdisplay: No such file or directory
+    centos67: <span style="color:#f92672">==</span>&gt; Zero out the free space to save space in the final image
+    centos67: dd: writing <span style="color:#e6db74">`</span>/EMPTY<span style="color:#960050;background-color:#1e0010">&#39;</span>: No space left on device
+    centos67: <span style="color:#ae81ff">12970</span>+0 records in
+    centos67: <span style="color:#ae81ff">12969</span>+0 records out
+    centos67: <span style="color:#ae81ff">13599232000</span> bytes <span style="color:#f92672">(</span><span style="color:#ae81ff">14</span> GB<span style="color:#f92672">)</span> copied, <span style="color:#ae81ff">413</span>.4 s, <span style="color:#ae81ff">32</span>.9 MB/s</code></pre></div>
+
+<p>With the provisioners block having been completed, Packer will now shutdown the centos67 virtual machine and unregister it from the ESXi virtual machine.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">==</span>&gt; centos67: Gracefully halting virtual machine...
+    centos67: Waiting <span style="color:#66d9ef">for</span> VMware to clean up after itself...
+<span style="color:#f92672">==</span>&gt; centos67: Deleting unnecessary VMware files...
+    centos67: Deleting: /vmfs/volumes/datastore1/output-centos67/vmware.log
+<span style="color:#f92672">==</span>&gt; centos67: Cleaning VMX prior to finishing up...
+    centos67: Unmounting floppy from VMX...
+    centos67: Detaching ISO from CD-ROM device...
+    centos67: Disabling VNC server...
+<span style="color:#f92672">==</span>&gt; centos67: Compacting the disk image
+<span style="color:#f92672">==</span>&gt; centos67: Unregistering virtual machine...
+Build <span style="color:#e6db74">&#39;centos67&#39;</span> finished.
+
+<span style="color:#f92672">==</span>&gt; Builds finished. The artifacts of successful builds are:
+--&gt; centos67: VM files in directory: /vmfs/volumes/datastore1/output-centos67
+<span style="color:#f92672">[</span>root@packer-centos packer-templates<span style="color:#f92672">]</span>#</code></pre></div>
+
+<p>The output of the packer build command shows that the template was successfully created at /vmfs/volumes/datastore1/output-centos67 on the ESXi virtual machine.</p>
+
+<h4 id="this-seems-like-a-good-point-to-take-break-we-covered-a-lot-of-ground-in-this-post-but-as-a-result-of-all-our-work-we-have-a-working-packer-template-to-build-on">This seems like a good point to take break. We covered a lot of ground in this post, but as a result of all our work we have a working Packer template to build on.</h4>
+
+<h4 id="if-you-would-like-to-not-have-to-manually-create-the-files-covered-in-this-post-you-can-clone-down-this-github-repository-https-github-com-sdorsett-packer-templates-tree-first-packer-template-by-running-the-following-command">If you would like to not have to manually create the files covered in this post, you can clone down <a href="https://github.com/sdorsett/packer-templates/tree/first-packer-template">this github repository</a> by running the following command:</h4>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git clone -b <span style="color:#e6db74">&#34;first-packer-template&#34;</span> https://github.com/sdorsett/packer-templates.git</code></pre></div>
+
+<h4 id="you-will-still-need-to-create-the-iso-directory-download-the-needed-iso-files-and-create-the-packer-remote-info-json-file-as-covered-in-this-post">You will still need to create the iso/ directory, download the needed .iso files and create the packer-remote-info.json file as covered in this post.</h4>
+
+<h4 id="in-the-next-post-we-will-extend-what-was-covered-in-this-post-by-installing-the-puppet-agent-in-packer-image">In the next post we will extend what was covered in this post by installing the Puppet agent in Packer image.</h4>
+
+<hr />
+
+<h4 id="please-provide-any-feedback-or-suggestions-to-my-twitter-account-located-on-the-about-page">Please provide any feedback or suggestions to my twitter account located on the about page.</h4>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="https://sdorsett.github.io/post/2015-12-24-installing-packer-and-ovftool-on-centos/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="https://sdorsett.github.io/post/2015-12-24-installing-packer-and-ovftool-on-centos/">Setting up Packer, ovftool and Apache web server on a CentOS virtual machine</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="next">
+      <a href="https://sdorsett.github.io/post/2015-12-26-copy-our-existing-template-and-add-the-puppet-agent/">Copying our existing CentOS 6.7 template and adding the Puppet agent</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+    <a href="https://sdorsett.github.io/post/2015-12-26-copy-our-existing-template-and-add-the-puppet-agent/"><i class="fa fa-chevron-right"></i></a>
+    
+  </div>
+</div>
+
+
+
+  
+
+</div>
+
+</div>
+</div>
+<script src="https://sdorsett.github.iojs/ui.js"></script>
+<script src="https://sdorsett.github.iojs/menus.js"></script>
+
+
+
+
+
+
+</body>
+</html>
+

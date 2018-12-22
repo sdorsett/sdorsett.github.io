@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.52" />
+
+  <title>Creating a CentOS 6.x template that is customized for Vagrant &middot; Things I find interesting</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://sdorsett.github.io/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://sdorsett.github.io/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="https://sdorsett.github.io/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+ 
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="https://sdorsett.github.ioimg/favicon.ico" type="image/x-icon" />
+
+  
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="https://sdorsett.github.io/"> </a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/post/"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/about/"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/contact/"><i class='fa fa-phone fa-fw'></i>Contact</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/about/">About</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://twitter.com/standorsett" target="_blank"><i class="fa fa-twitter-square fa-fw"></i>Twitter</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://linkedin.com/in/stan-dorsett-53a8827" target="_blank"><i class="fa fa-linkedin-square fa-fw"></i>LinkedIn</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/sdorsett" target="_blank"><i class="fa fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small>&copy; 2018. All rights reserved.</small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Creating a CentOS 6.x template that is customized for Vagrant</h1>
+  <h2></h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>20 Apr 2014, 00:00</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://sdorsett.github.iotags/vagrant">vagrant</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  
+
+<p>This post will continue our examination of using the vagrant-vsphere plugin, by customizing a CentOS template for integration with Vagrant. Having a Vagrant customize template will allow us to deploy this template and SSH to the cloned vm using the &ldquo;vagrant ssh&rdquo; command, as well automatically run puppet manifests when we deploy a vm using Vagrant. Let&rsquo;s get started:</p>
+
+<h3 id="1-ensure-you-have-a-dhcp-server-on-the-network-you-will-be-connecting-the-vagrant-deployed-templates-to-while-you-can-utilized-guest-customization-to-assign-a-static-ip-addresses-to-a-vagrant-deployed-vm-using-dhcp-will-make-this-process-much-easier">1. Ensure you have a DHCP server on the network you will be connecting the Vagrant deployed templates to. While you can utilized guest customization to assign a static IP addresses to a Vagrant deployed vm, using DHCP will make this process much easier.</h3>
+
+<h3 id="2-create-a-centos-6-x-minimal-virtual-machine-for-configuring-as-our-vagrant-centos-template">2. Create a CentOS 6.x minimal virtual machine for configuring as our Vagrant CentOS template.</h3>
+
+<p>Create or clone a fresh CentOS 6.x minimal virtual machine. I already have an existing Centos 6.5 minimal template that I simply cloned for this purpose.</p>
+
+<h3 id="3-power-on-the-new-cloned-vm-and-connect-using-ssh-to-the-dhcp-assigned-ip-address-for-this-vm">3. Power on the new cloned vm and connect using SSH to the DHCP assigned IP address for this vm.</h3>
+
+<h3 id="4-ensure-you-have-perl-rsync-ruby-puppet-agent-installed">4. Ensure you have perl, rsync, ruby &amp; puppet agent installed:</h3>
+
+<ul>
+<li>Import the EPEL 6 key and RPM:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@centos-6-5 ~<span style="color:#f92672">]</span><span style="color:#75715e"># rpm --import http://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-6</span>
+<span style="color:#f92672">[</span>root@centos-6-5 ~<span style="color:#f92672">]</span><span style="color:#75715e"># rpm -Kih http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm</span>
+<span style="color:#75715e">########################################### [100%]</span>
+<span style="color:#75715e">########################################### [100%]</span></code></pre></div>
+
+<ul>
+<li>Use yum to install ruby, wget, puppet, facter &amp; rsync:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@centos-6-5 ~<span style="color:#f92672">]</span><span style="color:#75715e"># yum install ruby ruby-libs ruby-shad wget yum-priorities puppet facter rsync -y</span></code></pre></div>
+
+<h3 id="5-ensure-you-have-vmtools-installed-on-the-new-centos-template">5. Ensure you have vmtools installed on the new CentOS template.</h3>
+
+<ul>
+<li><p>Start the install process by clicking &ldquo;VM | Guest | Install/Upgrade VMware Tools&rdquo; in the vShpere client. When prompted select &ldquo;Automatice Tools Upgrade&rdquo; and click &ldquo;OK&rdquo;</p></li>
+
+<li><p>Create a directory to mount the virtual CDROM to with the following command:</p></li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@centos-6-5 ~<span style="color:#f92672">]</span><span style="color:#75715e"># mkdir /mnt/cdrom</span></code></pre></div>
+
+<ul>
+<li>Mount the virtual CDROM to /mnt/cdrom with the following command:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@centos-6-5 ~<span style="color:#f92672">]</span><span style="color:#75715e"># mount /dev/cdrom /mnt/cdrom</span>
+mount: block device /dev/sr0 is write-protected, mounting read-only</code></pre></div>
+
+<ul>
+<li>Copy the VMware Tools installer over to the /root directory and unzip it:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@centos-6-5 ~<span style="color:#f92672">]</span><span style="color:#75715e"># cp /mnt/cdrom/VMwareTools-* ~/</span>
+<span style="color:#f92672">[</span>root@centos-6-5 ~<span style="color:#f92672">]</span><span style="color:#75715e"># tar -zxf ~/VMwareTools*</span></code></pre></div>
+
+<ul>
+<li>Change directory into the directory we just untared and run the &ldquo;vmware-install.pl&rdquo; to start the installer:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@centos-6-5 ~<span style="color:#f92672">]</span><span style="color:#75715e"># cd vmware-tools-distrib/</span>
+<span style="color:#f92672">[</span>root@centos-6-5 vmware-tools-distrib<span style="color:#f92672">]</span><span style="color:#75715e"># ./vmware-install.pl</span></code></pre></div>
+
+<p>You should be able to accept the defaults for all prompts and complete the VMware tools installer. Once the installer has completed check the vm summary of this template vm in the vSphere client. The VMware Tools should show as &ldquo;Running&rdquo; and &ldquo;Current.&rdquo;</p>
+
+<ul>
+<li>Unmount the virtual CDROM using the following command:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@centos-6-5 ~<span style="color:#f92672">]</span><span style="color:#75715e"># umount /dev/cdrom</span></code></pre></div>
+
+<h3 id="6-we-will-next-follow-the-steps-for-creating-a-base-box-https-docs-vagrantup-com-v2-boxes-base-html-from-the-vagrant-website">6. We will next follow the steps for <a href="https://docs.vagrantup.com/v2/boxes/base.html">creating a base box</a> from the Vagrant website.</h3>
+
+<p>One thing to point out is we will be configuring the vagrant template for password less SSH using a vagrant user with the password of &ldquo;vagrant.&rdquo; The Vagrant website mentions &lsquo;by default, Vagrant expects a &ldquo;vagrant&rdquo; user to SSH into the machine as. This user should be setup with the insecure keypair that Vagrant uses as a default to attempt to SSH. Also, even though Vagrant uses key-based authentication by default, it is a general convention to set the password for the &ldquo;vagrant&rdquo; user to &ldquo;vagrant.&rdquo;&rsquo;</p>
+
+<p>This vagrant template should only be used for lab or development work and never used for production or publicly facing virtual machines due to the security risks of having known users, passwords &amp; private SSH keys configured by default.</p>
+
+<ul>
+<li>Add a new user named &ldquo;vagrant&rdquo; to the template.</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@centos-6-5 ~<span style="color:#f92672">]</span><span style="color:#75715e"># useradd vagrant</span></code></pre></div>
+
+<ul>
+<li>Change the password of the user &ldquo;vagrant&rdquo; to &ldquo;vagrant&rdquo;</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@centos-6-5 ~<span style="color:#f92672">]</span><span style="color:#75715e"># [root@centos-6-5 ~]# passwd vagrant</span>
+Changing password <span style="color:#66d9ef">for</span> user vagrant.
+New password: &lt;type the word <span style="color:#e6db74">&#34;vagrant&#34;</span>&gt;
+BAD PASSWORD: it is based on a dictionary word
+BAD PASSWORD: is too simple
+Retype new password: &lt;type the word <span style="color:#e6db74">&#34;vagrant&#34;</span> again&gt;
+passwd: all authentication tokens updated successfully.</code></pre></div>
+
+<ul>
+<li>We will next need to copy the contents of the vagrant.pub file located at the <a href="https://github.com/mitchellh/vagrant/tree/master/keys">vagrant github site</a> into the /home/vagrant/.ssh/authorized_keys file.</li>
+</ul>
+
+<p>First we will su (switch user) to the vagrant user by running the following command:</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@centos-6-5 ~<span style="color:#f92672">]</span><span style="color:#75715e"># su vagrant</span>
+<span style="color:#f92672">[</span>vagrant@centos-6-5 root<span style="color:#f92672">]</span>$ </code></pre></div>
+
+<p>Next we will create the .ssh directory since is does not exist:</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>vagrant@centos-6-5 root<span style="color:#f92672">]</span>$ mkdir ~/.ssh
+<span style="color:#f92672">[</span>vagrant@centos-6-5 root<span style="color:#f92672">]</span>$ cd ~/.ssh
+<span style="color:#f92672">[</span>vagrant@centos-6-5 .ssh<span style="color:#f92672">]</span>$ pwd
+/home/vagrant/.ssh</code></pre></div>
+
+<p>We will now create /home/vagrant/.ssh/authorized_keys with the contents of <a href="https://raw.githubusercontent.com/mitchellh/vagrant/master/keys/vagrant.pub">this file</a> from the vagrant github page:</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>vagrant@centos-6-5 .ssh<span style="color:#f92672">]</span>$ echo <span style="color:#e6db74">&#39;ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key&#39;</span> &gt; ~/.ssh/authorized_keys
+<span style="color:#f92672">[</span>vagrant@centos-6-5 .ssh<span style="color:#f92672">]</span>$ cat ~/.ssh/authorized_keys
+ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ<span style="color:#f92672">==</span> vagrant insecure public key</code></pre></div>
+
+<p>The vagrant website also mentions &lsquo;that OpenSSH is very picky about file permissions. Therefore, make sure that ~/.ssh has 0700 permissions and the authorized keys file has 0600 permissions.&rsquo; We will correct those permissions now:</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>vagrant@centos-6-5 .ssh<span style="color:#f92672">]</span>$ cd ~/
+<span style="color:#f92672">[</span>vagrant@centos-6-5 ~<span style="color:#f92672">]</span>$ chmod <span style="color:#ae81ff">700</span> ~/.ssh
+<span style="color:#f92672">[</span>vagrant@centos-6-5 ~<span style="color:#f92672">]</span>$ chmod <span style="color:#ae81ff">600</span> ~/.ssh/authorized_keys
+<span style="color:#f92672">[</span>vagrant@centos-6-5 ~<span style="color:#f92672">]</span>$ ls -la
+total <span style="color:#ae81ff">24</span>
+drwx------. <span style="color:#ae81ff">3</span> vagrant vagrant <span style="color:#ae81ff">4096</span> Apr <span style="color:#ae81ff">20</span> <span style="color:#ae81ff">14</span>:22 .
+drwxr-xr-x. <span style="color:#ae81ff">3</span> root    root    <span style="color:#ae81ff">4096</span> Apr <span style="color:#ae81ff">20</span> <span style="color:#ae81ff">14</span>:15 ..
+-rw-r--r--. <span style="color:#ae81ff">1</span> vagrant vagrant   <span style="color:#ae81ff">18</span> Jul <span style="color:#ae81ff">18</span>  <span style="color:#ae81ff">2013</span> .bash_logout
+-rw-r--r--. <span style="color:#ae81ff">1</span> vagrant vagrant  <span style="color:#ae81ff">176</span> Jul <span style="color:#ae81ff">18</span>  <span style="color:#ae81ff">2013</span> .bash_profile
+-rw-r--r--. <span style="color:#ae81ff">1</span> vagrant vagrant  <span style="color:#ae81ff">124</span> Jul <span style="color:#ae81ff">18</span>  <span style="color:#ae81ff">2013</span> .bashrc
+drwx------. <span style="color:#ae81ff">2</span> vagrant vagrant <span style="color:#ae81ff">4096</span> Apr <span style="color:#ae81ff">20</span> <span style="color:#ae81ff">14</span>:26 .ssh
+<span style="color:#f92672">[</span>vagrant@centos-6-5 ~<span style="color:#f92672">]</span>$ ls -la .ssh
+total <span style="color:#ae81ff">12</span>
+drwx------. <span style="color:#ae81ff">2</span> vagrant vagrant <span style="color:#ae81ff">4096</span> Apr <span style="color:#ae81ff">20</span> <span style="color:#ae81ff">14</span>:26 .
+drwx------. <span style="color:#ae81ff">3</span> vagrant vagrant <span style="color:#ae81ff">4096</span> Apr <span style="color:#ae81ff">20</span> <span style="color:#ae81ff">14</span>:22 ..
+-rw-------. <span style="color:#ae81ff">1</span> vagrant vagrant  <span style="color:#ae81ff">409</span> Apr <span style="color:#ae81ff">20</span> <span style="color:#ae81ff">14</span>:26 authorized_keys
+<span style="color:#f92672">[</span>vagrant@centos-6-5 ~<span style="color:#f92672">]</span>$ exit
+exit
+<span style="color:#f92672">[</span>root@centos-6-5 ~<span style="color:#f92672">]</span>#</code></pre></div>
+
+<ul>
+<li>We will to edit the sudo file. Type the following command to open the sudo file in vi:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">root@centos-6-5 ~<span style="color:#f92672">]</span><span style="color:#75715e"># visudo</span></code></pre></div>
+
+<p>Locate the line containing:</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">Defaults    requiretty</code></pre></div>
+
+<p>&hellip;and change it to read:</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Defaults    requiretty&#39;</span></code></pre></div>
+
+<p>The # sign at the beginning of the line will cause this line to be ignored as a comment.
+We also need to add the following line at the bottom of the file:</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">vagrant ALL<span style="color:#f92672">=(</span>ALL<span style="color:#f92672">)</span> NOPASSWD: ALL</code></pre></div>
+
+<ul>
+<li>One more recommendation from the vagrant website is to edit /etc/ssh/sshd_config and change any line matching:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">UseDNS yes</code></pre></div>
+
+<p>to</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">UseDNS no</code></pre></div>
+
+<p>This avoids a reverse DNS lookup on the connecting SSH client which can take many seconds.</p>
+
+<h3 id="7-lastly-this-is-a-template-so-we-will-need-to-remove-etc-udev-rules-d-70-persistent-net-rules-file-because-it-contains-the-mac-address-of-the-current-virtual-nic-it-will-be-recreated-on-boot-up-or-when-we-deploy-other-virtual-machines-from-this-template">7. Lastly this is a template, so we will need to remove /etc/udev/rules.d/70-persistent-net.rules file because it contains the MAC address of the current virtual NIC. It will be recreated on boot up or when we deploy other virtual machines from this template.</h3>
+
+<h3 id="8-we-will-now-shutdown-the-template-by-running-halt">8. We will now shutdown the template by running halt:</h3>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@centos-6-5 ~<span style="color:#f92672">]</span><span style="color:#75715e"># halt</span>
+Broadcast message from root@centos-6-5
+	<span style="color:#f92672">(</span>/dev/pts/1<span style="color:#f92672">)</span> at <span style="color:#ae81ff">14</span>:51 ...
+The system is going down <span style="color:#66d9ef">for</span> halt NOW!</code></pre></div>
+
+<h3 id="9-we-now-need-to-ssh-to-the-vagrant-vm-that-has-the-vagrant-vsphere-plugin-installed-this-is-the-vm-we-created-if-you-followed-the-a-href-2014-04-19-vagrant-install-last-blog-post-a">9. We now need to SSH to the vagrant vm that has the vagrant-vsphere plugin installed. This is the vm we created if you followed the <a href="../2014-04-19-vagrant-install">last blog post</a>.</h3>
+
+<ul>
+<li>Edit the Vagrantfile we created to modify the following line to reflect the name you gave the new vagrant template we cloned or created in the steps above:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">vsphere.template_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;vagrant-centos-6.5&#39;</span></code></pre></div>
+
+<ul>
+<li>We can test this new template by issuing the following command:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant vagrant-vms<span style="color:#f92672">]</span><span style="color:#75715e"># vagrant up --provider=vsphere</span>
+Bringing machine <span style="color:#e6db74">&#39;default&#39;</span> up with <span style="color:#e6db74">&#39;vsphere&#39;</span> provider...
+<span style="color:#f92672">==</span>&gt; default: Calling vSphere CloneVM with the following settings:
+<span style="color:#f92672">==</span>&gt; default:  -- Source VM: vagrant-centos-6.5
+<span style="color:#f92672">==</span>&gt; default:  -- Name: vagrant-test
+<span style="color:#f92672">==</span>&gt; default: Waiting <span style="color:#66d9ef">for</span> SSH to become available...
+<span style="color:#f92672">==</span>&gt; default: New virtual machine successfully cloned and started
+<span style="color:#f92672">==</span>&gt; default: Rsyncing folder: /root/vagrant-vms/ <span style="color:#f92672">=</span>&gt; /vagrant</code></pre></div>
+
+<p>Unlike our &lsquo;vagrant up&rdquo; command in the last post we have established a SSH session with the cloned template using the vagrant user we created and the public key in that users authorized_keys file.</p>
+
+<p>You also might notice that the entire directory we launched the &lsquo;vagrant up&rdquo; command from has been copied over to /vagrant on the cloned vm using rsync. We will go into leveraging this feature with puppet in our next blog post.</p>
+
+<ul>
+<li>Using SSH to connect to the vagrant vm is as easy as &lsquo;vagrant ssh&rsquo;</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant vagrant-vms<span style="color:#f92672">]</span><span style="color:#75715e"># hostname</span>
+vagrant.mylab.net
+<span style="color:#f92672">[</span>root@vagrant vagrant-vms<span style="color:#f92672">]</span><span style="color:#75715e"># vagrant ssh</span>
+<span style="color:#f92672">[</span>vagrant@vagrant-centos-6-5 ~<span style="color:#f92672">]</span>$ hostname
+vagrant-centos-6-5
+<span style="color:#f92672">[</span>vagrant@vagrant-centos-6-5 ~<span style="color:#f92672">]</span>$ exit
+logout
+Connection to <span style="color:#ae81ff">192</span>.168.1.133 closed.
+<span style="color:#f92672">[</span>root@vagrant vagrant-vms<span style="color:#f92672">]</span># </code></pre></div>
+
+<ul>
+<li>Finally we will power down and delete the cloned template by running the following command:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant vagrant-vms<span style="color:#f92672">]</span><span style="color:#75715e"># vagrant destroy</span>
+<span style="color:#f92672">==</span>&gt; default: Calling vSphere PowerOff
+<span style="color:#f92672">==</span>&gt; default: Calling vShpere Destroy</code></pre></div>
+
+<h4 id="hopefully-you-found-this-post-helpful-in-demonstrating-how-to-create-a-vagrant-specific-template-to-use-with-the-vagrant-vsphere-plugin-the-next-blog-post-will-be-covering-how-to-take-advantage-of-customization-specifications-and-advanced-vagrantfile-configurations-on-a-vm-deployed-using-vagrant">Hopefully you found this post helpful in demonstrating how to create a vagrant specific template to use with the vagrant-vsphere plugin. The next blog post will be covering how to take advantage of customization specifications and advanced Vagrantfile configurations on a vm deployed using vagrant.</h4>
+
+<hr />
+
+<h4 id="please-provide-any-feedback-or-suggestions-to-my-twitter-account-located-on-the-about-page">Please provide any feedback or suggestions to my twitter account located on the about page.</h4>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="https://sdorsett.github.io/post/2014-04-19-vagrant-install/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="https://sdorsett.github.io/post/2014-04-19-vagrant-install/">Installing Vagrant and the vagrant-vsphere plugin on CentOS 6.x</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="next">
+      <a href="https://sdorsett.github.io/post/2014-04-24-vagrant-and-vcenter-guest-customization/">Using advanced vagrant-vsphere provider settings and vCenter guest customization</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+    <a href="https://sdorsett.github.io/post/2014-04-24-vagrant-and-vcenter-guest-customization/"><i class="fa fa-chevron-right"></i></a>
+    
+  </div>
+</div>
+
+
+
+  
+
+</div>
+
+</div>
+</div>
+<script src="https://sdorsett.github.iojs/ui.js"></script>
+<script src="https://sdorsett.github.iojs/menus.js"></script>
+
+
+
+
+
+
+</body>
+</html>
+

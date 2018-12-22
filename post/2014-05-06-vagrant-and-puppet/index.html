@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.52" />
+
+  <title>Creating a Puppet manifest and integrating it with Vagrant &middot; Things I find interesting</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://sdorsett.github.io/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://sdorsett.github.io/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="https://sdorsett.github.io/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+ 
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="https://sdorsett.github.ioimg/favicon.ico" type="image/x-icon" />
+
+  
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="https://sdorsett.github.io/"> </a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/post/"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/about/"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/contact/"><i class='fa fa-phone fa-fw'></i>Contact</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/about/">About</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://twitter.com/standorsett" target="_blank"><i class="fa fa-twitter-square fa-fw"></i>Twitter</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://linkedin.com/in/stan-dorsett-53a8827" target="_blank"><i class="fa fa-linkedin-square fa-fw"></i>LinkedIn</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/sdorsett" target="_blank"><i class="fa fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small>&copy; 2018. All rights reserved.</small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Creating a Puppet manifest and integrating it with Vagrant</h1>
+  <h2></h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>06 May 2014, 00:00</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://sdorsett.github.iotags/vagrant">vagrant</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://sdorsett.github.iotags/puppet">puppet</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  
+
+<p>This post will cover configuring Vagrant to automatically run a Puppet manifest on the vm created by &ldquo;vagrant up.&rdquo; This capability allows you to test your Puppet manifests, make changes and test again, all quickly and easily. Let&rsquo;s get started:</p>
+
+<h3 id="1-create-the-puppet-manifest-modules-we-will-be-using-for-our-vagrant-tests">1. Create the Puppet manifest &amp; modules we will be using for our Vagrant tests.</h3>
+
+<p>For testing purposes we will be creating a Puppet manifest that ensures NTP is installed and is configured to use the following NTP servers:</p>
+
+<pre>
+0.pool.ntp.org
+1.pool.ntp.org
+2.pool.ntp.org
+</pre>
+
+<ul>
+<li>First we should install tree, since it will help us visualize the directory structure of the puppet manifest directories we will be creating:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant vagrant-vms<span style="color:#f92672">]</span><span style="color:#75715e"># yum install -y tree</span>
+Loaded plugins: fastestmirror
+Loading mirror speeds from cached hostfile
+ * base: mirrors.centarra.com
+ * epel: mirror.unl.edu
+ * extras: mirrors.finalasp.com
+ * updates: mirrors.centarra.com
+Setting up Install Process
+Resolving Dependencies
+--&gt; Running transaction check
+---&gt; Package tree.x86_64 <span style="color:#ae81ff">0</span>:1.5.3-2.el6 will be installed
+--&gt; Finished Dependency Resolution
+
+Dependencies Resolved
+
+<span style="color:#f92672">====================================================================</span>
+ Package      Arch           Version             Repository    Size
+<span style="color:#f92672">====================================================================</span>
+Installing:
+ tree         x86_64         <span style="color:#ae81ff">1</span>.5.3-2.el6         base          <span style="color:#ae81ff">36</span> k
+
+Transaction Summary
+<span style="color:#f92672">====================================================================</span>
+Install       <span style="color:#ae81ff">1</span> Package<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>
+
+Total download size: <span style="color:#ae81ff">36</span> k
+Installed size: <span style="color:#ae81ff">65</span> k
+Downloading Packages:
+tree-1.5.3-2.el6.x86_64.rpm                    |  <span style="color:#ae81ff">36</span> kB     <span style="color:#ae81ff">00</span>:00     
+Running rpm_check_debug
+Running Transaction Test
+Transaction Test Succeeded
+Running Transaction
+  Installing : tree-1.5.3-2.el6.x86_64                          <span style="color:#ae81ff">1</span>/1 
+  Verifying  : tree-1.5.3-2.el6.x86_64                          <span style="color:#ae81ff">1</span>/1 
+
+Installed:
+  tree.x86_64 <span style="color:#ae81ff">0</span>:1.5.3-2.el6                                           
+
+Complete!
+<span style="color:#f92672">[</span>root@vagrant vagrant-vms<span style="color:#f92672">]</span>#</code></pre></div>
+
+<ul>
+<li>Change to the directory that contains the Vagrantfile &amp; example_box directory we&rsquo;ve been working in over the last few blog posts:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant ~<span style="color:#f92672">]</span><span style="color:#75715e"># cd ~/vagrant-vms/</span>
+<span style="color:#f92672">[</span>root@vagrant vagrant-vms<span style="color:#f92672">]</span><span style="color:#75715e"># tree</span>
+.
+├── example_box
+│   └── dummy.box
+└── Vagrantfile
+
+<span style="color:#ae81ff">1</span> directory, <span style="color:#ae81ff">2</span> files
+<span style="color:#f92672">[</span>root@vagrant vagrant-vms<span style="color:#f92672">]</span>#  </code></pre></div>
+
+<ul>
+<li>Create the following modules &amp; manifests directory structure for our Puppet manifest files:</li>
+</ul>
+
+<p><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant vagrant-vms<span style="color:#f92672">]</span><span style="color:#75715e"># mkdir -p {manifests,modules/ntp/manifests,modules/ntp/templates,modules/common/manifests}</span>
+<span style="color:#f92672">[</span>root@vagrant vagrant-vms<span style="color:#f92672">]</span><span style="color:#75715e"># tree</span>
+.
+├── example_box
+│   └── dummy.box
+├── manifests
+├── modules
+│   ├── common
+│   │   └── manifests
+│   └── ntp
+│       ├── manifests
+│       └── templates
+└── Vagrantfile
+
+<span style="color:#ae81ff">8</span> directories, <span style="color:#ae81ff">2</span> files
+<span style="color:#f92672">[</span>root@vagrant vagrant-vms<span style="color:#f92672">]</span># </code></pre></div>
+* Create manifests/site.pp with the following contents:</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant vagrant-vms<span style="color:#f92672">]</span><span style="color:#75715e"># vi manifests/site.pp</span>
+node default <span style="color:#f92672">{</span>
+  include common
+    class <span style="color:#f92672">{</span><span style="color:#e6db74">&#39;ntp&#39;</span>:<span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+<span style="color:#f92672">[</span>root@vagrant vagrant-vms<span style="color:#f92672">]</span># </code></pre></div>
+
+<p>This is the Puppet manifest that we will configure Vagrent to run automatically. The &ldquo;node default&rdquo; section will be applied by any hostname that runs this manifest. The &ldquo;node default&rdquo; section calls the common &amp; ntp modules which we will create next.</p>
+
+<ul>
+<li>Create modules/common/manifests/init.pp with the following contents:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant vagrant-vms<span style="color:#f92672">]</span><span style="color:#75715e"># cat modules/common/manifests/init.pp</span>
+class common <span style="color:#f92672">{</span>
+  include common::data
+<span style="color:#f92672">}</span>
+
+class common::data <span style="color:#f92672">{</span>
+  $ntpServerList <span style="color:#f92672">=</span> <span style="color:#f92672">[</span> <span style="color:#e6db74">&#39;0.pool.ntp.org&#39;</span>,<span style="color:#e6db74">&#39;1.pool.ntp.org&#39;</span>,<span style="color:#e6db74">&#39;2.pool.ntp.org&#39;</span> <span style="color:#f92672">]</span>
+<span style="color:#f92672">}</span>
+<span style="color:#f92672">[</span>root@vagrant vagrant-vms<span style="color:#f92672">]</span># </code></pre></div>
+
+<p>This manifest is what gets run when Puppets runs &ldquo;include common&rdquo; in the manifests/site.pp manifest. When this manifest is run it creates an array named &ldquo;common::data::ntpServerList&rdquo; containing the ntp servers we&rsquo;re needing to have defined.</p>
+
+<ul>
+<li>Create modules/ntp/manifests/init.pp with the following contents:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant vagrant-vms<span style="color:#f92672">]</span><span style="color:#75715e"># cat modules/ntp/manifests/init.pp</span>
+class ntp<span style="color:#f92672">(</span> $ntpServerList <span style="color:#f92672">=</span> $common::data::ntpServerList<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+  package <span style="color:#f92672">{</span> <span style="color:#e6db74">&#39;ntp&#39;</span>:
+  ensure <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#39;present&#39;</span>,
+  <span style="color:#f92672">}</span> <span style="color:#75715e">#package</span>
+
+  file <span style="color:#f92672">{</span> <span style="color:#e6db74">&#39;/etc/ntp.conf&#39;</span>:
+    mode    <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;644&#34;</span>,
+    content <span style="color:#f92672">=</span>&gt; template<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;ntp/client-ntp.conf.erb&#34;</span><span style="color:#f92672">)</span>,
+    notify  <span style="color:#f92672">=</span>&gt; Service<span style="color:#f92672">[</span><span style="color:#e6db74">&#34;ntpd&#34;</span><span style="color:#f92672">]</span>,
+    require <span style="color:#f92672">=</span>&gt; Package<span style="color:#f92672">[</span><span style="color:#e6db74">&#34;ntp&#34;</span><span style="color:#f92672">]</span>,
+  <span style="color:#f92672">}</span> <span style="color:#75715e"># file</span>
+
+  service <span style="color:#f92672">{</span> <span style="color:#e6db74">&#39;ntpd&#39;</span>:
+    ensure  <span style="color:#f92672">=</span>&gt; running,
+    enable  <span style="color:#f92672">=</span>&gt; true,
+    require <span style="color:#f92672">=</span>&gt; Package<span style="color:#f92672">[</span><span style="color:#e6db74">&#34;ntp&#34;</span><span style="color:#f92672">]</span>,
+  <span style="color:#f92672">}</span> <span style="color:#75715e"># service</span>
+<span style="color:#f92672">}</span>
+<span style="color:#f92672">[</span>root@vagrant vagrant-vms<span style="color:#f92672">]</span># </code></pre></div>
+
+<p>This manifest is what gets run when Puppet calls &ldquo;class {&lsquo;ntp&rsquo;:}&rdquo; in the manifests/site.pp manifest. When this manifest is run it will ensure the ntp package is installed, the file &ldquo;/etc/ntp.conf&rdquo; is created containing our list of ntp servers and the ntpd service is started.<br />
+* Create modules/ntp/templates/client-ntp.conf.erb with the following contents:</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># This file is being maintained by Puppet.</span>
+<span style="color:#75715e"># DO NOT EDIT</span>
+
+<span style="color:#75715e"># Permit time synchronization with our time source, but do not</span>
+<span style="color:#75715e"># permit the source to query or modify the service on this system.</span>
+restrict default kod nomodify notrap nopeer noquery
+restrict -6 default kod nomodify notrap nopeer noquery
+
+<span style="color:#75715e"># Permit all access over the loopback interface.  This could</span>
+<span style="color:#75715e"># be tightened as well, but to do so would effect some of</span>
+<span style="color:#75715e"># the administrative functions.</span>
+restrict <span style="color:#ae81ff">127</span>.0.0.1
+restrict -6 ::1
+
+&lt;% ntpServerList.each <span style="color:#66d9ef">do</span> |ntpServer| -%&gt;
+server &lt;%<span style="color:#f92672">=</span> ntpServer %&gt;
+&lt;% end -%&gt;
+
+<span style="color:#75715e"># Drift file.  Put this in a directory which the daemon can write to.</span>
+<span style="color:#75715e"># No symbolic links allowed, either, since the daemon updates the file</span>
+<span style="color:#75715e"># by creating a temporary in the same directory and then rename()&#39;ing</span>
+<span style="color:#75715e"># it to the file.</span>
+driftfile /var/lib/ntp/drift
+<span style="color:#f92672">[</span>root@vagrant vagrant-vms<span style="color:#f92672">]</span># </code></pre></div>
+
+<p>This .erb file is a ruby template describing what the file /etc/ntp.conf should contain. The magic of this is the section:</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">&lt;% ntpServerList.each <span style="color:#66d9ef">do</span> |ntpServer| -%&gt;
+server &lt;%<span style="color:#f92672">=</span> ntpServer %&gt;
+&lt;% end -%&gt;</code></pre></div>
+
+<p>This section is actually ruby code that runs a foreach loop on the array &ldquo;ntpServerList&rdquo; and adds a line for each ntp server contained in that array.</p>
+
+<ul>
+<li>Run the tree command and you should see the following file/directory structure:</li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant vagrant-vms<span style="color:#f92672">]</span><span style="color:#75715e"># tree</span>
+.
+├── example_box
+│   └── dummy.box
+├── manifests
+│   └── site.pp
+├── modules
+│   ├── common
+│   │   └── manifests
+│   │       └── init.pp
+│   └── ntp
+│       ├── manifests
+│       │   └── init.pp
+│       └── templates
+│           └── client-ntp.conf.erb
+└── Vagrantfile
+
+<span style="color:#ae81ff">8</span> directories, <span style="color:#ae81ff">6</span> files
+<span style="color:#f92672">[</span>root@vagrant vagrant-vms<span style="color:#f92672">]</span># </code></pre></div>
+
+<h3 id="2-modify-the-vagrantfile-we-created-in-the-last-post-to-include-the-following">2. Modify the Vagrantfile we created in the last post to include the following:</h3>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant vagrant-vms<span style="color:#f92672">]</span><span style="color:#75715e"># cat Vagrantfile</span>
+Vagrant.configure<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;2&#34;</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">do</span> |config|
+  config.vm.box <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;dummy&#39;</span>
+  config.vm.box_url <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;./example_box/dummy.box&#39;</span>
+
+  config.vm.provider :vsphere <span style="color:#66d9ef">do</span> |vsphere|
+    vsphere.host <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;192.168.1.195&#39;</span>
+    vsphere.name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;vagrant-test&#39;</span>
+    vsphere.clone_from_vm <span style="color:#f92672">=</span> true
+    vsphere.template_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;vagrant-centos-6.5&#39;</span>
+    vsphere.user <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;root@localos&#39;</span>
+    vsphere.password <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;S0meR@nd0mP@ssw0rd&#39;</span>
+    vsphere.insecure <span style="color:#f92672">=</span> true
+    vsphere.data_store_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;vsanDatastore&#39;</span>
+    vsphere.linked_clone <span style="color:#f92672">=</span> true
+    vsphere.customization_spec_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;vagrant-centos&#39;</span>
+  end
+  config.vm.provision <span style="color:#e6db74">&#34;puppet&#34;</span> <span style="color:#66d9ef">do</span> |puppet|
+    puppet.manifests_path <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;manifests&#34;</span>
+    puppet.manifest_file <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;site.pp&#34;</span>
+    puppet.module_path <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;modules&#34;</span>
+  end
+end
+<span style="color:#f92672">[</span>root@vagrant vagrant-vms<span style="color:#f92672">]</span># </code></pre></div>
+
+<p>The following new lines have been added:</p>
+
+<ul>
+<li>&ldquo;puppet.manifests_path&rdquo; specifies the sub-directory, from the directory containing the Vagrantfile, that contains the puppet manifests.</li>
+<li>&ldquo;puppet.manifest_file&rdquo; specifies the puppet manifest that will be initially run.</li>
+<li>&ldquo;puppet.module_path&rdquo; specifies the sub-directory, from the directory containing the Vagrantfile, that contains the puppet modules.</li>
+</ul>
+
+<h3 id="3-test-the-configuration-changes-we-made-by-running-a-vagrant-up">3. Test the configuration changes we made by running a &ldquo;vagrant up&rdquo;:</h3>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant vagrant-vms<span style="color:#f92672">]</span><span style="color:#75715e"># vagrant up --provider=vsphere</span>
+Bringing machine <span style="color:#e6db74">&#39;default&#39;</span> up with <span style="color:#e6db74">&#39;vsphere&#39;</span> provider...
+<span style="color:#f92672">==</span>&gt; default: Calling vSphere CloneVM with the following settings:
+<span style="color:#f92672">==</span>&gt; default:  -- Source VM: vagrant-centos-6.5
+<span style="color:#f92672">==</span>&gt; default:  -- Name: vagrant-test
+<span style="color:#f92672">==</span>&gt; default: Waiting <span style="color:#66d9ef">for</span> SSH to become available...
+<span style="color:#f92672">==</span>&gt; default: New virtual machine successfully cloned and started
+<span style="color:#f92672">==</span>&gt; default: Rsyncing folder: /root/vagrant-vms/ <span style="color:#f92672">=</span>&gt; /vagrant
+<span style="color:#f92672">==</span>&gt; default: Rsyncing folder: /root/vagrant-vms/manifests/ <span style="color:#f92672">=</span>&gt; /tmp/vagrant-puppet-1/manifests
+<span style="color:#f92672">==</span>&gt; default: Rsyncing folder: /root/vagrant-vms/modules/ <span style="color:#f92672">=</span>&gt; /tmp/vagrant-puppet-1/modules-0
+<span style="color:#f92672">==</span>&gt; default: Running provisioner: puppet...
+Running Puppet with site.pp...
+notice: /File<span style="color:#f92672">[</span>/etc/ntp.conf<span style="color:#f92672">]</span>/content: content changed <span style="color:#e6db74">&#39;{md5}d7e1e16f9c0cd6382f6b68b486163db1&#39;</span> to <span style="color:#e6db74">&#39;{md5}f7a83a4ca84e1ba2bba0166c5620e9e7&#39;</span>
+notice: /Stage<span style="color:#f92672">[</span>main<span style="color:#f92672">]</span>/Ntp/Service<span style="color:#f92672">[</span>ntpd<span style="color:#f92672">]</span>: Triggered <span style="color:#e6db74">&#39;refresh&#39;</span> from <span style="color:#ae81ff">1</span> events
+notice: Finished catalog run in <span style="color:#ae81ff">0</span>.72 seconds
+<span style="color:#f92672">[</span>root@vagrant vagrant-vms<span style="color:#f92672">]</span># </code></pre></div>
+
+<p>You might notice a few new lines since the &ldquo;vagrant up&rdquo; we ran in the last post.</p>
+
+<ul>
+<li>The manifests &amp; modules folders we specified in Vagrantfile have been copied over using rsync.</li>
+<li>The Puppet agent is running a &ldquo;puppet apply&rdquo; using the site.pp file we specified.</li>
+<li>/etc/ntp.conf was modified by Puppet</li>
+<li>The NTP service was notified that it needed to refresh it&rsquo;s configuration since /etc/ntp.conf had been modified.</li>
+</ul>
+
+<h3 id="4-connect-to-the-vagrant-vm-to-validate-that-etc-ntp-conf-has-been-modified-to-include-the-three-ntp-servers-we-specified">4. Connect to the vagrant vm to validate that /etc/ntp.conf has been modified to include the three NTP servers we specified:</h3>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant vagrant-vms<span style="color:#f92672">]</span><span style="color:#75715e"># vagrant ssh</span>
+<span style="color:#f92672">[</span>vagrant@vagrant-test ~<span style="color:#f92672">]</span>$ cat /etc/ntp.conf
+<span style="color:#75715e"># This file is being maintained by Puppet.</span>
+<span style="color:#75715e"># DO NOT EDIT</span>
+
+<span style="color:#75715e"># Permit time synchronization with our time source, but do not</span>
+<span style="color:#75715e"># permit the source to query or modify the service on this system.</span>
+restrict default kod nomodify notrap nopeer noquery
+restrict -6 default kod nomodify notrap nopeer noquery
+
+<span style="color:#75715e"># Permit all access over the loopback interface.  This could</span>
+<span style="color:#75715e"># be tightened as well, but to do so would effect some of</span>
+<span style="color:#75715e"># the administrative functions.</span>
+restrict <span style="color:#ae81ff">127</span>.0.0.1
+restrict -6 ::1
+
+server <span style="color:#ae81ff">0</span>.pool.ntp.org iburst
+server <span style="color:#ae81ff">1</span>.pool.ntp.org iburst
+server <span style="color:#ae81ff">2</span>.pool.ntp.org iburst
+
+<span style="color:#75715e"># Drift file.  Put this in a directory which the daemon can write to.</span>
+<span style="color:#75715e"># No symbolic links allowed, either, since the daemon updates the file</span>
+<span style="color:#75715e"># by creating a temporary in the same directory and then rename()&#39;ing</span>
+<span style="color:#75715e"># it to the file.</span>
+driftfile /var/lib/ntp/drift
+<span style="color:#f92672">[</span>vagrant@vagrant-test ~<span style="color:#f92672">]</span>$ exit
+logout
+Connection to <span style="color:#ae81ff">192</span>.168.1.123 closed.
+<span style="color:#f92672">[</span>root@vagrant vagrant-vms<span style="color:#f92672">]</span># </code></pre></div>
+
+<h3 id="5-modify-the-site-pp-file-to-add-a-node-definition-for-our-vagrant-vm">5. Modify the site.pp file to add a node definition for our vagrant vm:</h3>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant vagrant-vms<span style="color:#f92672">]</span><span style="color:#75715e"># cat site.pp</span>
+node default <span style="color:#f92672">{</span>
+  include common
+    class <span style="color:#f92672">{</span><span style="color:#e6db74">&#39;ntp&#39;</span>:<span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+node <span style="color:#e6db74">&#39;vagrant-test.mylab.net&#39;</span> <span style="color:#f92672">{</span>
+  include common
+    class <span style="color:#f92672">{</span><span style="color:#e6db74">&#39;ntp&#39;</span>:
+      ntpServerList <span style="color:#f92672">=</span>&gt; <span style="color:#f92672">[</span><span style="color:#e6db74">&#39;3.pool.ntp.org&#39;</span>,<span style="color:#e6db74">&#39;4.pool.ntp.org&#39;</span>,<span style="color:#e6db74">&#39;5.pool.ntp.org&#39;</span><span style="color:#f92672">]</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span></code></pre></div>
+
+<p>The new &ldquo;node &lsquo;vagrant-test.mylab.net&rsquo;&rdquo; definition will only be run by hosts with a matching hostname. Any host that doesn&rsquo;t have a matching host definition will continue to run the &ldquo;node default&rdquo; section. Node definitions allow you to change variables or even modules that will be run by specific hosts and provide flexibility in the changes made to a given host. Our new node section will configure &ldquo;vagrant-test.mylab.net&rdquo; to use a different set of ntp servers than any other host that runs this Puppet manifest</p>
+
+<h3 id="6-run-vagrant-provision-to-apply-the-updated-puppet-manifest-to-our-vagrant-vm">6. Run &lsquo;vagrant provision&rsquo; to apply the updated Puppet manifest to our Vagrant vm:</h3>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant vagrant-vms<span style="color:#f92672">]</span><span style="color:#75715e"># vagrant provision</span>
+<span style="color:#f92672">==</span>&gt; default: Rsyncing folder: /root/vagrant-vms/ <span style="color:#f92672">=</span>&gt; /vagrant
+<span style="color:#f92672">==</span>&gt; default: Rsyncing folder: /root/vagrant-vms/manifests/ <span style="color:#f92672">=</span>&gt; /tmp/vagrant-puppet-1/manifests
+<span style="color:#f92672">==</span>&gt; default: Rsyncing folder: /root/vagrant-vms/modules/ <span style="color:#f92672">=</span>&gt; /tmp/vagrant-puppet-1/modules-0
+<span style="color:#f92672">==</span>&gt; default: Running provisioner: puppet...
+Running Puppet with site.pp...
+notice: /File<span style="color:#f92672">[</span>/etc/ntp.conf<span style="color:#f92672">]</span>/content: content changed <span style="color:#e6db74">&#39;{md5}f7a83a4ca84e1ba2bba0166c5620e9e7&#39;</span> to <span style="color:#e6db74">&#39;{md5}414e811fdbfa3f8cfa38e1e4e6d0586f&#39;</span>
+notice: /Stage<span style="color:#f92672">[</span>main<span style="color:#f92672">]</span>/Ntp/Service<span style="color:#f92672">[</span>ntpd<span style="color:#f92672">]</span>: Triggered <span style="color:#e6db74">&#39;refresh&#39;</span> from <span style="color:#ae81ff">1</span> events
+notice: Finished catalog run in <span style="color:#ae81ff">0</span>.34 seconds
+<span style="color:#f92672">[</span>root@vagrant vagrant-vms<span style="color:#f92672">]</span>#</code></pre></div>
+
+<p>While we could have destroyed and recreated our Vagrant vm to test the change to the Puppet manifest, &lsquo;vagrant provision&rsquo; quickly resyncs the folders defined in our Vagrantfile and re-runs our Puppet manifest.</p>
+
+<h3 id="7-connect-to-the-vagrant-vm-to-validate-that-etc-ntp-conf-has-been-modified-to-include-the-three-ntp-servers-we-defined-fof-this-specific-node">7. Connect to the vagrant vm to validate that /etc/ntp.conf has been modified to include the three NTP servers we defined fof this specific node:</h3>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">root@vagrant vagrant-vms<span style="color:#f92672">]</span><span style="color:#75715e"># vagrant ssh</span>
+Last login: Tue May  <span style="color:#ae81ff">6</span> <span style="color:#ae81ff">15</span>:09:50 <span style="color:#ae81ff">2014</span> from <span style="color:#ae81ff">192</span>.168.1.40
+<span style="color:#f92672">[</span>vagrant@vagrant-test ~<span style="color:#f92672">]</span>$ cat /etc/ntp.conf
+<span style="color:#75715e"># This file is being maintained by Puppet.</span>
+<span style="color:#75715e"># DO NOT EDIT</span>
+
+<span style="color:#75715e"># Permit time synchronization with our time source, but do not</span>
+<span style="color:#75715e"># permit the source to query or modify the service on this system.</span>
+restrict default kod nomodify notrap nopeer noquery
+restrict -6 default kod nomodify notrap nopeer noquery
+
+<span style="color:#75715e"># Permit all access over the loopback interface.  This could</span>
+<span style="color:#75715e"># be tightened as well, but to do so would effect some of</span>
+<span style="color:#75715e"># the administrative functions.</span>
+restrict <span style="color:#ae81ff">127</span>.0.0.1
+restrict -6 ::1
+
+server <span style="color:#ae81ff">3</span>.pool.ntp.org iburst
+server <span style="color:#ae81ff">4</span>.pool.ntp.org iburst
+server <span style="color:#ae81ff">5</span>.pool.ntp.org iburst
+
+<span style="color:#75715e"># Drift file.  Put this in a directory which the daemon can write to.</span>
+<span style="color:#75715e"># No symbolic links allowed, either, since the daemon updates the file</span>
+<span style="color:#75715e"># by creating a temporary in the same directory and then rename()&#39;ing</span>
+<span style="color:#75715e"># it to the file.</span>
+driftfile /var/lib/ntp/drift
+<span style="color:#f92672">[</span>vagrant@vagrant-test ~<span style="color:#f92672">]</span>$ exit
+logout
+Connection to <span style="color:#ae81ff">192</span>.168.1.123 closed.
+<span style="color:#f92672">[</span>root@vagrant vagrant-vms<span style="color:#f92672">]</span>#</code></pre></div>
+
+<h3 id="8-shutdown-the-vagrant-machine">8. Shutdown the vagrant machine:</h3>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant vagrant-vms<span style="color:#f92672">]</span><span style="color:#75715e"># vagrant destroy</span>
+<span style="color:#f92672">==</span>&gt; default: Calling vSphere PowerOff
+<span style="color:#f92672">==</span>&gt; default: Calling vShpere Destroy
+<span style="color:#f92672">[</span>root@vagrant vagrant-vms<span style="color:#f92672">]</span>#</code></pre></div>
+
+<h4 id="hopefully-you-found-this-post-helpful-in-demonstrating-how-to-use-puppet-with-vagrant-as-well-as-the-benefits-it-provides-for-testing-puppet-manfests-and-modules">Hopefully you found this post helpful in demonstrating how to use Puppet with Vagrant, as well as the benefits it provides for testing Puppet manfests and modules</h4>
+
+<hr />
+
+<h4 id="please-provide-any-feedback-or-suggestions-to-my-twitter-account-located-on-the-about-page">Please provide any feedback or suggestions to my twitter account located on the about page.</h4>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="https://sdorsett.github.io/post/2014-04-24-vagrant-and-vcenter-guest-customization/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="https://sdorsett.github.io/post/2014-04-24-vagrant-and-vcenter-guest-customization/">Using advanced vagrant-vsphere provider settings and vCenter guest customization</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="next">
+      <a href="https://sdorsett.github.io/post/2014-05-25-vagrant-vcloud/">Introducing the vagrant-vcloud provider</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+    <a href="https://sdorsett.github.io/post/2014-05-25-vagrant-vcloud/"><i class="fa fa-chevron-right"></i></a>
+    
+  </div>
+</div>
+
+
+
+  
+
+</div>
+
+</div>
+</div>
+<script src="https://sdorsett.github.iojs/ui.js"></script>
+<script src="https://sdorsett.github.iojs/menus.js"></script>
+
+
+
+
+
+
+</body>
+</html>
+

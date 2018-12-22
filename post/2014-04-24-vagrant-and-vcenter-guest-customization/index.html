@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.52" />
+
+  <title>Using advanced vagrant-vsphere provider settings and vCenter guest customization &middot; Things I find interesting</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://sdorsett.github.io/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://sdorsett.github.io/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="https://sdorsett.github.io/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+ 
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="https://sdorsett.github.ioimg/favicon.ico" type="image/x-icon" />
+
+  
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="https://sdorsett.github.io/"> </a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/post/"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/about/"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/contact/"><i class='fa fa-phone fa-fw'></i>Contact</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/about/">About</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://twitter.com/standorsett" target="_blank"><i class="fa fa-twitter-square fa-fw"></i>Twitter</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://linkedin.com/in/stan-dorsett-53a8827" target="_blank"><i class="fa fa-linkedin-square fa-fw"></i>LinkedIn</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/sdorsett" target="_blank"><i class="fa fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small>&copy; 2018. All rights reserved.</small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Using advanced vagrant-vsphere provider settings and vCenter guest customization</h1>
+  <h2></h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>24 Apr 2014, 00:00</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://sdorsett.github.iotags/vagrant">vagrant</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://sdorsett.github.iotags/vagrant-vsphere">vagrant-vsphere</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://sdorsett.github.iotags/vsphere">vsphere</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  
+
+<p>This post will pick up where we left off by demonstrating more vagrant-vsphere provider settings using the CentOS template we customized in the last blog post. Let&rsquo;s get started:</p>
+
+<h3 id="1-create-a-new-customization-specification-in-the-vsphere-web-client-this-customization-specification-will-allow-us-to-set-the-hostname-of-the-vm-created-by-vagrant-up-to-the-same-name-as-the-virtual-machine">1. Create a new customization specification in the vSphere web client. This customization specification will allow us to set the hostname of the vm created by &ldquo;vagrant up&rdquo; to the same name as the virtual machine.</h3>
+
+<ul>
+<li>Go to Home | Customization Specification Manager:</li>
+</ul>
+
+<p><img src="https://sdorsett.github.io/static/01-web-client-home.jpg" alt="screenshot" /></p>
+
+<ul>
+<li>Click the &ldquo;Create a new specification&rdquo; button:</li>
+</ul>
+
+<p><img src="https://sdorsett.github.io/static/02-create-guest-customization.jpg" alt="screenshot" /></p>
+
+<ul>
+<li>Select &ldquo;Linux&rdquo; for the &ldquo;Target VM Operating System&rdquo; and name the customization specification. Click &ldquo;Next&rdquo; to continue</li>
+</ul>
+
+<p><img src="https://sdorsett.github.io/static/03-new-guest-customization.jpg" alt="screenshot" /></p>
+
+<ul>
+<li>For &ldquo;Computer Name&rdquo; select &ldquo;Use the virtual machine name&rdquo; and click &ldquo;Next&rdquo; to continue.</li>
+</ul>
+
+<p><img src="https://sdorsett.github.io/static/04-set-computer-name.jpg" alt="screenshot" /></p>
+
+<ul>
+<li>For &ldquo;Time Zone&rdquo; select the time zone you want to use and click &ldquo;Next&rdquo; to continue.</li>
+</ul>
+
+<p><img src="https://sdorsett.github.io/static/05-set-timezone.jpg" alt="screenshot" /></p>
+
+<ul>
+<li>For &ldquo;Configure Network&rdquo; keep the default and click &ldquo;Next to continue.</li>
+</ul>
+
+<p><img src="https://sdorsett.github.io/static/06-configure-network.jpg" alt="screenshot" /></p>
+
+<ul>
+<li>For &ldquo;Enter DNS and Domain settings&rdquo; enter the DNS servers and the domain name you want to assign to the cloned vm. Click &ldquo;Next to continue.</li>
+</ul>
+
+<p><img src="https://sdorsett.github.io/static/07-dns-settings.jpg" alt="screenshot" /></p>
+
+<ul>
+<li>Click &ldquo;Finish&rdquo; to create the customization specification.</li>
+</ul>
+
+<p><img src="https://sdorsett.github.io/static/08-finish.jpg" alt="screenshot" /></p>
+
+<h3 id="2-modify-the-vagrantfile-we-created-in-the-initial-a-href-2014-04-19-vagrant-install-installing-vagrant-and-the-vagrant-vsphere-plugin-on-centos-6-x-a-post">2. Modify the Vagrantfile we created in the initial <a href="../2014-04-19-vagrant-install">Installing Vagrant and the vagrant-vsphere plugin on CentOS 6.x</a> post.</h3>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant vagrant-vms<span style="color:#f92672">]</span><span style="color:#75715e"># cat Vagrantfile</span>
+Vagrant.configure<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;2&#34;</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">do</span> |config|
+  config.vm.box <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;dummy&#39;</span>
+  config.vm.box_url <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;./example_box/dummy.box&#39;</span>
+
+  config.vm.provider :vsphere <span style="color:#66d9ef">do</span> |vsphere|
+    vsphere.host <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;192.168.1.195&#39;</span>
+    vsphere.name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;vagrant-test&#39;</span>
+    vsphere.clone_from_vm <span style="color:#f92672">=</span> true
+    vsphere.template_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;vagrant-centos-6.5&#39;</span>
+    vsphere.user <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;root@localos&#39;</span>
+    vsphere.password <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;S0meR@nd0mP@ssw0rd&#39;</span>
+    vsphere.insecure <span style="color:#f92672">=</span> true
+    vsphere.data_store_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;vsanDatastore&#39;</span>
+    vsphere.linked_clone <span style="color:#f92672">=</span> true
+    vsphere.customization_spec_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;vagrant-centos&#39;</span>
+  end
+end</code></pre></div>
+
+<p>The following new lines have been added:</p>
+
+<ul>
+<li>&ldquo;vsphere.data_store_name&rdquo; is the datastore that the cloned vm will be deployed to.</li>
+<li>&ldquo;vsphere.linked_clone&rdquo; being set to &ldquo;true&rdquo; will cause the cloned vm to be deployed as a linked clone. This will dramatically decrease the amount of time needed to clone the vm when &ldquo;vagrant up&rdquo; command is issued.</li>
+<li>&ldquo;vsphere.customization_spec_name&rdquo; will specify the customization specification that will be applied to the cloned vm. Set this to the customization specification we created in the previous step.</li>
+</ul>
+
+<h3 id="3-test-the-configuration-changes-we-made-by-running-a-vagrant-up">3. Test the configuration changes we made by running a &ldquo;vagrant up&rdquo;:</h3>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant vagrant-vms<span style="color:#f92672">]</span><span style="color:#75715e"># vagrant up --provider=vsphere</span>
+Bringing machine <span style="color:#e6db74">&#39;default&#39;</span> up with <span style="color:#e6db74">&#39;vsphere&#39;</span> provider...
+<span style="color:#f92672">==</span>&gt; default: Calling vSphere CloneVM with the following settings:
+<span style="color:#f92672">==</span>&gt; default:  -- Source VM: vagrant-centos-6.5
+<span style="color:#f92672">==</span>&gt; default:  -- Name: vagrant-test
+<span style="color:#f92672">==</span>&gt; default: Waiting <span style="color:#66d9ef">for</span> SSH to become available...
+<span style="color:#f92672">==</span>&gt; default: New virtual machine successfully cloned and started
+<span style="color:#f92672">==</span>&gt; default: Rsyncing folder: /root/vagrant-vms/ <span style="color:#f92672">=</span>&gt; /vagrant
+<span style="color:#f92672">[</span>root@vagrant vagrant-vms<span style="color:#f92672">]</span># </code></pre></div>
+
+<p>You should find the time it took to deploy the linked clone vm was much faster than previous full clones of the vagrant template vm.</p>
+
+<h3 id="4-connect-to-the-vagrant-vm-to-validate-the-hostname-of-the-vm-matched-the-vm-name-search-domain">4. Connect to the vagrant vm to validate the hostname of the vm matched the vm name &amp; search domain:</h3>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant vagrant-vms<span style="color:#f92672">]</span><span style="color:#75715e"># vagrant ssh</span>
+<span style="color:#f92672">[</span>vagrant@vagrant-test ~<span style="color:#f92672">]</span>$ hostname -f
+vagrant-test.mylab.net
+<span style="color:#f92672">[</span>vagrant@vagrant-test ~<span style="color:#f92672">]</span>$ exit
+logout
+Connection to <span style="color:#ae81ff">192</span>.168.1.117 closed.
+<span style="color:#f92672">[</span>root@vagrant vagrant-vms<span style="color:#f92672">]</span># </code></pre></div>
+
+<h3 id="5-clean-up-after-ourselves-and-call-it-a-day">5. Clean up after ourselves and call it a day:</h3>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@vagrant vagrant-vms<span style="color:#f92672">]</span><span style="color:#75715e"># vagrant destroy</span>
+<span style="color:#f92672">==</span>&gt; default: Calling vSphere PowerOff
+<span style="color:#f92672">==</span>&gt; default: Calling vShpere Destroy
+<span style="color:#f92672">[</span>root@vagrant vagrant-vms<span style="color:#f92672">]</span>#</code></pre></div>
+
+<p>You might be wondering why setting the hostname &amp; domain name might be so important. We will see in future posts how to use hostnames to determine which manifests will be applied to specific vms we clone and power up with Vagrant.</p>
+
+<h4 id="hopefully-you-found-this-post-helpful-understanding-more-about-the-usefulness-of-customization-specifications-and-advanced-vagrant-vsphere-configurations-the-next-blog-post-will-start-diving-into-using-vagrant-to-test-puppet-manifests">Hopefully you found this post helpful understanding more about the usefulness of customization specifications and advanced vagrant-vsphere configurations. The next blog post will start diving into using Vagrant to test Puppet manifests.</h4>
+
+<hr />
+
+<h4 id="please-provide-any-feedback-or-suggestions-to-my-twitter-account-located-on-the-about-page">Please provide any feedback or suggestions to my twitter account located on the about page.</h4>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="https://sdorsett.github.io/post/2014-04-20-vagrant-boxes/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="https://sdorsett.github.io/post/2014-04-20-vagrant-boxes/">Creating a CentOS 6.x template that is customized for Vagrant</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="next">
+      <a href="https://sdorsett.github.io/post/2014-05-06-vagrant-and-puppet/">Creating a Puppet manifest and integrating it with Vagrant</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+    <a href="https://sdorsett.github.io/post/2014-05-06-vagrant-and-puppet/"><i class="fa fa-chevron-right"></i></a>
+    
+  </div>
+</div>
+
+
+
+  
+
+</div>
+
+</div>
+</div>
+<script src="https://sdorsett.github.iojs/ui.js"></script>
+<script src="https://sdorsett.github.iojs/menus.js"></script>
+
+
+
+
+
+
+</body>
+</html>
+

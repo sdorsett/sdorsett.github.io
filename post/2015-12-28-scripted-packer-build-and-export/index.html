@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.52" />
+
+  <title>Scripted Packer build, ovftool export and Vagrant .box file creation &middot; Things I find interesting</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://sdorsett.github.io/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://sdorsett.github.io/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="https://sdorsett.github.io/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+ 
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="https://sdorsett.github.ioimg/favicon.ico" type="image/x-icon" />
+
+  
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="https://sdorsett.github.io/"> </a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/post/"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/about/"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/contact/"><i class='fa fa-phone fa-fw'></i>Contact</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/about/">About</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://twitter.com/standorsett" target="_blank"><i class="fa fa-twitter-square fa-fw"></i>Twitter</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://linkedin.com/in/stan-dorsett-53a8827" target="_blank"><i class="fa fa-linkedin-square fa-fw"></i>LinkedIn</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/sdorsett" target="_blank"><i class="fa fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small>&copy; 2018. All rights reserved.</small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Scripted Packer build, ovftool export and Vagrant .box file creation</h1>
+  <h2></h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>28 Dec 2015, 00:00</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://sdorsett.github.iotags/packer">packer</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://sdorsett.github.iotags/ovftool">ovftool</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://sdorsett.github.iotags/vagrant">vagrant</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  
+
+<p>This is the seventh in a series of posts on <a href="../2015-12-22-pipeline-for-creating-packer-box-files">using a Packer pipeline to generate Vagrant .box files</a>.</p>
+
+<p>In the last post we covered <a href="../2015-12-27-using-ovftool-to-export-packer-generated-virtual-machines">using ovftool to convert Packer generated virtual machines into Vagrant .box files</a>. I promised to show you a better way of exporting and creating the Vagrant .box files, so in this post we will be combining the following items in one script:</p>
+
+<ul>
+<li>Kicking off the Packer build of a specific template</li>
+<li>Exporting the Packer generated virtual machine</li>
+<li>Creating the necessary metadata.json &amp; Vagrantfile files</li>
+<li>Compressing the files into a TAR file with the .box extension</li>
+<li>Copying the Vagrant .box files to /vat/www/html/box-files/ so they can accessed by HTTP</li>
+</ul>
+
+<p>Let&rsquo;s get started&hellip;</p>
+
+<h3 id="1-start-off-by-connecting-by-ssh-to-centos-virtual-machine-we-have-been-using-in-previous-posts">1. Start off by connecting by SSH to CentOS virtual machine we have been using in previous posts.</h3>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sdorsett-mbp:~ sdorsett$ ssh root@192.168.1.52
+root@192.168.1.52<span style="color:#960050;background-color:#1e0010">&#39;</span>s password:
+Last login: Sat Dec <span style="color:#ae81ff">26</span> <span style="color:#ae81ff">22</span>:04:20 <span style="color:#ae81ff">2015</span> from <span style="color:#ae81ff">192</span>.168.1.163
+<span style="color:#f92672">[</span>root@packer-centos ~<span style="color:#f92672">]</span>#</code></pre></div>
+
+<h3 id="2-create-a-new-directory-in-the-packer-templates-directory-for-storing-build-scripts">2. Create a new directory, in the packer-templates directory, for storing build scripts.</h3>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@packer-centos ~<span style="color:#f92672">]</span><span style="color:#75715e"># mkdir ~/packer-templates/build-scripts</span>
+<span style="color:#f92672">[</span>root@packer-centos ~<span style="color:#f92672">]</span><span style="color:#75715e"># cd packer-templates/build-scripts/</span>
+<span style="color:#f92672">[</span>root@packer-centos build-scripts<span style="color:#f92672">]</span>#</code></pre></div>
+
+<h3 id="3-next-we-will-create-a-generic-script-for-performing-a-packer-build-of-a-template">3. Next we will create a generic script for performing a Packer build of a template.</h3>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@packer-centos build-scripts<span style="color:#f92672">]</span><span style="color:#75715e"># cat generic-packer-build-script.sh</span>
+<span style="color:#75715e">#!/bin/bash
+</span><span style="color:#75715e"></span>
+source /root/.bashrc
+
+echo <span style="color:#e6db74">&#34;starting packer build of </span>$PACKER_VM_NAME<span style="color:#e6db74">&#34;</span>
+packer build -var-file<span style="color:#f92672">=</span>packer-remote-info.json /root/packer-templates/templates/$PACKER_VM_NAME.json
+
+echo <span style="color:#e6db74">&#34;registering </span><span style="color:#e6db74">${</span>PACKER_VM_NAME<span style="color:#e6db74">}</span><span style="color:#e6db74"> virtual machine on </span><span style="color:#e6db74">${</span>PACKER_REMOTE_HOST<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+/usr/bin/sshpass -p <span style="color:#e6db74">${</span>PACKER_REMOTE_PASSWORD<span style="color:#e6db74">}</span> ssh root@<span style="color:#e6db74">${</span>PACKER_REMOTE_HOST<span style="color:#e6db74">}</span> <span style="color:#e6db74">&#34;vim-cmd solo/registervm /vmfs/volumes/</span><span style="color:#e6db74">${</span>PACKER_REMOTE_DATASTORE<span style="color:#e6db74">}</span><span style="color:#e6db74">/output-</span><span style="color:#e6db74">${</span>PACKER_VM_NAME<span style="color:#e6db74">}</span><span style="color:#e6db74">/*.vmx&#34;</span>
+
+mkdir -p /root/box_files/ovf/empty_dir/
+mkdir -p /root/box_files/vmx/empty_dir/
+
+rm -rf /root/box_files/ovf/<span style="color:#e6db74">${</span>PACKER_VM_NAME<span style="color:#e6db74">}</span>
+rm -rf /root/box_files/vmx/<span style="color:#e6db74">${</span>PACKER_VM_NAME<span style="color:#e6db74">}</span>
+
+echo <span style="color:#e6db74">&#34;output of /vmfs/volumes/</span><span style="color:#e6db74">${</span>PACKER_REMOTE_DATASTORE<span style="color:#e6db74">}</span><span style="color:#e6db74">/output-</span><span style="color:#e6db74">${</span>PACKER_VM_NAME<span style="color:#e6db74">}</span><span style="color:#e6db74">/*.vmxf:&#34;</span>
+/usr/bin/sshpass -p <span style="color:#e6db74">${</span>PACKER_REMOTE_PASSWORD<span style="color:#e6db74">}</span> ssh root@<span style="color:#e6db74">${</span>PACKER_REMOTE_HOST<span style="color:#e6db74">}</span> <span style="color:#e6db74">&#34;cat /vmfs/volumes/</span><span style="color:#e6db74">${</span>PACKER_REMOTE_DATASTORE<span style="color:#e6db74">}</span><span style="color:#e6db74">/output-</span><span style="color:#e6db74">${</span>PACKER_VM_NAME<span style="color:#e6db74">}</span><span style="color:#e6db74">/*.vmxf&#34;</span>
+
+ovftool vi://root:<span style="color:#e6db74">${</span>PACKER_REMOTE_PASSWORD<span style="color:#e6db74">}</span>@<span style="color:#e6db74">${</span>PACKER_REMOTE_HOST<span style="color:#e6db74">}</span>/<span style="color:#e6db74">${</span>PACKER_VM_NAME<span style="color:#e6db74">}</span> /root/box_files/ovf/
+ovftool -tt<span style="color:#f92672">=</span>vmx vi://root:<span style="color:#e6db74">${</span>PACKER_REMOTE_PASSWORD<span style="color:#e6db74">}</span>@<span style="color:#e6db74">${</span>PACKER_REMOTE_HOST<span style="color:#e6db74">}</span>/<span style="color:#e6db74">${</span>PACKER_VM_NAME<span style="color:#e6db74">}</span> /root/box_files/vmx/
+
+echo <span style="color:#e6db74">&#34;creating metadata.json and Vagrantfile files in ovf virtual machine directory&#34;</span>
+echo <span style="color:#e6db74">&#39;{&#34;provider&#34;:&#34;vmware_ovf&#34;}&#39;</span> &gt;&gt; /root/box_files/ovf/<span style="color:#e6db74">${</span>PACKER_VM_NAME<span style="color:#e6db74">}</span>/metadata.json
+touch /root/box_files/ovf/<span style="color:#e6db74">${</span>PACKER_VM_NAME<span style="color:#e6db74">}</span>/Vagrantfile
+cd /root/box_files/ovf/empty_dir/
+cd /root/box_files/ovf/<span style="color:#e6db74">${</span>PACKER_VM_NAME<span style="color:#e6db74">}</span>/
+
+echo <span style="color:#e6db74">&#34;compressing ovf virtual machine files to /var/www/html/box-files/</span><span style="color:#e6db74">${</span>PACKER_VM_NAME<span style="color:#e6db74">}</span><span style="color:#e6db74">-vmware_ovf-1.0.box&#34;</span>
+tar cvzf /var/www/html/box-files/$PACKER_VM_NAME-vmware_ovf-1.0.box ./*
+
+echo <span style="color:#e6db74">&#34;creating metadata.json and Vagrantfile files in vmx virtual machine directory&#34;</span>
+echo <span style="color:#e6db74">&#39;{&#34;provider&#34;:&#34;vmware_desktop&#34;}&#39;</span> &gt;&gt; /root/box_files/vmx/<span style="color:#e6db74">${</span>PACKER_VM_NAME<span style="color:#e6db74">}</span>/metadata.json
+touch /root/box_files/vmx/<span style="color:#e6db74">${</span>PACKER_VM_NAME<span style="color:#e6db74">}</span>/Vagrantfile
+cd /root/box_files/vmx/empty_dir/
+cd /root/box_files/vmx/<span style="color:#e6db74">${</span>PACKER_VM_NAME<span style="color:#e6db74">}</span>/
+
+echo <span style="color:#e6db74">&#34;compressing vmx virtual machine files to /var/www/html/box-files/</span><span style="color:#e6db74">${</span>PACKER_VM_NAME<span style="color:#e6db74">}</span><span style="color:#e6db74">-vmware_desktop-1.0.box&#34;</span>
+tar cvzf /var/www/html/box-files/$PACKER_VM_NAME-vmware_desktop-1.0.box ./*
+
+echo <span style="color:#e6db74">&#34;cleaning up /root/box_files directories&#34;</span>
+rm -rf /root/box_files/ovf/$PACKER_VM_NAME
+rm -rf /root/box_files/vmx/$PACKER_VM_NAME
+
+echo <span style="color:#e6db74">&#34;deleting </span>$PACKER_VM_NAME<span style="color:#e6db74"> from </span>$PACKER_REMOTE_HOST<span style="color:#e6db74">&#34;</span>
+/usr/bin/sshpass -p <span style="color:#e6db74">${</span>PACKER_REMOTE_PASSWORD<span style="color:#e6db74">}</span> ssh root@<span style="color:#e6db74">${</span>PACKER_REMOTE_HOST<span style="color:#e6db74">}</span>  <span style="color:#e6db74">&#34;vim-cmd vmsvc/getallvms | grep </span><span style="color:#e6db74">${</span>PACKER_VM_NAME<span style="color:#e6db74">}</span><span style="color:#e6db74"> | cut -d &#39; &#39; -f 1 | xargs vim-cmd vmsvc/destroy&#34;</span>
+
+echo <span style="color:#e6db74">&#34;packer build of </span>$PACKER_VM_NAME<span style="color:#e6db74"> has been  completed&#34;</span>
+
+<span style="color:#f92672">[</span>root@packer-centos build-scripts<span style="color:#f92672">]</span>#</code></pre></div>
+
+<p>If you look over this script you will notice it covers all of the tasks we performed manually in the last two posts. You might all notice the following environmental variables listed:</p>
+
+<ul>
+<li>PACKER_REMOTE_HOST</li>
+<li>PACKER_REMOTE_USERNAME</li>
+<li>PACKER_REMOTE_PASSWORD</li>
+<li>PACKER_REMOTE_DATASTORE</li>
+<li>PACKER_VM_NAME</li>
+</ul>
+
+<p>We are again using the idea of &ldquo;separating data from code&rdquo; to keep environment specific information out of the scripts. This will help in keeping sensitive information from being store with our scripts in a code repository.</p>
+
+<h3 id="4-we-now-need-to-added-the-above-listed-packer-remote-environmental-variables-into-the-bashrc-file-so-the-script-will-know-how-to-connect-to-vcenter">4. We now need to added the above listed PACKER_REMOTE environmental variables into the .bashrc file, so the script will know how to connect to vCenter</h3>
+
+<p>Add the following lines to the bottom of /root/.bashrc. Make sure to update any of them that do you match your environment:</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">PACKER_REMOTE_HOST<span style="color:#f92672">=</span><span style="color:#ae81ff">192</span>.168.1.51
+PACKER_REMOTE_USERNAME<span style="color:#f92672">=</span>root
+PACKER_REMOTE_PASSWORD<span style="color:#f92672">=</span>password
+PACKER_REMOTE_DATASTORE<span style="color:#f92672">=</span>datastore1</code></pre></div>
+
+<p>After updating the ~/.bashrc file, reread the file by running the following command:</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@packer-centos build-scripts<span style="color:#f92672">]</span><span style="color:#75715e"># source ~/.bashrc</span>
+<span style="color:#f92672">[</span>root@packer-centos build-scripts<span style="color:#f92672">]</span>#</code></pre></div>
+
+<p>You can also validate the environmental variables exist by using the echo commmand:</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@packer-centos build-scripts<span style="color:#f92672">]</span><span style="color:#75715e"># echo $PACKER_REMOTE_HOST</span>
+<span style="color:#ae81ff">192</span>.168.1.51
+<span style="color:#f92672">[</span>root@packer-centos build-scripts<span style="color:#f92672">]</span>#</code></pre></div>
+
+<h3 id="5-we-need-to-delete-the-existing-packer-generated-virtual-machines-from-the-esxi-virtual-machine-embedded-host-client-since-the-packer-build-will-halt-if-the-virtual-machine-it-is-trying-to-build-already-exists">5. We need to delete the existing Packer generated virtual machines from the ESXi virtual machine embedded host client, since the Packer build will halt if the virtual machine it is trying to build already exists:</h3>
+
+<p><img src="https://sdorsett.github.io/static/01-delete-virtual-machine.png" alt="screenshot" /></p>
+
+<h3 id="6-with-the-generic-packer-build-script-and-environmental-variables-in-place-we-can-test-our-script-out-first-off-we-need-to-ensure-the-execution-bit-is-set-on-our-generic-packer-build-script">6. With the generic Packer build script and environmental variables in place we can test our script out. First off we need to ensure the execution bit is set on our generic Packer build script:</h3>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@packer-centos build-scripts<span style="color:#f92672">]</span><span style="color:#75715e"># cd ~/packer-templates/</span>
+<span style="color:#f92672">[</span>root@packer-centos packer-templates<span style="color:#f92672">]</span><span style="color:#75715e"># chmod +x build-scripts/generic-packer-build-script.sh</span>
+<span style="color:#f92672">[</span>root@packer-centos packer-templates<span style="color:#f92672">]</span><span style="color:#75715e"># ls -la build-scripts/generic-packer-build-script.sh</span>
+-rwxr-xr-x <span style="color:#ae81ff">1</span> root root <span style="color:#ae81ff">2091</span> Dec <span style="color:#ae81ff">26</span> <span style="color:#ae81ff">22</span>:27 build-scripts/generic-packer-build-script.sh
+<span style="color:#f92672">[</span>root@packer-centos packer-templates<span style="color:#f92672">]</span>#</code></pre></div>
+
+<p>Now that we have set the script as executable, we can use it to build to centos67 template by passing in the PACKER_VM_NAME environmental variable like the following:</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@packer-centos packer-templates<span style="color:#f92672">]</span><span style="color:#75715e"># PACKER_VM_NAME=centos67 build-scripts/generic-packer-build-script.sh</span>
+starting packer build of centos67
+centos67 output will be in this color.
+
+<span style="color:#f92672">==</span>&gt; centos67: Downloading or copying ISO
+    centos67: Downloading or copying: file:///root/packer-templates/iso/CentOS-6.7-x86_64-minimal.iso
+<span style="color:#f92672">==</span>&gt; centos67: Uploading ISO to remote machine...
+<span style="color:#f92672">==</span>&gt; centos67: Creating virtual machine disk
+<span style="color:#f92672">==</span>&gt; centos67: Building and writing VMX file
+<span style="color:#f92672">==</span>&gt; centos67: Starting HTTP server on port 8001
+<span style="color:#f92672">==</span>&gt; centos67: Registering remote VM...
+<span style="color:#f92672">==</span>&gt; centos67: Starting virtual machine...
+<span style="color:#f92672">==</span>&gt; centos67: Waiting 5s <span style="color:#66d9ef">for</span> boot...
+<span style="color:#f92672">==</span>&gt; centos67: Connecting to VM via VNC
+<span style="color:#f92672">==</span>&gt; centos67: Typing the boot command over VNC...
+<span style="color:#f92672">==</span>&gt; centos67: Waiting <span style="color:#66d9ef">for</span> SSH to become available...
+...</code></pre></div>
+
+<p>Checking the embedded host client we can see that the CentOS 6.7 operating system is being installed.</p>
+
+<p><img src="https://sdorsett.github.io/static/02-centos67-os-install.png" alt="screenshot" /></p>
+
+<p>Once the Packer build completes you will see the following output:</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">centos67: <span style="color:#f92672">==</span>&gt; Zero out the free space to save space in the final image
+centos67: dd: writing <span style="color:#e6db74">`</span>/EMPTY<span style="color:#e6db74">&#39;: No space left on device
+</span><span style="color:#e6db74">centos67: 12950+0 records in
+</span><span style="color:#e6db74">centos67: 12949+0 records out
+</span><span style="color:#e6db74">centos67: 13578776576 bytes (14 GB) copied, 462.514 s, 29.4 MB/s
+</span><span style="color:#e6db74">==&gt; centos67: Gracefully halting virtual machine...
+</span><span style="color:#e6db74">centos67: Waiting for VMware to clean up after itself...
+</span><span style="color:#e6db74">==&gt; centos67: Deleting unnecessary VMware files...
+</span><span style="color:#e6db74">centos67: Deleting: /vmfs/volumes/datastore1/output-centos67/vmware.log
+</span><span style="color:#e6db74">==&gt; centos67: Cleaning VMX prior to finishing up...
+</span><span style="color:#e6db74">centos67: Unmounting floppy from VMX...
+</span><span style="color:#e6db74">centos67: Detaching ISO from CD-ROM device...
+</span><span style="color:#e6db74">centos67: Disabling VNC server...
+</span><span style="color:#e6db74">==&gt; centos67: Compacting the disk image
+</span><span style="color:#e6db74">==&gt; centos67: Unregistering virtual machine...
+</span><span style="color:#e6db74">Build &#39;</span>centos67<span style="color:#960050;background-color:#1e0010">&#39;</span> finished.
+
+<span style="color:#f92672">==</span>&gt; Builds finished. The artifacts of successful builds are:
+--&gt; centos67: VM files in directory: /vmfs/volumes/datastore1/output-centos67</code></pre></div>
+
+<p>At this point the script will re-register the vm Packer built and output the .vmxf file of the virtual machine. This is use for ensuring vmtools was properly installed, since this file contains the vmtool components and their versions that were successfully installed:</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">registering centos67 virtual machine on <span style="color:#ae81ff">192</span>.168.1.51
+<span style="color:#ae81ff">18</span>
+output of /vmfs/volumes/datastore1/output-centos67/*.vmxf:
+&lt;?xml version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;1.0&#34;</span>?&gt;
+&lt;Foundry&gt;&lt;VM/&gt;&lt;tools-install-info&gt;&lt;installError&gt;0&lt;/installError&gt;&lt;updateCounter&gt;1&lt;/updateCounter&gt;&lt;/tools-install-info&gt;&lt;tools-manifest&gt;&lt;monolithic version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;9.9.4&#34;</span>/&gt;&lt;svga33 version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;10.3.0.0&#34;</span> installed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;FALSE&#34;</span>/&gt;&lt;svga4 version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;10.4.0.0&#34;</span> installed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;FALSE&#34;</span>/&gt;&lt;vmmouse42 version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;1.0.0.0&#34;</span> installed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;FALSE&#34;</span>/&gt;&lt;svga42 version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;10.10.2.0&#34;</span> installed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;FALSE&#34;</span>/&gt;&lt;vmmouse43 version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;12.6.4.0&#34;</span> installed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;FALSE&#34;</span>/&gt;&lt;svga43 version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;10.16.7.0&#34;</span> installed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;FALSE&#34;</span>/&gt;&lt;vmmouse43_64 version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;12.6.4.0&#34;</span> installed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;FALSE&#34;</span>/&gt;&lt;svga43_64 version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;10.16.7.0&#34;</span> installed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;FALSE&#34;</span>/&gt;&lt;vmmouse67 version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;12.6.4.0&#34;</span> installed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;FALSE&#34;</span>/&gt;&lt;svga67 version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;10.16.7.0&#34;</span> installed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;FALSE&#34;</span>/&gt;&lt;vmmouse67_64 version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;12.6.4.0&#34;</span> installed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;FALSE&#34;</span>/&gt;&lt;svga67_64 version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;10.16.7.0&#34;</span> installed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;FALSE&#34;</span>/&gt;&lt;vmmouse68 version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;12.6.4.0&#34;</span> installed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;FALSE&#34;</span>/&gt;&lt;svga68 version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;10.16.7.0&#34;</span> installed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;FALSE&#34;</span>/&gt;&lt;vmmouse68_64 version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;12.6.4.0&#34;</span> installed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;FALSE&#34;</span>/&gt;&lt;svga68_64 version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;10.16.7.0&#34;</span> installed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;FALSE&#34;</span>/&gt;&lt;vmmouse70 version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;12.7.0.0&#34;</span> installed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;FALSE&#34;</span>/&gt;&lt;svga70 version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;11.0.99.4&#34;</span> installed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;FALSE&#34;</span>/&gt;&lt;vmmouse70_64 version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;12.7.0.0&#34;</span> installed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;FALSE&#34;</span>/&gt;&lt;svga70_64 version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;11.0.99.4&#34;</span> installed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;FALSE&#34;</span>/&gt;&lt;vmmouse71 version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;12.7.0.0&#34;</span> installed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;FALSE&#34;</span>/&gt;&lt;svga71 version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;11.0.99.4&#34;</span> installed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;FALSE&#34;</span>/&gt;&lt;vmmouse71_64 version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;12.7.0.0&#34;</span> installed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;FALSE&#34;</span>/&gt;&lt;svga71_64 version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;11.0.99.4&#34;</span> installed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;FALSE&#34;</span>/&gt;&lt;vmmouse73 version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;12.7.0.0&#34;</span> installed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;FALSE&#34;</span>/&gt;&lt;svga73 version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;11.0.99.4&#34;</span> installed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;FALSE&#34;</span>/&gt;&lt;vmmouse73_64 version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;12.7.0.0&#34;</span> installed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;FALSE&#34;</span>/&gt;&lt;svga73_64 version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;11.0.99.4&#34;</span> installed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;FALSE&#34;</span>/&gt;&lt;vmmouse73_99 version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;12.7.0.0&#34;</span> installed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;FALSE&#34;</span>/&gt;&lt;svga73_99 version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;11.0.99.4&#34;</span> installed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;FALSE&#34;</span>/&gt;&lt;vmmouse73_99_64 version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;12.7.0.0&#34;</span> installed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;FALSE&#34;</span>/&gt;&lt;svga73_99_64 version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;11.0.99.4&#34;</span> installed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;FALSE&#34;</span>/&gt;&lt;vmmouse74 version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;12.7.0.0&#34;</span> installed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;FALSE&#34;</span>/&gt;&lt;svga74 version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;11.0.99.4&#34;</span> installed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;FALSE&#34;</span>/&gt;&lt;vmmouse74_64 version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;12.7.0.0&#34;</span> installed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;FALSE&#34;</span>/&gt;&lt;svga74_64 version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;11.0.99.4&#34;</span> installed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;FALSE&#34;</span>/&gt;&lt;vmmouse75 version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;12.7.0.0&#34;</span> installed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;FALSE&#34;</span>/&gt;&lt;svga75 version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;11.0.99.4&#34;</span> installed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;FALSE&#34;</span>/&gt;&lt;vmmouse75_64 version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;12.7.0.0&#34;</span> installed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;FALSE&#34;</span>/&gt;&lt;svga75_64 version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;11.0.99.4&#34;</span> installed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;FALSE&#34;</span>/&gt;&lt;vmmouse76 version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;12.7.0.0&#34;</span> installed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;FALSE&#34;</span>/&gt;&lt;svga76 version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;11.0.99.4&#34;</span> installed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;FALSE&#34;</span>/&gt;&lt;vmmouse76_64 version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;12.7.0.0&#34;</span> installed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;FALSE&#34;</span>/&gt;&lt;svga76_64 version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;11.0.99.4&#34;</span> installed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;FALSE&#34;</span>/&gt;&lt;checkvm version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;9.9.4.51858&#34;</span> installed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;TRUE&#34;</span>/&gt;&lt;vmtoolsd version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;9.9.4.51858&#34;</span> installed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;TRUE&#34;</span>/&gt;&lt;upgrader version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;9.9.4.51858&#34;</span> installed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;FALSE&#34;</span>/&gt;&lt;hgfsclient version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;9.9.4.51858&#34;</span> installed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;TRUE&#34;</span>/&gt;&lt;hgfsmounter version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;9.9.4.51858&#34;</span> installed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;TRUE&#34;</span>/&gt;&lt;vmguestlib version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;9.9.4.51858&#34;</span> installed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;TRUE&#34;</span>/&gt;&lt;vmguestlibjava version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;9.9.4.51858&#34;</span> installed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;TRUE&#34;</span>/&gt;&lt;toolbox-cmd version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;9.9.4.51858&#34;</span> installed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;TRUE&#34;</span>/&gt;&lt;vmci version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;9.6.2.0&#34;</span> installed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;TRUE&#34;</span>/&gt;&lt;vmhgfs version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;1.4.20.1&#34;</span> installed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;TRUE&#34;</span>/&gt;&lt;vmmemctl version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;1.2.1.2&#34;</span> installed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;FALSE&#34;</span>/&gt;&lt;vmsync version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;1.1.0.1&#34;</span> installed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;FALSE&#34;</span>/&gt;&lt;vmxnet version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;2.1.0.0&#34;</span> installed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;TRUE&#34;</span>/&gt;&lt;vmxnet3 version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;1.3.0.0&#34;</span> installed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;FALSE&#34;</span>/&gt;&lt;vmblock version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;1.1.2.0&#34;</span> installed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;FALSE&#34;</span>/&gt;&lt;vsock version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;9.6.1.0&#34;</span> installed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;TRUE&#34;</span>/&gt;&lt;pvscsi version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;1.2.3.0&#34;</span> installed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;FALSE&#34;</span>/&gt;&lt;/tools-manifest&gt;&lt;/Foundry&gt;</code></pre></div>
+
+<p>The next stage of the build script will run the ovftool commands to export .vmx and .ovf format virtual machines from ESXi.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">Opening VI source: vi://root@192.168.1.51:443/centos67
+Opening OVF target: /root/box_files/ovf/
+Writing OVF package: /root/box_files/ovf/centos67/centos67.ovf
+Transfer Completed
+Completed successfully
+Opening VI source: vi://root@192.168.1.51:443/centos67
+Opening VMX target: /root/box_files/vmx/
+Writing VMX file: /root/box_files/vmx/centos67/centos67.vmx
+Transfer Completed
+Completed successfully</code></pre></div>
+
+<p>The next stage of the build script will create the metadata.json and Vagrantfiles needed for the Vagrant .box files. It will then TAR up all the virtual machine files contained in the ovf &amp; vmx folders. This stage will also save the TAR files to /var/www/html/box-files/ so that they will be available over http.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">creating metadata.json and Vagrantfile files in ovf virtual machine directory
+compressing ovf virtual machine files to /var/www/html/box-files/centos67-vmware_ovf-1.0.box
+./centos67-disk1.vmdk
+./centos67.mf
+./centos67.ovf
+./metadata.json
+./Vagrantfile
+creating metadata.json and Vagrantfile files in vmx virtual machine directory
+compressing vmx virtual machine files to /var/www/html/box-files/centos67-vmware_desktop-1.0.box
+./centos67-disk1.vmdk
+./centos67.vmx
+./metadata.json
+./Vagrantfile</code></pre></div>
+
+<p>The final section of the build script will remove the directories that ovftool generated in /root/box_files (to keep disk space usage to a minimum) and delete the Packer virtual machine from ESXi.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">cleaning up /root/box_files directories
+deleting centos67 from <span style="color:#ae81ff">192</span>.168.1.51
+packer build of centos67 has been  completed
+<span style="color:#f92672">[</span>root@packer-centos packer-templates<span style="color:#f92672">]</span>#</code></pre></div>
+
+<h3 id="6-we-can-now-list-the-files-in-var-www-html-box-files-and-see-the-two-box-files-generated-by-the-script">6. We can now list the files in /var/www/html/box-files and see the two .box files generated by the script.</h3>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@packer-centos packer-templates<span style="color:#f92672">]</span><span style="color:#75715e"># ls -lah /var/www/html/box-files/</span>
+total 654M
+drwxr-xr-x <span style="color:#ae81ff">2</span> root root <span style="color:#ae81ff">4</span>.0K Dec <span style="color:#ae81ff">28</span> <span style="color:#ae81ff">15</span>:44 .
+drwxr-xr-x <span style="color:#ae81ff">3</span> root root <span style="color:#ae81ff">4</span>.0K Dec <span style="color:#ae81ff">23</span> <span style="color:#ae81ff">18</span>:09 ..
+-rw-r--r-- <span style="color:#ae81ff">1</span> root root 319M Dec <span style="color:#ae81ff">28</span> <span style="color:#ae81ff">15</span>:46 centos67-vmware_desktop-1.0.box
+-rw-r--r-- <span style="color:#ae81ff">1</span> root root 336M Dec <span style="color:#ae81ff">28</span> <span style="color:#ae81ff">15</span>:44 centos67-vmware_ovf-1.0.box
+<span style="color:#f92672">[</span>root@packer-centos packer-templates<span style="color:#f92672">]</span>#</code></pre></div>
+
+<p>We can also open a browser and see the .box files the script generated.</p>
+
+<p><img src="https://sdorsett.github.io/static/01-browse-vagrant-box-files.png" alt="screenshot" /></p>
+
+<p>###If you would like to not have to manually create the build script covered in this post, you can clone down <a href="https://github.com/sdorsett/packer-templates/tree/adding-build-script">this github repository</a> by running the following command:</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git clone -b <span style="color:#e6db74">&#34;adding-build-script&#34;</span> https://github.com/sdorsett/packer-templates.git</code></pre></div>
+
+<p>If you cloned the packer-templates repo in the last post, you can pull down the updates by running the following command:</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git fetch --all
+git pull origin <span style="color:#e6db74">&#34;adding-build-script&#34;</span></code></pre></div>
+
+<h4 id="this-brings-us-to-the-end-of-this-post-i-hope-i-made-good-on-my-promise-of-showing-an-automated-ways-of-converting-the-packer-templates-to-box-files-in-the-next-post-i-think-we-should-cover-how-to-test-our-vagrant-box-files-are-functional-by-deploying-them-using-vagrant">This brings us to the end of this post. I hope I made good on my promise of showing an automated ways of converting the Packer templates to .box files. In the next post I think we should cover how to test our Vagrant .box files are functional by deploying them using Vagrant.</h4>
+
+<hr />
+
+<h4 id="please-provide-any-feedback-or-suggestions-to-my-twitter-account-located-on-the-about-page">Please provide any feedback or suggestions to my twitter account located on the about page.</h4>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="https://sdorsett.github.io/post/2015-12-27-using-ovftool-to-export-packer-generated-virtual-machines/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="https://sdorsett.github.io/post/2015-12-27-using-ovftool-to-export-packer-generated-virtual-machines/">Using ovftool to convert Packer generated virtual machines into Vagrant .box files</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="next">
+      <a href="https://sdorsett.github.io/post/2018-08-06-exploring-the-ovhpublic-cloud/">Exploring the OVH public cloud and opensource tools that can use it.</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+    <a href="https://sdorsett.github.io/post/2018-08-06-exploring-the-ovhpublic-cloud/"><i class="fa fa-chevron-right"></i></a>
+    
+  </div>
+</div>
+
+
+
+  
+
+</div>
+
+</div>
+</div>
+<script src="https://sdorsett.github.iojs/ui.js"></script>
+<script src="https://sdorsett.github.iojs/menus.js"></script>
+
+
+
+
+
+
+</body>
+</html>
+

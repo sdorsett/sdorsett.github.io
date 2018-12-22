@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Vsphere on Things I find interesting</title>
+    <link>https://sdorsett.github.io/tags/vsphere/</link>
+    <description>Recent content in Vsphere on Things I find interesting</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2018. All rights reserved.</copyright>
+    <lastBuildDate>Wed, 23 Dec 2015 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://sdorsett.github.io/tags/vsphere/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Installing a ESXi 6.0 virtual machine for use with Packer</title>
+      <link>https://sdorsett.github.io/post/2015-12-23-installing-esxi-virtual-machine-for-packer-depolyment/</link>
+      <pubDate>Wed, 23 Dec 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/post/2015-12-23-installing-esxi-virtual-machine-for-packer-depolyment/</guid>
+      <description>This is the second in a series of posts on using a Packer pipeline to generate Vagrant .box files.
+In order to begin using Packer to create images, we will first need to lay the &amp;ldquo;virtual&amp;rdquo; ground work. Packer can create virtual machine images on a wide variety of virtualization or cloud platforms, but since I work for VMware I have been using the ESXi hypervisor.
+ This post will be covering installing ESXi as a virtual machine on a vSphere cluster.</description>
+    </item>
+    
+    <item>
+      <title>Creating a vCSA 5.5 .box template on CentOS 6.5 for vagrant deployment</title>
+      <link>https://sdorsett.github.io/post/2015-01-06-creating-vcsa-box-manually/</link>
+      <pubDate>Tue, 06 Jan 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/post/2015-01-06-creating-vcsa-box-manually/</guid>
+      <description>In the last few blogs post we have created ESXi .box templates, but in order to create a complete virtual lab using vagrant we will also need a vCenter Server Appliance virtual machine. The vCSA comes as a .ova template, so we will need to convert it to a vagrant-vmware-ovf .box template before we can use it with vagrant.
+In this post we will need several packages installed, that we have covered in the last few posts:</description>
+    </item>
+    
+    <item>
+      <title>Using packer on CentOS 6.5 to create an ESXi .box template for vagrant deployment</title>
+      <link>https://sdorsett.github.io/post/2015-01-03-using-packer-on-centos/</link>
+      <pubDate>Sat, 03 Jan 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/post/2015-01-03-using-packer-on-centos/</guid>
+      <description>In the previous post I demonstrated using packer to create a ESXi .box template on OS X with fusion and the vagrant vmware provider. Both of these pieces of software have a cost associated with their usage, so in this post I will demonstrate how to use CentOS 6.5 and ESXi for the same results.
+In this post we will again talk about two helpful gosddc projects:
+ gosddc/packer-post-processor-vagrant-vmware-ovf. This repo contains a packer post processor that leverages VMware OVF Tool to create a vmware_ovf Vagrant box that is compatible with vagrant-vcloud, vagrant-vcenter and vagrant-vcloudair vagrant providers.</description>
+    </item>
+    
+    <item>
+      <title>Using packer on OS X to create an ESXi .box template for vagrant deployment</title>
+      <link>https://sdorsett.github.io/post/2014-12-28-getting-packer-installed-on-os-x/</link>
+      <pubDate>Sun, 28 Dec 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/post/2014-12-28-getting-packer-installed-on-os-x/</guid>
+      <description>I&amp;rsquo;ve been recently working on using packer to create vagrant .box files rather than manually creating them as I documented in a previous post. For this post I will be using fusion and the vagrant vmware provider, each of which have an associated cost, but I will cover a free alternative using packer and CentOS in a future post.
+Several github projects by gosddc have helped me in getting packer up and running on my Macbook:</description>
+    </item>
+    
+    <item>
+      <title>Using advanced vagrant-vsphere provider settings and vCenter guest customization</title>
+      <link>https://sdorsett.github.io/post/2014-04-24-vagrant-and-vcenter-guest-customization/</link>
+      <pubDate>Thu, 24 Apr 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/post/2014-04-24-vagrant-and-vcenter-guest-customization/</guid>
+      <description>This post will pick up where we left off by demonstrating more vagrant-vsphere provider settings using the CentOS template we customized in the last blog post. Let&amp;rsquo;s get started:
+1. Create a new customization specification in the vSphere web client. This customization specification will allow us to set the hostname of the vm created by &amp;ldquo;vagrant up&amp;rdquo; to the same name as the virtual machine.  Go to Home | Customization Specification Manager:   Click the &amp;ldquo;Create a new specification&amp;rdquo; button:   Select &amp;ldquo;Linux&amp;rdquo; for the &amp;ldquo;Target VM Operating System&amp;rdquo; and name the customization specification.</description>
+    </item>
+    
+    <item>
+      <title>Installing Vagrant and the vagrant-vsphere plugin on CentOS 6.x</title>
+      <link>https://sdorsett.github.io/post/2014-04-19-vagrant-install/</link>
+      <pubDate>Sat, 19 Apr 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/post/2014-04-19-vagrant-install/</guid>
+      <description>Some readers might find this post to be a little &amp;ldquo;in the weeds&amp;rdquo; and cover details they are already familiar with. I struggled in my first attempts to get Vagrant working on CentOS, because I couldn&amp;rsquo;t find any good tutorials that covered the entire process. If you get bored with basic network configuration or have another preferred method for installing Ruby, please understand I&amp;rsquo;m trying to provide as much detail as possible to those without much linux experience.</description>
+    </item>
+    
+  </channel>
+</rss>
