@@ -29,7 +29,7 @@ There is nothing vsphere specific in this post, but it is more about showing a p
       
       <guid>https://sdorsett.github.io/post/2018-12-22-learning-terraform-on-vsphere/</guid>
       <description>This post is the beginning of a series of posts that will walt through how to use terraform to deploy and configure virtual machines on vsphere. During this series of posts I will try to show how to do this deployment in a generic way in order to keep the terraform code as free as possible of the details of the environment being deployed into.
-This series assumes you have the following: * a vsphere instance that you have permissions to create virtual machines on.</description>
+This series assumes you have the following:</description>
     </item>
     
   </channel>
