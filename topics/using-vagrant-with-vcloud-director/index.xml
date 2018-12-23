@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Using Vagrant With Vcloud Director on Things I find interesting</title>
+    <link>https://sdorsett.github.io/topics/using-vagrant-with-vcloud-director/</link>
+    <description>Recent content in Using Vagrant With Vcloud Director on Things I find interesting</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2018. All rights reserved.</copyright>
+    <lastBuildDate>Mon, 26 May 2014 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://sdorsett.github.io/topics/using-vagrant-with-vcloud-director/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Installing Vagrant and the vagrant-vcloud plugin on CentOS 6.x</title>
+      <link>https://sdorsett.github.io/post/2014-05-26-vagrant-install/</link>
+      <pubDate>Mon, 26 May 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/post/2014-05-26-vagrant-install/</guid>
+      <description>In this post I&amp;rsquo;m setting out to explain how to create a CentOS 6.4 vm, from template, in vCHS (or a vCloud Director instance) and then install vagrant-vcloud on that.
+1. Create a CentOS 6.x minimal virtual machine from a template in a vCHS organization. I will demonstrate creating a new CentOS vm in vCHS using a template, but you could just as easily create a new CentOS virtual machine from scratch in vCloud Director.</description>
+    </item>
+    
+    <item>
+      <title>Introducing the vagrant-vcloud provider</title>
+      <link>https://sdorsett.github.io/post/2014-05-25-vagrant-vcloud/</link>
+      <pubDate>Sun, 25 May 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/post/2014-05-25-vagrant-vcloud/</guid>
+      <description>While continuing to explore what the vagrant-vsphere provider is capable of I came across the vagrant-vcloud provider, which had recently released a new version. I work for the vCHS operations group, so I figured it would be interesting to compare the feature differences of the vsphere &amp;amp; vcloud providers.
+Over the next few blog posts I intend to cover the following vagrant-vcloud provider related topics:
+ Installing Vagant and the vagrant-vcloud plugin on a CentOS 6.</description>
+    </item>
+    
+  </channel>
+</rss>

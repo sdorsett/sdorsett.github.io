@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2018. All rights reserved.</copyright>
-    <lastBuildDate>Sun, 19 Aug 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 21 Aug 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://sdorsett.github.io/tags/ovh/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Using Terraform to deploy an OVH public cloud server.</title>
+      <link>https://sdorsett.github.io/post/2018-08-21-using-terraform-to-deploy-to-ovh-public-cloud/</link>
+      <pubDate>Tue, 21 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/post/2018-08-21-using-terraform-to-deploy-to-ovh-public-cloud/</guid>
+      <description>This is the fifth in a series of posts that will walk you through using the Openstack-based OVH public cloud. In this post you will get introduced to using Terraform to create Openstack servers using the Openstack API. This post is assumes you have already signed up for an account with ovhcloud.com, added a payment method, created a cloud project, created an Openstack user, created a ssh keypair in the Horizon UI and downloaded the openrc.</description>
+    </item>
     
     <item>
       <title>Using Vagrant to deploy an OVH public cloud server</title>
@@ -50,6 +59,16 @@ This post is assumes you have already signed up for an account with ovhcloud.com
       <description>This is the first in a series of posts that will walk you through using the openstack-based OVH public cloud. In this post you will get introduced to using the ovhcloud.com UI to create an Openstack server.
 I will attempt in this post to present the options that are available to OVH public cloud customers along side the choices I made that were specific to my server.
 Let&amp;rsquo;s get started&amp;hellip;</description>
+    </item>
+    
+    <item>
+      <title>Exploring the OVH public cloud and opensource tools that can use it.</title>
+      <link>https://sdorsett.github.io/post/2018-08-06-exploring-the-ovhpublic-cloud/</link>
+      <pubDate>Mon, 06 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/post/2018-08-06-exploring-the-ovhpublic-cloud/</guid>
+      <description>This post is the beginning of a series of posts that will explain how to use the openstack-based OVH public cloud UI and opensource tools that you can use to automate and manage your openstack infrastructure.
+Over the last few years, I have worked primarily with VMware products and have not taken the time to learn with openstack. Now that the OVH public cloud has launched in the United States, and I work for OVH US, I figured it was time to start learning how customers could put this offering to use.</description>
     </item>
     
   </channel>

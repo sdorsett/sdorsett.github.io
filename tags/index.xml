@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2018. All rights reserved.</copyright>
-    <lastBuildDate>Tue, 21 Aug 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 28 Dec 2014 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://sdorsett.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Fusion</title>
+      <link>https://sdorsett.github.io/tags/fusion/</link>
+      <pubDate>Sun, 28 Dec 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/tags/fusion/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Openstack</title>
@@ -33,7 +42,7 @@
     <item>
       <title>Ovh</title>
       <link>https://sdorsett.github.io/tags/ovh/</link>
-      <pubDate>Sun, 19 Aug 2018 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 21 Aug 2018 00:00:00 +0000</pubDate>
       
       <guid>https://sdorsett.github.io/tags/ovh/</guid>
       <description></description>

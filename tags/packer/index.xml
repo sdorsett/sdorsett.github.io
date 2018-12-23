@@ -87,6 +87,17 @@ This will be the first of several blog posts in which I intend to cover:</descri
     </item>
     
     <item>
+      <title>Using packer on CentOS 6.5 to create an ESXi .box template for vagrant deployment</title>
+      <link>https://sdorsett.github.io/post/2015-01-03-using-packer-on-centos/</link>
+      <pubDate>Sat, 03 Jan 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/post/2015-01-03-using-packer-on-centos/</guid>
+      <description>In the previous post I demonstrated using packer to create a ESXi .box template on OS X with fusion and the vagrant vmware provider. Both of these pieces of software have a cost associated with their usage, so in this post I will demonstrate how to use CentOS 6.5 and ESXi for the same results.
+In this post we will again talk about two helpful gosddc projects:
+ gosddc/packer-post-processor-vagrant-vmware-ovf. This repo contains a packer post processor that leverages VMware OVF Tool to create a vmware_ovf Vagrant box that is compatible with vagrant-vcloud, vagrant-vcenter and vagrant-vcloudair vagrant providers.</description>
+    </item>
+    
+    <item>
       <title>Using packer on OS X to create an ESXi .box template for vagrant deployment</title>
       <link>https://sdorsett.github.io/post/2014-12-28-getting-packer-installed-on-os-x/</link>
       <pubDate>Sun, 28 Dec 2014 00:00:00 +0000</pubDate>

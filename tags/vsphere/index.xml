@@ -45,16 +45,6 @@ In this post we will again talk about two helpful gosddc projects:
     </item>
     
     <item>
-      <title>Using packer on OS X to create an ESXi .box template for vagrant deployment</title>
-      <link>https://sdorsett.github.io/post/2014-12-28-getting-packer-installed-on-os-x/</link>
-      <pubDate>Sun, 28 Dec 2014 00:00:00 +0000</pubDate>
-      
-      <guid>https://sdorsett.github.io/post/2014-12-28-getting-packer-installed-on-os-x/</guid>
-      <description>I&amp;rsquo;ve been recently working on using packer to create vagrant .box files rather than manually creating them as I documented in a previous post. For this post I will be using fusion and the vagrant vmware provider, each of which have an associated cost, but I will cover a free alternative using packer and CentOS in a future post.
-Several github projects by gosddc have helped me in getting packer up and running on my Macbook:</description>
-    </item>
-    
-    <item>
       <title>Using advanced vagrant-vsphere provider settings and vCenter guest customization</title>
       <link>https://sdorsett.github.io/post/2014-04-24-vagrant-and-vcenter-guest-customization/</link>
       <pubDate>Thu, 24 Apr 2014 00:00:00 +0000</pubDate>

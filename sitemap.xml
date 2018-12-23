@@ -128,6 +128,12 @@
   </url>
   
   <url>
+    <loc>https://sdorsett.github.io/tags/fusion/</loc>
+    <lastmod>2014-12-28T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://sdorsett.github.io/tags/openstack/</loc>
     <lastmod>2018-08-21T00:00:00+00:00</lastmod>
     <priority>0</priority>
@@ -141,7 +147,7 @@
   
   <url>
     <loc>https://sdorsett.github.io/tags/ovh/</loc>
-    <lastmod>2018-08-19T00:00:00+00:00</lastmod>
+    <lastmod>2018-08-21T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -165,7 +171,7 @@
   
   <url>
     <loc>https://sdorsett.github.io/tags/</loc>
-    <lastmod>2018-08-21T00:00:00+00:00</lastmod>
+    <lastmod>2014-12-28T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -183,6 +189,42 @@
   
   <url>
     <loc>https://sdorsett.github.io/topics/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://sdorsett.github.io/topics/using-ovh-openstack-public-cloud/</loc>
+    <lastmod>2018-08-21T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://sdorsett.github.io/topics/using-packer-with-esxi/</loc>
+    <lastmod>2015-12-28T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://sdorsett.github.io/topics/using-packer-with-fusion/</loc>
+    <lastmod>2014-12-28T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://sdorsett.github.io/topics/using-vagrant/</loc>
+    <lastmod>2014-04-02T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://sdorsett.github.io/topics/using-vagrant-with-vcloud-director/</loc>
+    <lastmod>2014-05-26T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://sdorsett.github.io/topics/using-vagrant-with-vsphere/</loc>
+    <lastmod>2015-01-06T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   

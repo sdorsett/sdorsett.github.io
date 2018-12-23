@@ -89,7 +89,19 @@
       
       
         <li class="pure-menu-item">
-          <a class="pure-menu-link" href="https://sdorsett.github.io/about/"><i class='fa fa-user fa-fw'></i>About</a>
+          <a class="pure-menu-link" href="https://sdorsett.github.io/topics/"><i class='fa fa-folder fa-fw'></i>Topics</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/tags/"><i class='fa fa-tags fa-fw'></i>Tags</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://github.com/sdorsett/interesting-links"><i class='fa fa-folder fa-fw'></i>Favorites</a>
       
         </li>
       
@@ -235,6 +247,16 @@
   
 
   
+  
+  
+  <div>
+    <i class="fa fa-folder fa-fw"></i>
+    
+      <a class="post-taxonomy-topic" href="https://sdorsett.github.iotopics/using-packer-with-esxi">using-packer-with-esxi</a>
+    
+  </div>
+  
+  
 
   
   
@@ -284,6 +306,16 @@ In the last post we covered using ovftool to convert Packer generated virtual ma
   
 
   
+  
+  
+  <div>
+    <i class="fa fa-folder fa-fw"></i>
+    
+      <a class="post-taxonomy-topic" href="https://sdorsett.github.iotopics/using-packer-with-esxi">using-packer-with-esxi</a>
+    
+  </div>
+  
+  
 
   
   
@@ -332,6 +364,16 @@ In the last post we covered copying our existing CentOS 6.7 template and adding 
   
 
   
+  
+  
+  <div>
+    <i class="fa fa-folder fa-fw"></i>
+    
+      <a class="post-taxonomy-topic" href="https://sdorsett.github.iotopics/using-packer-with-esxi">using-packer-with-esxi</a>
+    
+  </div>
+  
+  
 
   
   
@@ -379,6 +421,16 @@ This is an older version of the Puppet Enterprise agent, but it will let us crea
   
 
   
+  
+  
+  <div>
+    <i class="fa fa-folder fa-fw"></i>
+    
+      <a class="post-taxonomy-topic" href="https://sdorsett.github.iotopics/using-packer-with-esxi">using-packer-with-esxi</a>
+    
+  </div>
+  
+  
 
   
   
@@ -424,6 +476,16 @@ In the last two posts we covered installing a ESXi virtual machine for use with 
 
   
 
+  
+  
+  
+  <div>
+    <i class="fa fa-folder fa-fw"></i>
+    
+      <a class="post-taxonomy-topic" href="https://sdorsett.github.iotopics/using-packer-with-esxi">using-packer-with-esxi</a>
+    
+  </div>
+  
   
 
   
@@ -472,6 +534,16 @@ In the last post we setup a ESXi virtual machine that would be the target for cr
   
 
   
+  
+  
+  <div>
+    <i class="fa fa-folder fa-fw"></i>
+    
+      <a class="post-taxonomy-topic" href="https://sdorsett.github.iotopics/using-packer-with-esxi">using-packer-with-esxi</a>
+    
+  </div>
+  
+  
 
   
   
@@ -519,6 +591,16 @@ In order to begin using Packer to create images, we will first need to lay the &
   
 
   
+  
+  
+  <div>
+    <i class="fa fa-folder fa-fw"></i>
+    
+      <a class="post-taxonomy-topic" href="https://sdorsett.github.iotopics/using-packer-with-esxi">using-packer-with-esxi</a>
+    
+  </div>
+  
+  
 
   
   
@@ -551,6 +633,63 @@ This will be the first of several blog posts in which I intend to cover:
   
     <article>
   <header>
+    <h2><a href="https://sdorsett.github.io/post/2015-01-03-using-packer-on-centos/">Using packer on CentOS 6.5 to create an ESXi .box template for vagrant deployment</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>03 Jan 2015, 00:00</time>
+  </div>
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-folder fa-fw"></i>
+    
+      <a class="post-taxonomy-topic" href="https://sdorsett.github.iotopics/using-packer-with-esxi">using-packer-with-esxi</a>
+    
+  </div>
+  
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://sdorsett.github.iotags/packer">packer</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://sdorsett.github.iotags/vsphere">vsphere</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  In the previous post I demonstrated using packer to create a ESXi .box template on OS X with fusion and the vagrant vmware provider. Both of these pieces of software have a cost associated with their usage, so in this post I will demonstrate how to use CentOS 6.5 and ESXi for the same results.
+In this post we will again talk about two helpful gosddc projects:
+ gosddc/packer-post-processor-vagrant-vmware-ovf. This repo contains a packer post processor that leverages VMware OVF Tool to create a vmware_ovf Vagrant box that is compatible with vagrant-vcloud, vagrant-vcenter and vagrant-vcloudair vagrant providers.
+  </p>
+
+  
+  <footer>
+    <a href="https://sdorsett.github.io/post/2015-01-03-using-packer-on-centos/">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
     <h2><a href="https://sdorsett.github.io/post/2014-12-28-getting-packer-installed-on-os-x/">Using packer on OS X to create an ESXi .box template for vagrant deployment</a></h2>
 
     <div class="post-meta">
@@ -563,6 +702,16 @@ This will be the first of several blog posts in which I intend to cover:
   
 
   
+  
+  
+  <div>
+    <i class="fa fa-folder fa-fw"></i>
+    
+      <a class="post-taxonomy-topic" href="https://sdorsett.github.iotopics/using-packer-with-fusion">using-packer-with-fusion</a>
+    
+  </div>
+  
+  
 
   
   
@@ -572,7 +721,7 @@ This will be the first of several blog posts in which I intend to cover:
     
       <a class="post-taxonomy-tag" href="https://sdorsett.github.iotags/packer">packer</a>&nbsp;&#47;
     
-      <a class="post-taxonomy-tag" href="https://sdorsett.github.iotags/vsphere">vsphere</a>
+      <a class="post-taxonomy-tag" href="https://sdorsett.github.iotags/fusion">fusion</a>
     
   </div>
   

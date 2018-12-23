@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Using Packer With Fusion on Things I find interesting</title>
+    <link>https://sdorsett.github.io/topics/using-packer-with-fusion/</link>
+    <description>Recent content in Using Packer With Fusion on Things I find interesting</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2018. All rights reserved.</copyright>
+    <lastBuildDate>Sun, 28 Dec 2014 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://sdorsett.github.io/topics/using-packer-with-fusion/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Using packer on OS X to create an ESXi .box template for vagrant deployment</title>
+      <link>https://sdorsett.github.io/post/2014-12-28-getting-packer-installed-on-os-x/</link>
+      <pubDate>Sun, 28 Dec 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/post/2014-12-28-getting-packer-installed-on-os-x/</guid>
+      <description>I&amp;rsquo;ve been recently working on using packer to create vagrant .box files rather than manually creating them as I documented in a previous post. For this post I will be using fusion and the vagrant vmware provider, each of which have an associated cost, but I will cover a free alternative using packer and CentOS in a future post.
+Several github projects by gosddc have helped me in getting packer up and running on my Macbook:</description>
+    </item>
+    
+  </channel>
+</rss>

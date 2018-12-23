@@ -11,5 +11,59 @@
 	<atom:link href="https://sdorsett.github.io/topics/index.xml" rel="self" type="application/rss+xml" />
     
     
+    <item>
+      <title>Using Ovh Openstack Public Cloud</title>
+      <link>https://sdorsett.github.io/topics/using-ovh-openstack-public-cloud/</link>
+      <pubDate>Tue, 21 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/topics/using-ovh-openstack-public-cloud/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Using Packer With Esxi</title>
+      <link>https://sdorsett.github.io/topics/using-packer-with-esxi/</link>
+      <pubDate>Mon, 28 Dec 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/topics/using-packer-with-esxi/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Using Packer With Fusion</title>
+      <link>https://sdorsett.github.io/topics/using-packer-with-fusion/</link>
+      <pubDate>Sun, 28 Dec 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/topics/using-packer-with-fusion/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Using Vagrant</title>
+      <link>https://sdorsett.github.io/topics/using-vagrant/</link>
+      <pubDate>Wed, 02 Apr 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/topics/using-vagrant/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Using Vagrant With Vcloud Director</title>
+      <link>https://sdorsett.github.io/topics/using-vagrant-with-vcloud-director/</link>
+      <pubDate>Mon, 26 May 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/topics/using-vagrant-with-vcloud-director/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Using Vagrant With Vsphere</title>
+      <link>https://sdorsett.github.io/topics/using-vagrant-with-vsphere/</link>
+      <pubDate>Tue, 06 Jan 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/topics/using-vagrant-with-vsphere/</guid>
+      <description></description>
+    </item>
+    
   </channel>
 </rss>
