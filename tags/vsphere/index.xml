@@ -7,10 +7,20 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2018. All rights reserved.</copyright>
-    <lastBuildDate>Wed, 23 Dec 2015 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 22 Dec 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://sdorsett.github.io/tags/vsphere/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Learning terraform by deploying to vsphere</title>
+      <link>https://sdorsett.github.io/post/2018-12-22-learning-terraform-on-vsphere/</link>
+      <pubDate>Sat, 22 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/post/2018-12-22-learning-terraform-on-vsphere/</guid>
+      <description>This post is the beginning of a series of posts that will walt through how to use terraform to deploy and configure virtual machines on vsphere. During this series of posts I will try to show how to do this deployment in a generic way in order to keep the terraform code as free as possible of the details of the environment being deployed into.
+This series assumes you have the following: * a vsphere instance that you have permissions to create virtual machines on.</description>
+    </item>
     
     <item>
       <title>Installing a ESXi 6.0 virtual machine for use with Packer</title>

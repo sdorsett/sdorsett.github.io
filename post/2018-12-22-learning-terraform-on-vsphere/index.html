@@ -7,7 +7,7 @@
   <meta name="description" content="">
   <meta name="generator" content="Hugo 0.52" />
 
-  <title>Tags &middot; Things I find interesting</title>
+  <title>Learning terraform by deploying to vsphere &middot; Things I find interesting</title>
 
   
   
@@ -39,8 +39,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
  
-  
-  <link rel="alternate" type="application/rss+xml" title="Things I find interesting" href="https://sdorsett.github.io/tags/index.xml" />
   
 
   
@@ -117,10 +115,6 @@
   <div class="pure-menu social">
   <ul class="pure-menu-list">
 
-    
-    <li class="pure-menu-item">
-      <a class="pure-menu-link" href="https://sdorsett.github.io/tags/index.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
-    </li>
     
 
     
@@ -228,73 +222,103 @@
 
 
 <div class="header">
-  <h1>Tags</h1>
+  <h1>Learning terraform by deploying to vsphere</h1>
+  <h2></h2>
 </div>
 <div class="content">
-  <ul>
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>22 Dec 2018, 00:00</time>
+  </div>
+
+  
+
   
   
-    <li>
-      <a href="vagrant">vagrant</a>
-      <span>&#40;14&#41;</span>
-    </li>
   
-    <li>
-      <a href="packer">packer</a>
-      <span>&#40;9&#41;</span>
-    </li>
+  <div>
+    <i class="fa fa-folder fa-fw"></i>
+    
+      <a class="post-taxonomy-topic" href="https://sdorsett.github.iotopics/learning-terraform-by-deploying-to-vsphere">learning-terraform-by-deploying-to-vsphere</a>
+    
+  </div>
   
-    <li>
-      <a href="openstack">openstack</a>
-      <span>&#40;6&#41;</span>
-    </li>
   
-    <li>
-      <a href="ovh">ovh</a>
-      <span>&#40;6&#41;</span>
-    </li>
+
   
-    <li>
-      <a href="vsphere">vsphere</a>
-      <span>&#40;6&#41;</span>
-    </li>
   
-    <li>
-      <a href="ovftool">ovftool</a>
-      <span>&#40;3&#41;</span>
-    </li>
   
-    <li>
-      <a href="terraform">terraform</a>
-      <span>&#40;3&#41;</span>
-    </li>
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://sdorsett.github.iotags/terraform">terraform</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://sdorsett.github.iotags/vsphere">vsphere</a>
+    
+  </div>
   
-    <li>
-      <a href="vagrant-vcloud">vagrant-vcloud</a>
-      <span>&#40;2&#41;</span>
-    </li>
   
-    <li>
-      <a href="vagrant-vsphere">vagrant-vsphere</a>
-      <span>&#40;2&#41;</span>
-    </li>
+
+</div>
+
   
-    <li>
-      <a href="fusion">fusion</a>
-      <span>&#40;1&#41;</span>
-    </li>
+
+<p>This post is the beginning of a series of posts that will walt through how to use terraform to deploy and configure virtual machines on vsphere. During this series of posts I will try to show how to do this deployment in a generic way in order to keep the terraform code as free as possible of the details of the environment being deployed into.</p>
+
+<p>This series assumes you have the following:
+* a vsphere instance that you have permissions to create virtual machines on. Terraform can create and configure resources on ESXi, but this series will require vsphere since we will be cloning virtual machines from a base template.
+* terraform is installed on your workstation, laptop or a virtual machine that can access the vsphere instance
+* a github account for deploying terraform code to (optional)</p>
+
+<p>The posts in this series of blogs that have been released are:</p>
+
+<ul>
+<li><a href="../2018-12-23-using-environment-variables-with-terraform">Using environment variables with terraform</a></li>
+</ul>
+
+<hr />
+
+<h4 id="please-provide-any-feedback-or-suggestions-to-my-twitter-account-located-on-the-about-page">Please provide any feedback or suggestions to my twitter account located on the about page.</h4>
+
+
   
-    <li>
-      <a href="puppet">puppet</a>
-      <span>&#40;1&#41;</span>
-    </li>
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="https://sdorsett.github.io/post/2018-08-21-using-terraform-to-deploy-to-ovh-public-cloud/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="https://sdorsett.github.io/post/2018-08-21-using-terraform-to-deploy-to-ovh-public-cloud/">Using Terraform to deploy an OVH public cloud server.</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="next">
+      <a href="https://sdorsett.github.io/post/2018-12-23-using-environment-variables-with-terraform/">Using environment variables with terraform</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+    <a href="https://sdorsett.github.io/post/2018-12-23-using-environment-variables-with-terraform/"><i class="fa fa-chevron-right"></i></a>
+    
+  </div>
+</div>
+
+
+
   
-    <li>
-      <a href="vagrant-vcenter">vagrant-vcenter</a>
-      <span>&#40;1&#41;</span>
-    </li>
-  
-  </ul>
+
 </div>
 
 </div>
@@ -309,3 +333,4 @@
 
 </body>
 </html>
+

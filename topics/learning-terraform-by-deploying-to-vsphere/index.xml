@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Terraform on Things I find interesting</title>
-    <link>https://sdorsett.github.io/tags/terraform/</link>
-    <description>Recent content in Terraform on Things I find interesting</description>
+    <title>Learning Terraform by Deploying to Vsphere on Things I find interesting</title>
+    <link>https://sdorsett.github.io/topics/learning-terraform-by-deploying-to-vsphere/</link>
+    <description>Recent content in Learning Terraform by Deploying to Vsphere on Things I find interesting</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2018. All rights reserved.</copyright>
     <lastBuildDate>Sun, 23 Dec 2018 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://sdorsett.github.io/tags/terraform/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://sdorsett.github.io/topics/learning-terraform-by-deploying-to-vsphere/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -30,15 +30,6 @@ There is nothing vsphere specific in this post, but it is more about showing a p
       <guid>https://sdorsett.github.io/post/2018-12-22-learning-terraform-on-vsphere/</guid>
       <description>This post is the beginning of a series of posts that will walt through how to use terraform to deploy and configure virtual machines on vsphere. During this series of posts I will try to show how to do this deployment in a generic way in order to keep the terraform code as free as possible of the details of the environment being deployed into.
 This series assumes you have the following: * a vsphere instance that you have permissions to create virtual machines on.</description>
-    </item>
-    
-    <item>
-      <title>Using Terraform to deploy an OVH public cloud server.</title>
-      <link>https://sdorsett.github.io/post/2018-08-21-using-terraform-to-deploy-to-ovh-public-cloud/</link>
-      <pubDate>Tue, 21 Aug 2018 00:00:00 +0000</pubDate>
-      
-      <guid>https://sdorsett.github.io/post/2018-08-21-using-terraform-to-deploy-to-ovh-public-cloud/</guid>
-      <description>This is the fifth in a series of posts that will walk you through using the Openstack-based OVH public cloud. In this post you will get introduced to using Terraform to create Openstack servers using the Openstack API. This post is assumes you have already signed up for an account with ovhcloud.com, added a payment method, created a cloud project, created an Openstack user, created a ssh keypair in the Horizon UI and downloaded the openrc.</description>
     </item>
     
   </channel>
