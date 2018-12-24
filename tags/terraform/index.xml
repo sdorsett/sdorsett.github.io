@@ -7,10 +7,20 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2018. All rights reserved.</copyright>
-    <lastBuildDate>Mon, 24 Dec 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 24 Dec 2018 01:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://sdorsett.github.io/tags/terraform/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Using .gitignore to keep terraform secrets secret</title>
+      <link>https://sdorsett.github.io/post/2018-12-24-using-gitignore-to-keep-terraform-secrets-secret/</link>
+      <pubDate>Mon, 24 Dec 2018 01:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/post/2018-12-24-using-gitignore-to-keep-terraform-secrets-secret/</guid>
+      <description>This is the third in a series of posts that will walk you through using terraform to deploy and configure virtual machines on vsphere. In this post you will see how to use a .gitignore file to prevent a terraform.tfvar file from getting committed into a git repository.
+There is nothing vsphere specific in this post, but it is more about showing a pattern for keeping deployment specifics out of terraform code.</description>
+    </item>
     
     <item>
       <title>Using terraform to clone a virtual machine on vSphere</title>

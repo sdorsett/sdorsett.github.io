@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.52" />
+
+  <title>Using .gitignore to keep terraform secrets secret &middot; Things I find interesting</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://sdorsett.github.io/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://sdorsett.github.io/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="https://sdorsett.github.io/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+ 
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="https://sdorsett.github.ioimg/favicon.ico" type="image/x-icon" />
+
+  
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="https://sdorsett.github.io/"> </a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/post/"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/topics/"><i class='fa fa-folder fa-fw'></i>Topics</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/tags/"><i class='fa fa-tags fa-fw'></i>Tags</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://github.com/sdorsett/interesting-links"><i class='fa fa-folder fa-fw'></i>Favorites</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/about/">About</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://twitter.com/standorsett" target="_blank"><i class="fa fa-twitter-square fa-fw"></i>Twitter</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://linkedin.com/in/stan-dorsett-53a8827" target="_blank"><i class="fa fa-linkedin-square fa-fw"></i>LinkedIn</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/sdorsett" target="_blank"><i class="fa fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small>&copy; 2018. All rights reserved.</small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Using .gitignore to keep terraform secrets secret</h1>
+  <h2></h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>24 Dec 2018, 01:00</time>
+  </div>
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-folder fa-fw"></i>
+    
+      <a class="post-taxonomy-topic" href="https://sdorsett.github.iotopics/learning-terraform-by-deploying-to-vsphere">learning-terraform-by-deploying-to-vsphere</a>
+    
+  </div>
+  
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://sdorsett.github.iotags/terraform">terraform</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://sdorsett.github.iotags/git">git</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  
+
+<p>This is the third in a series of posts that will walk you through using terraform to deploy and configure virtual machines on vsphere. In this post you will see how to use a .gitignore file to prevent a terraform.tfvar file from getting committed into a git repository.</p>
+
+<p>There is nothing vsphere specific in this post, but it is more about showing a pattern for keeping deployment specifics out of terraform code. This post assumes you have created a github account and are currently logged into that account.</p>
+
+<hr />
+
+<h3 id="1-create-a-new-github-repository-for-storing-the-terraform-core-that-was-created-a-href-2018-12-24-using-terraform-to-clone-a-virtual-machine-on-vsphere-in-the-previous-blog-post-a">1. create a new github repository for storing the terraform core that was created <a href="../2018-12-24-using-terraform-to-clone-a-virtual-machine-on-vsphere">in the previous blog post</a>.</h3>
+
+<p>Go to your github page, click the <code>+</code> in the upper right and select <code>new repository</code>:</p>
+
+<p><img src="https://sdorsett.github.io/static/12242018-01-github-new-repository.png" alt="screenshot" /></p>
+
+<p>Name the repository and provide a description.</p>
+
+<p><img src="https://sdorsett.github.io/static/12242018-02-new-repository-details.png" alt="screenshot" /></p>
+
+<h3 id="3-go-the-to-directory-that-was-created-a-href-2018-12-24-using-terraform-to-clone-a-virtual-machine-on-vsphere-in-the-previous-blog-post-a">3. Go the to directory that was created <a href="../2018-12-24-using-terraform-to-clone-a-virtual-machine-on-vsphere">in the previous blog post</a>.</h3>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@terraform ~<span style="color:#f92672">]</span><span style="color:#75715e"># cd terraform-vsphere-clone/</span>
+<span style="color:#f92672">[</span>root@terraform terraform-vsphere-clone<span style="color:#f92672">]</span>#</code></pre></div>
+
+<h3 id="4-run-git-init-to-initialize-the-directory-as-a-git-repository">4. Run <code>git init</code> to initialize the directory as a git repository</h3>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@terraform terraform-vsphere-clone<span style="color:#f92672">]</span><span style="color:#75715e"># git init</span>
+Initialized empty Git repository in /root/terraform-vsphere-clone/.git/
+<span style="color:#f92672">[</span>root@terraform terraform-vsphere-clone<span style="color:#f92672">]</span>#</code></pre></div>
+
+<h3 id="5-add-the-github-repository-as-a-remote-using-git-remote">5. Add the github repository as a remote using <code>git remote</code></h3>
+
+<p>We need to let the git repository we just initialized know how to find the remote github repository we create. `git remote add origin <remote_git_url>&rsquo; will add git remote to the local git repository.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@terraform terraform-vsphere-clone<span style="color:#f92672">]</span><span style="color:#75715e"># git remote add origin https://github.com/sdorsett/terraform-vsphere-clone.git</span>
+<span style="color:#f92672">[</span>root@terraform terraform-vsphere-clone<span style="color:#f92672">]</span><span style="color:#75715e"># git fetch --all</span>
+Fetching origin
+remote: Enumerating objects: <span style="color:#ae81ff">3</span>, <span style="color:#66d9ef">done</span>.
+remote: Counting objects: <span style="color:#ae81ff">100</span>% <span style="color:#f92672">(</span><span style="color:#ae81ff">3</span>/3<span style="color:#f92672">)</span>, <span style="color:#66d9ef">done</span>.
+remote: Compressing objects: <span style="color:#ae81ff">100</span>% <span style="color:#f92672">(</span><span style="color:#ae81ff">2</span>/2<span style="color:#f92672">)</span>, <span style="color:#66d9ef">done</span>.
+remote: Total <span style="color:#ae81ff">3</span> <span style="color:#f92672">(</span>delta <span style="color:#ae81ff">0</span><span style="color:#f92672">)</span>, reused <span style="color:#ae81ff">0</span> <span style="color:#f92672">(</span>delta <span style="color:#ae81ff">0</span><span style="color:#f92672">)</span>, pack-reused <span style="color:#ae81ff">0</span>
+Unpacking objects: <span style="color:#ae81ff">100</span>% <span style="color:#f92672">(</span><span style="color:#ae81ff">3</span>/3<span style="color:#f92672">)</span>, <span style="color:#66d9ef">done</span>.
+From https://github.com/sdorsett/terraform-vsphere-clone
+ * <span style="color:#f92672">[</span>new branch<span style="color:#f92672">]</span>      master     -&gt; origin/master
+<span style="color:#f92672">[</span>root@terraform terraform-vsphere-clone<span style="color:#f92672">]</span>#</code></pre></div>
+
+<p>Running <code>git fetch --all</code> cause git to query the remote repository and pull down the remote state.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@terraform terraform-vsphere-clone<span style="color:#f92672">]</span><span style="color:#75715e"># git pull origin master</span>
+From https://github.com/sdorsett/terraform-vsphere-clone
+ * branch            master     -&gt; FETCH_HEAD
+Already up-to-date.
+<span style="color:#f92672">[</span>root@terraform terraform-vsphere-clone<span style="color:#f92672">]</span>#</code></pre></div>
+
+<p>Running <code>git pull origin master</code> will ensure the latest versions of remote files are copied to the local repository.</p>
+
+<h3 id="6-run-git-status-to-view-the-local-files-that-have-not-been-commited-to-the-github-repository">6. Run <code>git status</code> to view the local files that have not been commited to the github repository</h3>
+
+<p>Running <code>git status</code> will now show the local files that do not exist in the remote github repository:</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@terraform terraform-vsphere-clone<span style="color:#f92672">]</span><span style="color:#75715e"># git status</span>
+<span style="color:#75715e"># On branch master</span>
+#
+<span style="color:#75715e"># Initial commit</span>
+#
+<span style="color:#75715e"># Untracked files:</span>
+<span style="color:#75715e">#   (use &#34;git add &lt;file&gt;...&#34; to include in what will be committed)</span>
+#
+<span style="color:#75715e">#    .terraform/</span>
+<span style="color:#75715e">#    main.tf</span>
+<span style="color:#75715e">#    output.tf</span>
+<span style="color:#75715e">#    terraform.tfstate</span>
+<span style="color:#75715e">#    terraform.tfstate.backup</span>
+<span style="color:#75715e">#    terraform.tfvars</span>
+<span style="color:#75715e">#    variables.tf</span>
+nothing added to commit but untracked files present <span style="color:#f92672">(</span>use <span style="color:#e6db74">&#34;git add&#34;</span> to track<span style="color:#f92672">)</span>
+<span style="color:#f92672">[</span>root@terraform terraform-vsphere-clone<span style="color:#f92672">]</span>#</code></pre></div>
+
+<p>In the above output there are several directories and files we have not talked about before:</p>
+
+<ul>
+<li>.terraform/ - a hidden directory where terraform stores the providers pulled down when running <code>terraform init</code></li>
+</ul>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@terraform terraform-vsphere-clone<span style="color:#f92672">]</span><span style="color:#75715e"># tree .terraform</span>
+.terraform
+└── plugins
+    └── linux_amd64
+        ├── lock.json
+        └── terraform-provider-vsphere_v1.9.0_x4
+
+<span style="color:#ae81ff">2</span> directories, <span style="color:#ae81ff">2</span> files
+<span style="color:#f92672">[</span>root@terraform terraform-vsphere-clone<span style="color:#f92672">]</span>#</code></pre></div>
+
+<ul>
+<li>terraform.tfstate - the file terraform uses to store the state after the last run of <code>terraform apply</code></li>
+<li>terraform.tfstate.backup - terraform will backup <code>terraform.tfstate</code> to <code>terraform.tfstate.backup</code> in order to preserve the state of the previous run of <code>terraform apply</code></li>
+</ul>
+
+<p>All of these files should not be added into a remote git repository since:</p>
+
+<ul>
+<li>.terraform/ - this directory will be re-created when <code>terraform init</code> is run in a new environment.</li>
+<li>terraform.tfstate and terraform.tfstate.backup - these files contain the terraform state specific of a specific environment and do not need to be preserved in a repository.</li>
+<li>terraform.tfvars - contain secrets (usernames, password, ip addresses, etc) about a specific environment.</li>
+</ul>
+
+<h3 id="7-create-a-gitignore-file-to-prevent-these-files-from-being-added-to-the-remote-repository">7. Create a <code>.gitignore</code> file to prevent these files from being added to the remote repository</h3>
+
+<p>Create a <code>.gitignore</code> file in the same directory and add the following files</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@terraform terraform-vsphere-clone<span style="color:#f92672">]</span><span style="color:#75715e"># vim .gitignore</span>
+<span style="color:#f92672">[</span>root@terraform terraform-vsphere-clone<span style="color:#f92672">]</span><span style="color:#75715e"># cat .gitignore</span>
+.terraform/
+terraform.tfstate
+terraform.tfstate.backup
+terraform.tfvars
+<span style="color:#f92672">[</span>root@terraform terraform-vsphere-clone<span style="color:#f92672">]</span>#</code></pre></div>
+
+<p>Re-running <code>git status</code> will now show all the local files that have not been committed to the remote repository.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@terraform terraform-vsphere-clone<span style="color:#f92672">]</span><span style="color:#75715e"># git status</span>
+<span style="color:#75715e"># On branch master</span>
+#
+<span style="color:#75715e"># Initial commit</span>
+#
+<span style="color:#75715e"># Untracked files:</span>
+<span style="color:#75715e">#   (use &#34;git add &lt;file&gt;...&#34; to include in what will be committed)</span>
+#
+<span style="color:#75715e">#    .gitignore</span>
+<span style="color:#75715e">#    main.tf</span>
+<span style="color:#75715e">#    output.tf</span>
+<span style="color:#75715e">#    variables.tf</span>
+nothing added to commit but untracked files present <span style="color:#f92672">(</span>use <span style="color:#e6db74">&#34;git add&#34;</span> to track<span style="color:#f92672">)</span>
+<span style="color:#f92672">[</span>root@terraform terraform-vsphere-clone<span style="color:#f92672">]</span>#</code></pre></div>
+
+<p>You can see that <code>.gitignore</code> is being displayed, but the file names we added to the <code>.gitinore</code> file are ignored.</p>
+
+<h3 id="8-add-the-uncommited-local-files-and-commit-the-changes">8. Add the uncommited local files and commit the changes</h3>
+
+<p>Running <code>git add .</code> will stage all modified files to be added to a commit:</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@terraform terraform-vsphere-clone<span style="color:#f92672">]</span><span style="color:#75715e"># git add .</span>
+<span style="color:#f92672">[</span>root@terraform terraform-vsphere-clone<span style="color:#f92672">]</span><span style="color:#75715e"># git status</span>
+<span style="color:#75715e"># On branch master</span>
+#
+<span style="color:#75715e"># Initial commit</span>
+#
+<span style="color:#75715e"># Changes to be committed:</span>
+<span style="color:#75715e">#   (use &#34;git rm --cached &lt;file&gt;...&#34; to unstage)</span>
+#
+<span style="color:#75715e">#    new file:   .gitignore</span>
+<span style="color:#75715e">#    new file:   main.tf</span>
+<span style="color:#75715e">#    new file:   output.tf</span>
+<span style="color:#75715e">#    new file:   variables.tf</span>
+#
+<span style="color:#f92672">[</span>root@terraform terraform-vsphere-clone<span style="color:#f92672">]</span>#</code></pre></div>
+
+<p><code>git commit -m &quot;&lt;commit_message&gt;&quot;</code> will commit the staged files.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@terraform terraform-vsphere-clone<span style="color:#f92672">]</span><span style="color:#75715e"># git commit -m &#34;added main.tf, output.tf and variables.tf files&#34;</span>
+<span style="color:#f92672">[</span>master cc5c928<span style="color:#f92672">]</span> added main.tf, output.tf and variables.tf files
+ <span style="color:#ae81ff">4</span> files changed, <span style="color:#ae81ff">97</span> insertions<span style="color:#f92672">(</span>+<span style="color:#f92672">)</span>
+ create mode <span style="color:#ae81ff">100644</span> .gitignore
+ create mode <span style="color:#ae81ff">100644</span> main.tf
+ create mode <span style="color:#ae81ff">100644</span> output.tf
+ create mode <span style="color:#ae81ff">100644</span> variables.tf
+<span style="color:#f92672">[</span>root@terraform terraform-vsphere-clone<span style="color:#f92672">]</span>#</code></pre></div>
+
+<h3 id="9-push-the-committed-changes-to-the-remote-github-repository">9. Push the committed changes to the remote github repository</h3>
+
+<p><code>git push origin master</code> will push the local changes to the remote github repository</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@terraform terraform-vsphere-clone<span style="color:#f92672">]</span><span style="color:#75715e"># git push origin master</span>
+Username <span style="color:#66d9ef">for</span> <span style="color:#e6db74">&#39;https://github.com&#39;</span>: sdorsett
+Password <span style="color:#66d9ef">for</span> <span style="color:#e6db74">&#39;https://sdorsett@github.com&#39;</span>:
+Counting objects: <span style="color:#ae81ff">7</span>, <span style="color:#66d9ef">done</span>.
+Delta compression using up to <span style="color:#ae81ff">2</span> threads.
+Compressing objects: <span style="color:#ae81ff">100</span>% <span style="color:#f92672">(</span><span style="color:#ae81ff">6</span>/6<span style="color:#f92672">)</span>, <span style="color:#66d9ef">done</span>.
+Writing objects: <span style="color:#ae81ff">100</span>% <span style="color:#f92672">(</span><span style="color:#ae81ff">6</span>/6<span style="color:#f92672">)</span>, <span style="color:#ae81ff">1</span>.23 KiB | <span style="color:#ae81ff">0</span> bytes/s, <span style="color:#66d9ef">done</span>.
+Total <span style="color:#ae81ff">6</span> <span style="color:#f92672">(</span>delta <span style="color:#ae81ff">0</span><span style="color:#f92672">)</span>, reused <span style="color:#ae81ff">0</span> <span style="color:#f92672">(</span>delta <span style="color:#ae81ff">0</span><span style="color:#f92672">)</span>
+To https://github.com/sdorsett/terraform-vsphere-clone.git
+   70e13d6..cc5c928  master -&gt; master
+<span style="color:#f92672">[</span>root@terraform terraform-vsphere-clone<span style="color:#f92672">]</span>#</code></pre></div>
+
+<h4 id="i-hope-this-post-has-been-useful-in-helping-explain-how-to-use-environment-variables-to-override-terraform-variables-this-pattern-will-be-used-in-future-posts-to-keep-the-details-of-how-to-connect-to-vsphere-from-being-defined-in-terraform-code">I hope this post has been useful in helping explain how to use environment variables to override terraform variables. This pattern will be used in future posts to keep the details of how to connect to vsphere from being defined in terraform code.</h4>
+
+<h3 id="10-checking-the-github-remote-repository-to-validate-the-files-were-committed">10. Checking the github remote repository to validate the files were committed.</h3>
+
+<p>We can now refresh the github remote repository and validate the files were committed</p>
+
+<p><img src="https://sdorsett.github.io/static/12242018-03-changes-pushed-to-github-repository.png" alt="screenshot" /></p>
+
+<p>The files are present in the repository and the latest commit message matches the local commit that was made.</p>
+
+<h4 id="hopefully-you-found-this-post-helpful-in-understanding-how-to-use-a-gitignore-file-to-keep-environment-specific-secrets-out-of-a-public-github-repository">Hopefully you found this post helpful in understanding how to use a .gitignore file to keep environment specific secrets out of a public github repository.</h4>
+
+<hr />
+
+<h4 id="please-provide-any-feedback-or-suggestions-to-my-twitter-account-located-on-the-about-page">Please provide any feedback or suggestions to my twitter account located on the about page.</h4>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="https://sdorsett.github.io/post/2018-12-24-using-terraform-to-clone-a-virtual-machine-on-vsphere/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="https://sdorsett.github.io/post/2018-12-24-using-terraform-to-clone-a-virtual-machine-on-vsphere/">Using terraform to clone a virtual machine on vSphere</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+  </div>
+</div>
+
+
+
+  
+
+</div>
+
+</div>
+</div>
+<script src="https://sdorsett.github.iojs/ui.js"></script>
+<script src="https://sdorsett.github.iojs/menus.js"></script>
+
+
+
+
+
+
+</body>
+</html>
+

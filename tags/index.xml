@@ -22,6 +22,15 @@
     </item>
     
     <item>
+      <title>Git</title>
+      <link>https://sdorsett.github.io/tags/git/</link>
+      <pubDate>Mon, 24 Dec 2018 01:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/tags/git/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Openstack</title>
       <link>https://sdorsett.github.io/tags/openstack/</link>
       <pubDate>Tue, 21 Aug 2018 00:00:00 +0000</pubDate>
@@ -69,7 +78,7 @@
     <item>
       <title>Terraform</title>
       <link>https://sdorsett.github.io/tags/terraform/</link>
-      <pubDate>Mon, 24 Dec 2018 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 24 Dec 2018 01:00:00 +0000</pubDate>
       
       <guid>https://sdorsett.github.io/tags/terraform/</guid>
       <description></description>
