@@ -25,12 +25,23 @@ Thanks for reading!</description>
     </item>
     
     <item>
+      <title>Using terraform to clone a virtual machine on vSphere</title>
+      <link>https://sdorsett.github.io/post/2018-12-24-using-terraform-to-clone-a-virtual-machine-on-vsphere/</link>
+      <pubDate>Mon, 24 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/post/2018-12-24-using-terraform-to-clone-a-virtual-machine-on-vsphere/</guid>
+      <description>This is the second in a series of posts that will walk you through using terraform to deploy and configure virtual machines on vsphere. In this post you will get introduced to using terraform to clone an existing template to a new virtual machine.
+1. Create a new directory for our terraform code. Start by creating a new directory for the terraform code and cd to it.
+[root@terraform ~]# mkdir terraform-vsphere-clone [root@terraform ~]# cd terraform-vsphere-clone/ [root@terraform terraform-vsphere-clone]# 2.</description>
+    </item>
+    
+    <item>
       <title>Using environment variables with terraform</title>
       <link>https://sdorsett.github.io/post/2018-12-23-using-environment-variables-with-terraform/</link>
       <pubDate>Sun, 23 Dec 2018 00:00:00 +0000</pubDate>
       
       <guid>https://sdorsett.github.io/post/2018-12-23-using-environment-variables-with-terraform/</guid>
-      <description>This is the first in a series of posts that will walk you through using terraform to deploy and configure virtual machines on vsphere. In this post you will get introduced to using environment variables to keep details obout the vsphere infrastructureout of the terraform code.
+      <description>This is the first in a series of posts that will walk you through using terraform to deploy and configure virtual machines on vsphere. In this post you will get introduced to using environment variables to keep details obout the vsphere infrastructure out of the terraform code.
 There is nothing vsphere specific in this post, but it is more about showing a pattern for keeping deployment specifics out of terraform code.</description>
     </item>
     

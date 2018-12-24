@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.52" />
+
+  <title>Using terraform to clone a virtual machine on vSphere &middot; Things I find interesting</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://sdorsett.github.io/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://sdorsett.github.io/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="https://sdorsett.github.io/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+ 
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="https://sdorsett.github.ioimg/favicon.ico" type="image/x-icon" />
+
+  
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="https://sdorsett.github.io/"> </a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/post/"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/topics/"><i class='fa fa-folder fa-fw'></i>Topics</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/tags/"><i class='fa fa-tags fa-fw'></i>Tags</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://github.com/sdorsett/interesting-links"><i class='fa fa-folder fa-fw'></i>Favorites</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/about/">About</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://twitter.com/standorsett" target="_blank"><i class="fa fa-twitter-square fa-fw"></i>Twitter</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://linkedin.com/in/stan-dorsett-53a8827" target="_blank"><i class="fa fa-linkedin-square fa-fw"></i>LinkedIn</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/sdorsett" target="_blank"><i class="fa fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small>&copy; 2018. All rights reserved.</small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Using terraform to clone a virtual machine on vSphere</h1>
+  <h2></h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>24 Dec 2018, 00:00</time>
+  </div>
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-folder fa-fw"></i>
+    
+      <a class="post-taxonomy-topic" href="https://sdorsett.github.iotopics/learning-terraform-by-deploying-to-vsphere">learning-terraform-by-deploying-to-vsphere</a>
+    
+  </div>
+  
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://sdorsett.github.iotags/terraform">terraform</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://sdorsett.github.iotags/vsphere">vsphere</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  
+
+<p>This is the second in a series of posts that will walk you through using terraform to deploy and configure virtual machines on vsphere. In this post you will get introduced to using terraform to clone an existing template to a new virtual machine.</p>
+
+<hr />
+
+<h3 id="1-create-a-new-directory-for-our-terraform-code">1. Create a new directory for our terraform code.</h3>
+
+<p>Start by creating a new directory for the terraform code and <code>cd</code> to it.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@terraform ~<span style="color:#f92672">]</span><span style="color:#75715e"># mkdir terraform-vsphere-clone</span>
+<span style="color:#f92672">[</span>root@terraform ~<span style="color:#f92672">]</span><span style="color:#75715e"># cd terraform-vsphere-clone/</span>
+<span style="color:#f92672">[</span>root@terraform terraform-vsphere-clone<span style="color:#f92672">]</span>#</code></pre></div>
+
+<h3 id="2-create-variables-tf-containing-the-variables-that-are-required">2. Create <code>variables.tf</code> containing the variables that are required.</h3>
+
+<p>Before we start creating the terraform file I want to point out Terraform does not require specific types of information to be stored in files with specific names.Terraform loads all configuration files within a directory and appends them together, so there is no techinical reason to split the code into multiple files. The reason the code is typically broken into seperate files it to designate how to code is being used.</p>
+
+<p>A common pattern with structuring terraform code is to use the same file structure that terraform modules use:</p>
+
+<ul>
+<li><code>main.tf</code> - contains the terraform code that will create resources.</li>
+<li><code>variables.tf</code> - defines the variables that will be used in main.tf.</li>
+<li><code>outputs.tf</code> - defines what output information terraform will output once <code>terraform apply</code> has completed.</li>
+</ul>
+
+<p>Let us start with the variables.tf file:</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@terraform terraform-vsphere-clone<span style="color:#f92672">]</span><span style="color:#75715e"># vim variables.tf</span>
+<span style="color:#f92672">[</span>root@terraform terraform-vsphere-clone<span style="color:#f92672">]</span><span style="color:#75715e"># cat variables.tf</span>
+<span style="color:#75715e"># vsphere login account. defaults to admin account</span>
+variable <span style="color:#e6db74">&#34;vsphere_user&#34;</span> <span style="color:#f92672">{</span>
+  default <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;administrator@vsphere.local&#34;</span>
+<span style="color:#f92672">}</span>
+
+<span style="color:#75715e"># vsphere account password. empty by default.</span>
+variable <span style="color:#e6db74">&#34;vsphere_password&#34;</span> <span style="color:#f92672">{}</span>
+
+<span style="color:#75715e"># vsphere server, defaults to localhost</span>
+variable <span style="color:#e6db74">&#34;vsphere_server&#34;</span> <span style="color:#f92672">{</span>
+  default <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;localhost&#34;</span>
+<span style="color:#f92672">}</span>
+
+<span style="color:#75715e"># vsphere datacenter the virtual machine will be deployed to. empty by default.</span>
+variable <span style="color:#e6db74">&#34;vsphere_datacenter&#34;</span> <span style="color:#f92672">{}</span>
+
+<span style="color:#75715e"># vsphere resource pool the virtual machine will be deployed to. empty by default.</span>
+variable <span style="color:#e6db74">&#34;vsphere_resource_pool&#34;</span> <span style="color:#f92672">{}</span>
+
+<span style="color:#75715e"># vsphere datastore the virtual machine will be deployed to. empty by default.</span>
+variable <span style="color:#e6db74">&#34;vsphere_datastore&#34;</span> <span style="color:#f92672">{}</span>
+
+<span style="color:#75715e"># vsphere network the virtual machine will be connected to. empty by default.</span>
+variable <span style="color:#e6db74">&#34;vsphere_network&#34;</span> <span style="color:#f92672">{}</span>
+
+<span style="color:#75715e"># vsphere virtual machine template that the virtual machine will be cloned from. empty by default.</span>
+variable <span style="color:#e6db74">&#34;vsphere_virtual_machine_template&#34;</span> <span style="color:#f92672">{}</span>
+
+<span style="color:#75715e"># the name of the vsphere virtual machine that is created. empty by default.</span>
+variable <span style="color:#e6db74">&#34;vsphere_virtual_machine_name&#34;</span> <span style="color:#f92672">{}</span>
+<span style="color:#f92672">[</span>root@terraform terraform-vsphere-clone<span style="color:#f92672">]</span>#</code></pre></div>
+
+<h3 id="3-create-terraform-tfvars-and-set-the-variable-values">3. Create <code>terraform.tfvars</code> and set the variable values.</h3>
+
+<p>There is nothing that prevents you from setting the specific values for variables in <code>variables.tf</code>, but this increases the chances of those values getting applied in version controt. The preferred method for setting variable values is setting them in <code>terraform.tfvars</code> or using environment variables as was covered <a href="../2018-12-23-using-environment-variables-with-terraform">in the previous blog post</a>.</p>
+
+<p>For demonstrations purposes this post will use the <code>terraform.tfvars</code> method to set the specific value of the variables defined in <code>variables.tf</code>.</p>
+
+<p>The following is an example of what <code>terraform.tfvars</code> should look like:</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@terraform terraform-vsphere-clone<span style="color:#f92672">]</span><span style="color:#75715e"># vim terraform.tfvars</span>
+<span style="color:#f92672">[</span>root@terraform terraform-vsphere-clone<span style="color:#f92672">]</span><span style="color:#75715e"># cat terraform.tfvars</span>
+vsphere_user <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;terraform_user@vsphere.local&#34;</span>
+vsphere_password <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;SuperSecretPassword&#34;</span>
+vsphere_server <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;192.168.100.50&#34;</span>
+vsphere_datacenter <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;datacenter&#34;</span>
+vsphere_datastore <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;datastore-1&#34;</span>
+vsphere_resource_pool <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;cluster/Resources&#34;</span>
+vsphere_network <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;VM Network&#34;</span>
+vsphere_virtual_machine_template <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;centos_7_template&#34;</span>
+vsphere_virtual_machine_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;terraform-vsphere-clone-test&#34;</span>
+<span style="color:#f92672">[</span>root@terraform terraform-vsphere-clone<span style="color:#f92672">]</span>#</code></pre></div>
+
+<h3 id="4-create-main-tf-containing-the-terraform-code">4. Create <code>main.tf</code> containing the terraform code.</h3>
+
+<p>Next we will create <code>main.tf</code> to contain the terraform code that will create the resource (virtual machine) as describe by the code.</p>
+
+<p><code>main.tf</code> will contain the following types of blocks:</p>
+
+<ul>
+<li><code>provider</code> - a provider block describes a terraform provider that will be used. We will be using the &lsquo;vsphere&rsquo; provider</li>
+<li><code>data</code> - a data block describes a resource that a provider will query and return the results. For instance we will be using vsphere_datacenter, vsphere_datastore, vsphere_resource_pool and vsphere_network data sources and using those value to create a new virtual machine</li>
+<li><code>resource</code> - a resource block describes a resource that terraform will ensure exists as described. The virtual machine we are wanted to have created will be described as a resource.</li>
+</ul>
+
+<p>The following is the <code>main.tf</code> that I used:</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@terraform terraform-vsphere-clone<span style="color:#f92672">]</span><span style="color:#75715e"># cat main.tf</span>
+provider <span style="color:#e6db74">&#34;vsphere&#34;</span> <span style="color:#f92672">{</span>
+  user           <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>var.vsphere_user<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+  password       <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>var.vsphere_password<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+  vsphere_server <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>var.vsphere_server<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+  allow_unverified_ssl <span style="color:#f92672">=</span> true
+<span style="color:#f92672">}</span>
+
+data <span style="color:#e6db74">&#34;vsphere_datacenter&#34;</span> <span style="color:#e6db74">&#34;dc&#34;</span> <span style="color:#f92672">{</span>
+  name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>var.vsphere_datacenter<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+<span style="color:#f92672">}</span>
+
+data <span style="color:#e6db74">&#34;vsphere_datastore&#34;</span> <span style="color:#e6db74">&#34;datastore&#34;</span> <span style="color:#f92672">{</span>
+  name          <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>var.vsphere_datastore<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+  datacenter_id <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>data.vsphere_datacenter.dc.id<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+<span style="color:#f92672">}</span>
+
+data <span style="color:#e6db74">&#34;vsphere_resource_pool&#34;</span> <span style="color:#e6db74">&#34;pool&#34;</span> <span style="color:#f92672">{</span>
+  name          <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>var.vsphere_resource_pool<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+  datacenter_id <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>data.vsphere_datacenter.dc.id<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+<span style="color:#f92672">}</span>
+
+data <span style="color:#e6db74">&#34;vsphere_network&#34;</span> <span style="color:#e6db74">&#34;network&#34;</span> <span style="color:#f92672">{</span>
+  name          <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>var.vsphere_network<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+  datacenter_id <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>data.vsphere_datacenter.dc.id<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+<span style="color:#f92672">}</span>
+
+data <span style="color:#e6db74">&#34;vsphere_virtual_machine&#34;</span> <span style="color:#e6db74">&#34;template&#34;</span> <span style="color:#f92672">{</span>
+  name          <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>var.vsphere_virtual_machine_template<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+  datacenter_id <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>data.vsphere_datacenter.dc.id<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+<span style="color:#f92672">}</span>
+
+resource <span style="color:#e6db74">&#34;vsphere_virtual_machine&#34;</span> <span style="color:#e6db74">&#34;cloned_virtual_machine&#34;</span> <span style="color:#f92672">{</span>
+  name             <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>var.vsphere_virtual_machine_name<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+  resource_pool_id <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>data.vsphere_resource_pool.pool.id<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+  datastore_id     <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>data.vsphere_datastore.datastore.id<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+
+  num_cpus <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>data.vsphere_virtual_machine.template.num_cpus<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+  memory   <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>data.vsphere_virtual_machine.template.memory<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+  guest_id <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>data.vsphere_virtual_machine.template.guest_id<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+
+  scsi_type <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>data.vsphere_virtual_machine.template.scsi_type<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+
+  network_interface <span style="color:#f92672">{</span>
+    network_id   <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>data.vsphere_network.network.id<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+    adapter_type <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>data.vsphere_virtual_machine.template.network_interface_types[0]<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+  <span style="color:#f92672">}</span>
+
+  disk <span style="color:#f92672">{</span>
+    label <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;disk0&#34;</span>
+    size <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>data.vsphere_virtual_machine.template.disks.0.size<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+  <span style="color:#f92672">}</span>
+
+  clone <span style="color:#f92672">{</span>
+    template_uuid <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>data.vsphere_virtual_machine.template.id<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+  <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+<span style="color:#f92672">[</span>root@terraform terraform-vsphere-clone<span style="color:#f92672">]</span>#</code></pre></div>
+
+<p>You might notice that the variables we defined are used in the vsphere provider block, to specify how to connect to vsphere, and the data blocks, to specify what vsphere resources should be queried.</p>
+
+<h3 id="5-create-output-tf-containing-the-information-we-want-terraform-to-return-after-a-run-completes">5. Create <code>output.tf</code> containing the information we want terraform to return after a run completes.</h3>
+
+<p>In the output.tf you can specify what information terraform should display after the run completes.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@terraform terraform-vsphere-clone<span style="color:#f92672">]</span><span style="color:#75715e"># vim output.tf</span>
+<span style="color:#f92672">[</span>root@terraform terraform-vsphere-clone<span style="color:#f92672">]</span><span style="color:#75715e"># cat output.tf</span>
+output <span style="color:#e6db74">&#34;ip&#34;</span> <span style="color:#f92672">{</span>
+   value <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>vsphere_virtual_machine.cloned_virtual_machine.*.default_ip_address<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+<span style="color:#f92672">}</span>
+output <span style="color:#e6db74">&#34;vm-moref&#34;</span> <span style="color:#f92672">{</span>
+   value <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>vsphere_virtual_machine.cloned_virtual_machine.moid<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+<span style="color:#f92672">}</span>
+
+<span style="color:#f92672">[</span>root@terraform terraform-vsphere-clone<span style="color:#f92672">]</span>#</code></pre></div>
+
+<p>In this example terraform will return the ip address and moref of the virtual machine created.</p>
+
+<h3 id="6-run-terraform-init-to-initialize-terraform-and-downloaded-the-provisioners">6. Run <code>terraform init</code> to initialize terraform and downloaded the provisioners.</h3>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@terraform terraform-vsphere-clone<span style="color:#f92672">]</span><span style="color:#75715e"># terraform init</span>
+
+Initializing provider plugins...
+- Checking <span style="color:#66d9ef">for</span> available provider plugins on https://releases.hashicorp.com...
+- Downloading plugin <span style="color:#66d9ef">for</span> provider <span style="color:#e6db74">&#34;vsphere&#34;</span> <span style="color:#f92672">(</span><span style="color:#ae81ff">1</span>.9.0<span style="color:#f92672">)</span>...
+
+The following providers <span style="color:#66d9ef">do</span> not have any version constraints in configuration,
+so the latest version was installed.
+
+To prevent automatic upgrades to new major versions that may contain breaking
+changes, it is recommended to add version <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;...&#34;</span> constraints to the
+corresponding provider blocks in configuration, with the constraint strings
+suggested below.
+
+* provider.vsphere: version <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;~&gt; 1.9&#34;</span>
+
+Terraform has been successfully initialized!
+
+You may now begin working with Terraform. Try running <span style="color:#e6db74">&#34;terraform plan&#34;</span> to see
+any changes that are required <span style="color:#66d9ef">for</span> your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration <span style="color:#66d9ef">for</span> Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to <span style="color:#66d9ef">do</span> so <span style="color:#66d9ef">if</span> necessary.
+<span style="color:#f92672">[</span>root@terraform terraform-vsphere-clone<span style="color:#f92672">]</span>#</code></pre></div>
+
+<h3 id="7-run-terraform-plan-to-have-terraform-show-what-will-get-created">7. Run <code>terraform plan</code> to have terraform show what will get created.</h3>
+
+<p>The next step is to run <code>terraform plan</code> to have terraform validate the vsphere credentials and display the changes it would like to make:</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@terraform terraform-vsphere-clone<span style="color:#f92672">]</span><span style="color:#75715e"># terraform plan</span>
+Refreshing Terraform state in-memory prior to plan...
+The refreshed state will be used to calculate this plan, but will not be
+persisted to local or remote state storage.
+
+data.vsphere_datacenter.dc: Refreshing state...
+data.vsphere_resource_pool.pool: Refreshing state...
+data.vsphere_network.network: Refreshing state...
+data.vsphere_virtual_machine.template: Refreshing state...
+data.vsphere_datastore.datastore: Refreshing state...
+
+------------------------------------------------------------------------
+
+An execution plan has been generated and is shown below.
+Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  + vsphere_virtual_machine.cloned_virtual_machine
+      id:                                        &lt;computed&gt;
+      boot_retry_delay:                          <span style="color:#e6db74">&#34;10000&#34;</span>
+      change_version:                            &lt;computed&gt;
+      clone.#:                                   <span style="color:#e6db74">&#34;1&#34;</span>
+      clone.0.template_uuid:                     <span style="color:#e6db74">&#34;4221e272-e449-97e0-39f4-ab580bebc473&#34;</span>
+      clone.0.timeout:                           <span style="color:#e6db74">&#34;30&#34;</span>
+      cpu_limit:                                 <span style="color:#e6db74">&#34;-1&#34;</span>
+      cpu_share_count:                           &lt;computed&gt;
+      cpu_share_level:                           <span style="color:#e6db74">&#34;normal&#34;</span>
+      datastore_id:                              <span style="color:#e6db74">&#34;datastore-15&#34;</span>
+      default_ip_address:                        &lt;computed&gt;
+      disk.#:                                    <span style="color:#e6db74">&#34;1&#34;</span>
+      disk.0.attach:                             <span style="color:#e6db74">&#34;false&#34;</span>
+      disk.0.datastore_id:                       <span style="color:#e6db74">&#34;&lt;computed&gt;&#34;</span>
+      disk.0.device_address:                     &lt;computed&gt;
+      disk.0.disk_mode:                          <span style="color:#e6db74">&#34;persistent&#34;</span>
+      disk.0.disk_sharing:                       <span style="color:#e6db74">&#34;sharingNone&#34;</span>
+      disk.0.eagerly_scrub:                      <span style="color:#e6db74">&#34;false&#34;</span>
+      disk.0.io_limit:                           <span style="color:#e6db74">&#34;-1&#34;</span>
+      disk.0.io_reservation:                     <span style="color:#e6db74">&#34;0&#34;</span>
+      disk.0.io_share_count:                     <span style="color:#e6db74">&#34;0&#34;</span>
+      disk.0.io_share_level:                     <span style="color:#e6db74">&#34;normal&#34;</span>
+      disk.0.keep_on_remove:                     <span style="color:#e6db74">&#34;false&#34;</span>
+      disk.0.key:                                <span style="color:#e6db74">&#34;0&#34;</span>
+      disk.0.label:                              <span style="color:#e6db74">&#34;disk0&#34;</span>
+      disk.0.path:                               &lt;computed&gt;
+      disk.0.size:                               <span style="color:#e6db74">&#34;8&#34;</span>
+      disk.0.thin_provisioned:                   <span style="color:#e6db74">&#34;true&#34;</span>
+      disk.0.unit_number:                        <span style="color:#e6db74">&#34;0&#34;</span>
+      disk.0.uuid:                               &lt;computed&gt;
+      disk.0.write_through:                      <span style="color:#e6db74">&#34;false&#34;</span>
+      ept_rvi_mode:                              <span style="color:#e6db74">&#34;automatic&#34;</span>
+      firmware:                                  <span style="color:#e6db74">&#34;bios&#34;</span>
+      force_power_off:                           <span style="color:#e6db74">&#34;true&#34;</span>
+      guest_id:                                  <span style="color:#e6db74">&#34;rhel7_64Guest&#34;</span>
+      guest_ip_addresses.#:                      &lt;computed&gt;
+      host_system_id:                            &lt;computed&gt;
+      hv_mode:                                   <span style="color:#e6db74">&#34;hvAuto&#34;</span>
+      imported:                                  &lt;computed&gt;
+      latency_sensitivity:                       <span style="color:#e6db74">&#34;normal&#34;</span>
+      memory:                                    <span style="color:#e6db74">&#34;1024&#34;</span>
+      memory_limit:                              <span style="color:#e6db74">&#34;-1&#34;</span>
+      memory_share_count:                        &lt;computed&gt;
+      memory_share_level:                        <span style="color:#e6db74">&#34;normal&#34;</span>
+      migrate_wait_timeout:                      <span style="color:#e6db74">&#34;30&#34;</span>
+      moid:                                      &lt;computed&gt;
+      name:                                      <span style="color:#e6db74">&#34;terraform-vsphere-clone-test&#34;</span>
+      network_interface.#:                       <span style="color:#e6db74">&#34;1&#34;</span>
+      network_interface.0.adapter_type:          <span style="color:#e6db74">&#34;vmxnet3&#34;</span>
+      network_interface.0.bandwidth_limit:       <span style="color:#e6db74">&#34;-1&#34;</span>
+      network_interface.0.bandwidth_reservation: <span style="color:#e6db74">&#34;0&#34;</span>
+      network_interface.0.bandwidth_share_count: &lt;computed&gt;
+      network_interface.0.bandwidth_share_level: <span style="color:#e6db74">&#34;normal&#34;</span>
+      network_interface.0.device_address:        &lt;computed&gt;
+      network_interface.0.key:                   &lt;computed&gt;
+      network_interface.0.mac_address:           &lt;computed&gt;
+      network_interface.0.network_id:            <span style="color:#e6db74">&#34;network-25&#34;</span>
+      num_cores_per_socket:                      <span style="color:#e6db74">&#34;1&#34;</span>
+      num_cpus:                                  <span style="color:#e6db74">&#34;1&#34;</span>
+      reboot_required:                           &lt;computed&gt;
+      resource_pool_id:                          <span style="color:#e6db74">&#34;resgroup-8&#34;</span>
+      run_tools_scripts_after_power_on:          <span style="color:#e6db74">&#34;true&#34;</span>
+      run_tools_scripts_after_resume:            <span style="color:#e6db74">&#34;true&#34;</span>
+      run_tools_scripts_before_guest_shutdown:   <span style="color:#e6db74">&#34;true&#34;</span>
+      run_tools_scripts_before_guest_standby:    <span style="color:#e6db74">&#34;true&#34;</span>
+      scsi_bus_sharing:                          <span style="color:#e6db74">&#34;noSharing&#34;</span>
+      scsi_controller_count:                     <span style="color:#e6db74">&#34;1&#34;</span>
+      scsi_type:                                 <span style="color:#e6db74">&#34;lsilogic&#34;</span>
+      shutdown_wait_timeout:                     <span style="color:#e6db74">&#34;3&#34;</span>
+      swap_placement_policy:                     <span style="color:#e6db74">&#34;inherit&#34;</span>
+      uuid:                                      &lt;computed&gt;
+      vmware_tools_status:                       &lt;computed&gt;
+      vmx_path:                                  &lt;computed&gt;
+      wait_for_guest_net_routable:               <span style="color:#e6db74">&#34;true&#34;</span>
+      wait_for_guest_net_timeout:                <span style="color:#e6db74">&#34;5&#34;</span>
+
+
+Plan: <span style="color:#ae81ff">1</span> to add, <span style="color:#ae81ff">0</span> to change, <span style="color:#ae81ff">0</span> to destroy.
+
+------------------------------------------------------------------------
+
+Note: You didn<span style="color:#e6db74">&#39;t specify an &#34;-out&#34; parameter to save this plan, so Terraform
+</span><span style="color:#e6db74">can&#39;</span>t guarantee that exactly these actions will be performed <span style="color:#66d9ef">if</span>
+<span style="color:#e6db74">&#34;terraform apply&#34;</span> is subsequently run.
+
+<span style="color:#f92672">[</span>root@terraform terraform-vsphere-clone<span style="color:#f92672">]</span>#</code></pre></div>
+
+<h3 id="8-run-terraform-apply-to-create-the-described-resources">8. Run <code>terraform apply</code> to create the described resources.</h3>
+
+<p>Running <code>terraform apply --auto-approve</code> will have terraform create the resource described in <code>main.tf</code>:</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@terraform terraform-vsphere-clone<span style="color:#f92672">]</span><span style="color:#75715e"># terraform apply --auto-approve</span>
+data.vsphere_datacenter.dc: Refreshing state...
+data.vsphere_network.network: Refreshing state...
+data.vsphere_resource_pool.pool: Refreshing state...
+data.vsphere_virtual_machine.template: Refreshing state...
+data.vsphere_datastore.datastore: Refreshing state...
+vsphere_virtual_machine.cloned_virtual_machine: Creating...
+  boot_retry_delay:                          <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;10000&#34;</span>
+  change_version:                            <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;&lt;computed&gt;&#34;</span>
+  clone.#:                                   <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;1&#34;</span>
+  clone.0.template_uuid:                     <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;4221e272-e449-97e0-39f4-ab580bebc473&#34;</span>
+  clone.0.timeout:                           <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;30&#34;</span>
+  cpu_limit:                                 <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;-1&#34;</span>
+  cpu_share_count:                           <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;&lt;computed&gt;&#34;</span>
+  cpu_share_level:                           <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;normal&#34;</span>
+  datastore_id:                              <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;datastore-15&#34;</span>
+  default_ip_address:                        <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;&lt;computed&gt;&#34;</span>
+  disk.#:                                    <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;1&#34;</span>
+  disk.0.attach:                             <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;false&#34;</span>
+  disk.0.datastore_id:                       <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;&lt;computed&gt;&#34;</span>
+  disk.0.device_address:                     <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;&lt;computed&gt;&#34;</span>
+  disk.0.disk_mode:                          <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;persistent&#34;</span>
+  disk.0.disk_sharing:                       <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;sharingNone&#34;</span>
+  disk.0.eagerly_scrub:                      <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;false&#34;</span>
+  disk.0.io_limit:                           <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;-1&#34;</span>
+  disk.0.io_reservation:                     <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;0&#34;</span>
+  disk.0.io_share_count:                     <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;0&#34;</span>
+  disk.0.io_share_level:                     <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;normal&#34;</span>
+  disk.0.keep_on_remove:                     <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;false&#34;</span>
+  disk.0.key:                                <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;0&#34;</span>
+  disk.0.label:                              <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;disk0&#34;</span>
+  disk.0.path:                               <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;&lt;computed&gt;&#34;</span>
+  disk.0.size:                               <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;8&#34;</span>
+  disk.0.thin_provisioned:                   <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;true&#34;</span>
+  disk.0.unit_number:                        <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;0&#34;</span>
+  disk.0.uuid:                               <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;&lt;computed&gt;&#34;</span>
+  disk.0.write_through:                      <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;false&#34;</span>
+  ept_rvi_mode:                              <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;automatic&#34;</span>
+  firmware:                                  <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;bios&#34;</span>
+  force_power_off:                           <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;true&#34;</span>
+  guest_id:                                  <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;rhel7_64Guest&#34;</span>
+  guest_ip_addresses.#:                      <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;&lt;computed&gt;&#34;</span>
+  host_system_id:                            <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;&lt;computed&gt;&#34;</span>
+  hv_mode:                                   <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;hvAuto&#34;</span>
+  imported:                                  <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;&lt;computed&gt;&#34;</span>
+  latency_sensitivity:                       <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;normal&#34;</span>
+  memory:                                    <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;1024&#34;</span>
+  memory_limit:                              <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;-1&#34;</span>
+  memory_share_count:                        <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;&lt;computed&gt;&#34;</span>
+  memory_share_level:                        <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;normal&#34;</span>
+  migrate_wait_timeout:                      <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;30&#34;</span>
+  moid:                                      <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;&lt;computed&gt;&#34;</span>
+  name:                                      <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;terraform-vsphere-clone-test&#34;</span>
+  network_interface.#:                       <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;1&#34;</span>
+  network_interface.0.adapter_type:          <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;vmxnet3&#34;</span>
+  network_interface.0.bandwidth_limit:       <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;-1&#34;</span>
+  network_interface.0.bandwidth_reservation: <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;0&#34;</span>
+  network_interface.0.bandwidth_share_count: <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;&lt;computed&gt;&#34;</span>
+  network_interface.0.bandwidth_share_level: <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;normal&#34;</span>
+  network_interface.0.device_address:        <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;&lt;computed&gt;&#34;</span>
+  network_interface.0.key:                   <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;&lt;computed&gt;&#34;</span>
+  network_interface.0.mac_address:           <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;&lt;computed&gt;&#34;</span>
+  network_interface.0.network_id:            <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;network-25&#34;</span>
+  num_cores_per_socket:                      <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;1&#34;</span>
+  num_cpus:                                  <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;1&#34;</span>
+  reboot_required:                           <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;&lt;computed&gt;&#34;</span>
+  resource_pool_id:                          <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;resgroup-8&#34;</span>
+  run_tools_scripts_after_power_on:          <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;true&#34;</span>
+  run_tools_scripts_after_resume:            <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;true&#34;</span>
+  run_tools_scripts_before_guest_shutdown:   <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;true&#34;</span>
+  run_tools_scripts_before_guest_standby:    <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;true&#34;</span>
+  scsi_bus_sharing:                          <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;noSharing&#34;</span>
+  scsi_controller_count:                     <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;1&#34;</span>
+  scsi_type:                                 <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;lsilogic&#34;</span>
+  shutdown_wait_timeout:                     <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;3&#34;</span>
+  swap_placement_policy:                     <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;inherit&#34;</span>
+  uuid:                                      <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;&lt;computed&gt;&#34;</span>
+  vmware_tools_status:                       <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;&lt;computed&gt;&#34;</span>
+  vmx_path:                                  <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;&lt;computed&gt;&#34;</span>
+  wait_for_guest_net_routable:               <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;true&#34;</span>
+  wait_for_guest_net_timeout:                <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;5&#34;</span>
+vsphere_virtual_machine.cloned_virtual_machine: Still creating... <span style="color:#f92672">(</span>10s elapsed<span style="color:#f92672">)</span>
+vsphere_virtual_machine.cloned_virtual_machine: Still creating... <span style="color:#f92672">(</span>20s elapsed<span style="color:#f92672">)</span>
+vsphere_virtual_machine.cloned_virtual_machine: Still creating... <span style="color:#f92672">(</span>30s elapsed<span style="color:#f92672">)</span>
+vsphere_virtual_machine.cloned_virtual_machine: Still creating... <span style="color:#f92672">(</span>40s elapsed<span style="color:#f92672">)</span>
+vsphere_virtual_machine.cloned_virtual_machine: Still creating... <span style="color:#f92672">(</span>50s elapsed<span style="color:#f92672">)</span>
+vsphere_virtual_machine.cloned_virtual_machine: Still creating... <span style="color:#f92672">(</span>1m0s elapsed<span style="color:#f92672">)</span>
+vsphere_virtual_machine.cloned_virtual_machine: Still creating... <span style="color:#f92672">(</span>1m10s elapsed<span style="color:#f92672">)</span>
+vsphere_virtual_machine.cloned_virtual_machine: Still creating... <span style="color:#f92672">(</span>1m20s elapsed<span style="color:#f92672">)</span>
+vsphere_virtual_machine.cloned_virtual_machine: Still creating... <span style="color:#f92672">(</span>1m30s elapsed<span style="color:#f92672">)</span>
+vsphere_virtual_machine.cloned_virtual_machine: Still creating... <span style="color:#f92672">(</span>1m40s elapsed<span style="color:#f92672">)</span>
+vsphere_virtual_machine.cloned_virtual_machine: Still creating... <span style="color:#f92672">(</span>1m50s elapsed<span style="color:#f92672">)</span>
+vsphere_virtual_machine.cloned_virtual_machine: Creation complete after 1m53s <span style="color:#f92672">(</span>ID: <span style="color:#ae81ff">42217964</span>-1e3c-29b6-0e39-8253913d4558<span style="color:#f92672">)</span>
+
+Apply complete! Resources: <span style="color:#ae81ff">1</span> added, <span style="color:#ae81ff">0</span> changed, <span style="color:#ae81ff">0</span> destroyed.
+
+Outputs:
+
+ip <span style="color:#f92672">=</span> <span style="color:#f92672">[</span>
+    <span style="color:#ae81ff">192</span>.168.100.178
+<span style="color:#f92672">]</span>
+vm-moref <span style="color:#f92672">=</span> vm-1115
+<span style="color:#f92672">[</span>root@terraform terraform-vsphere-clone<span style="color:#f92672">]</span>#</code></pre></div>
+
+<p>The bottom of the <code>terraform appy</code> displays the IP address and moref of the vm that was specified in the <code>output.tf</code> file.</p>
+
+<h3 id="9-run-terraform-destroy-to-delete-the-resources-that-were-previously-created">9. Run <code>terraform destroy</code> to delete the resources that were previously created.</h3>
+
+<p>Once you are ready to destroy the virtual machine terraform created, you can simply run <code>terraform destroy --force</code> to have terraform destroy it:</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@terraform terraform-vsphere-clone<span style="color:#f92672">]</span><span style="color:#75715e"># terraform destroy --force</span>
+data.vsphere_datacenter.dc: Refreshing state...
+data.vsphere_datastore.datastore: Refreshing state...
+data.vsphere_virtual_machine.template: Refreshing state...
+data.vsphere_network.network: Refreshing state...
+data.vsphere_resource_pool.pool: Refreshing state...
+vsphere_virtual_machine.cloned_virtual_machine: Refreshing state... <span style="color:#f92672">(</span>ID: <span style="color:#ae81ff">42217964</span>-1e3c-29b6-0e39-8253913d4558<span style="color:#f92672">)</span>
+vsphere_virtual_machine.cloned_virtual_machine: Destroying... <span style="color:#f92672">(</span>ID: <span style="color:#ae81ff">42217964</span>-1e3c-29b6-0e39-8253913d4558<span style="color:#f92672">)</span>
+vsphere_virtual_machine.cloned_virtual_machine: Still destroying... <span style="color:#f92672">(</span>ID: <span style="color:#ae81ff">42217964</span>-1e3c-29b6-0e39-8253913d4558, 10s elapsed<span style="color:#f92672">)</span>
+vsphere_virtual_machine.cloned_virtual_machine: Still destroying... <span style="color:#f92672">(</span>ID: <span style="color:#ae81ff">42217964</span>-1e3c-29b6-0e39-8253913d4558, 20s elapsed<span style="color:#f92672">)</span>
+vsphere_virtual_machine.cloned_virtual_machine: Destruction complete after 23s
+
+Destroy complete! Resources: <span style="color:#ae81ff">1</span> destroyed.
+<span style="color:#f92672">[</span>root@terraform terraform-vsphere-clone<span style="color:#f92672">]</span>#</code></pre></div>
+
+<h4 id="i-hope-this-post-has-been-useful-in-demonstrating-how-to-clone-a-vsphere-virtual-machine-from-template-using-terraform">I hope this post has been useful in demonstrating how to clone a vsphere virtual machine from template using terraform.</h4>
+
+<hr />
+
+<h4 id="please-provide-any-feedback-or-suggestions-to-my-twitter-account-located-on-the-about-page">Please provide any feedback or suggestions to my twitter account located on the about page.</h4>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="https://sdorsett.github.io/post/2018-12-23-using-environment-variables-with-terraform/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="https://sdorsett.github.io/post/2018-12-23-using-environment-variables-with-terraform/">Using environment variables with terraform</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+  </div>
+</div>
+
+
+
+  
+
+</div>
+
+</div>
+</div>
+<script src="https://sdorsett.github.iojs/ui.js"></script>
+<script src="https://sdorsett.github.iojs/menus.js"></script>
+
+
+
+
+
+
+</body>
+</html>
+

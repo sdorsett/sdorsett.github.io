@@ -264,7 +264,7 @@
 
   
 
-<p>This is the first in a series of posts that will walk you through using terraform to deploy and configure virtual machines on vsphere. In this post you will get introduced to using environment variables to keep details obout the vsphere infrastructureout of the terraform code.</p>
+<p>This is the first in a series of posts that will walk you through using terraform to deploy and configure virtual machines on vsphere. In this post you will get introduced to using environment variables to keep details obout the vsphere infrastructure out of the terraform code.</p>
 
 <p>There is nothing vsphere specific in this post, but it is more about showing a pattern for keeping deployment specifics out of terraform code.</p>
 
@@ -276,7 +276,7 @@
 <span style="color:#f92672">[</span>root@terraform ~<span style="color:#f92672">]</span><span style="color:#75715e"># cd terraform-test/</span>
 <span style="color:#f92672">[</span>root@terraform terraform-test<span style="color:#f92672">]</span>#</code></pre></div>
 
-<h3 id="2-create-a-a-test-tf-file-containing-our-test-variable-and-code-for-diplaying-this-value">2. Create a a test.tf file containing our test variable and code for diplaying this value.</h3>
+<h3 id="2-create-a-test-tf-file-containing-our-test-variable-and-code-for-diplaying-this-value">2. Create a test.tf file containing our test variable and code for diplaying this value.</h3>
 
 <p>All terraform code needs to be stored in files that end with .tf. In future posts you will see us keep variables in a seperate file than other terraform code, but today We will create a single .tf file that will contains all the code for this post.</p>
 
@@ -476,8 +476,14 @@ Apply complete! Resources: <span style="color:#ae81ff">1</span> added, <span sty
   </div>
   <div class="pure-u-10-24">
     
+    <nav class="next">
+      <a href="https://sdorsett.github.io/post/2018-12-24-using-terraform-to-clone-a-virtual-machine-on-vsphere/">Using terraform to clone a virtual machine on vSphere</a>
+    </nav>
+    
   </div>
   <div class="pure-u-1-24" style="text-align: right;">
+    
+    <a href="https://sdorsett.github.io/post/2018-12-24-using-terraform-to-clone-a-virtual-machine-on-vsphere/"><i class="fa fa-chevron-right"></i></a>
     
   </div>
 </div>

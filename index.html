@@ -236,6 +236,63 @@
   
     <article>
   <header>
+    <h2><a href="https://sdorsett.github.io/post/2018-12-24-using-terraform-to-clone-a-virtual-machine-on-vsphere/">Using terraform to clone a virtual machine on vSphere</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>24 Dec 2018, 00:00</time>
+  </div>
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-folder fa-fw"></i>
+    
+      <a class="post-taxonomy-topic" href="https://sdorsett.github.iotopics/learning-terraform-by-deploying-to-vsphere">learning-terraform-by-deploying-to-vsphere</a>
+    
+  </div>
+  
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://sdorsett.github.iotags/terraform">terraform</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://sdorsett.github.iotags/vsphere">vsphere</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  This is the second in a series of posts that will walk you through using terraform to deploy and configure virtual machines on vsphere. In this post you will get introduced to using terraform to clone an existing template to a new virtual machine.
+1. Create a new directory for our terraform code. Start by creating a new directory for the terraform code and cd to it.
+[root@terraform ~]# mkdir terraform-vsphere-clone [root@terraform ~]# cd terraform-vsphere-clone/ [root@terraform terraform-vsphere-clone]# 2.
+  </p>
+
+  
+  <footer>
+    <a href="https://sdorsett.github.io/post/2018-12-24-using-terraform-to-clone-a-virtual-machine-on-vsphere/">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
     <h2><a href="https://sdorsett.github.io/post/2018-12-23-using-environment-variables-with-terraform/">Using environment variables with terraform</a></h2>
 
     <div class="post-meta">
@@ -276,7 +333,7 @@
   </header>
 
   <p>
-  This is the first in a series of posts that will walk you through using terraform to deploy and configure virtual machines on vsphere. In this post you will get introduced to using environment variables to keep details obout the vsphere infrastructureout of the terraform code.
+  This is the first in a series of posts that will walk you through using terraform to deploy and configure virtual machines on vsphere. In this post you will get introduced to using environment variables to keep details obout the vsphere infrastructure out of the terraform code.
 There is nothing vsphere specific in this post, but it is more about showing a pattern for keeping deployment specifics out of terraform code.
   </p>
 
@@ -737,64 +794,6 @@ In the last post we covered using ovftool to convert Packer generated virtual ma
   
   <footer>
     <a href="https://sdorsett.github.io/post/2015-12-28-scripted-packer-build-and-export/">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
-  </footer>
-  
-</article>
-
-  
-    <article>
-  <header>
-    <h2><a href="https://sdorsett.github.io/post/2015-12-27-using-ovftool-to-export-packer-generated-virtual-machines/">Using ovftool to convert Packer generated virtual machines into Vagrant .box files</a></h2>
-
-    <div class="post-meta">
-
-  <div>
-    <i class="fa fa-calendar fa-fw"></i>
-    <time>27 Dec 2015, 00:00</time>
-  </div>
-
-  
-
-  
-  
-  
-  <div>
-    <i class="fa fa-folder fa-fw"></i>
-    
-      <a class="post-taxonomy-topic" href="https://sdorsett.github.iotopics/using-packer-with-esxi">using-packer-with-esxi</a>
-    
-  </div>
-  
-  
-
-  
-  
-  
-  <div>
-    <i class="fa fa-tags fa-fw"></i>
-    
-      <a class="post-taxonomy-tag" href="https://sdorsett.github.iotags/vagrant">vagrant</a>&nbsp;&#47;
-    
-      <a class="post-taxonomy-tag" href="https://sdorsett.github.iotags/packer">packer</a>&nbsp;&#47;
-    
-      <a class="post-taxonomy-tag" href="https://sdorsett.github.iotags/ovftool">ovftool</a>
-    
-  </div>
-  
-  
-
-</div>
-
-  </header>
-
-  <p>
-  This is the sixth in a series of posts on using a Packer pipeline to generate Vagrant .box files.
-In the last post we covered copying our existing CentOS 6.7 template and adding the Puppet agent in order to generate a new Packer template. In this post we will be covering how to use ovftool to convert Packer generated virtual machines into Vagrant .box files. This post will be going over the manual steps on purpose, since I feel it will make more sense when we start to cover automating the steps that you can already performed by hand.
-  </p>
-
-  
-  <footer>
-    <a href="https://sdorsett.github.io/post/2015-12-27-using-ovftool-to-export-packer-generated-virtual-machines/">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
   </footer>
   
 </article>
