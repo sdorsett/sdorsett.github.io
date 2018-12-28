@@ -268,9 +268,9 @@
 
   
 
-<p>This is the fourth in a series of posts that will walk you through using terraform to deploy and configure virtual machines on vsphere. In this post you will get introduced to using local-exec and remote-exe provisioners to make local (on the deloying system) and remote (on the deployed system) changes. If everything goes right we will also have a functional kubernetes controller that we can build on in future posts.</p>
+<p>This is the fourth in a series of posts that will walk you through using terraform to deploy and configure virtual machines on vsphere. In this post you will get introduced to using local-exec and remote-exec provisioners to make local (on the deloying system) and remote (on the deployed system) changes. If everything goes right we will also have a functional kubernetes controller when we finish that we can build on in future posts.</p>
 
-<p>One thing to mention early on in this post is that it is written expecting to deploy from a CentOS 7 template. All the bash scripts we will be using to configure the deployed virtual machine are written to install and configure a CentOS 7 virtual machine, so consider yourself warned.</p>
+<p>One thing to mention early on in this post is that it is written around CentOS 7. The expectation is that you will be deploying from a CentOS 7 template. All the bash scripts we will be using to configure the deployed virtual machine are written to install and configure a CentOS 7 virtual machine, so consider yourself warned.</p>
 
 <hr />
 
@@ -390,7 +390,19 @@ virtual_machine_kubernetes_controller <span style="color:#f92672">=</span> <span
 <span style="color:#f92672">}</span>
 <span style="color:#f92672">[</span>root@terraform terraform-vsphere-kubernetes<span style="color:#f92672">]</span>#</code></pre></div>
 
-<h3 id="4-create-kubernetes-controller-tf-to-contain-our-terraform-code-for-creating-the-kubernetes-controller-virtual-machine">4. Create <code>kubernetes_controller.tf</code> to contain our terraform code for creating the kubernetes_controller virtual machine.</h3>
+<h3 id="4-create-ssh-key-tf-to-contain-our-terraform-code-for-creating-a-ssh-key-used-to-connect-to-the-deployed-virtual-machine">4. Create <code>ssh-key.tf</code> to contain our terraform code for creating a ssh key used to connect to the deployed virtual machine.</h3>
+
+<p>The following is the terraform code that I used to create a ssh key. It is using the <code>local-exec</code> provisioner to run command on the machine that is running the terraform code.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@terraform terraform-vsphere-kubernetes<span style="color:#f92672">]</span><span style="color:#75715e"># cat ssh-key.tf</span>
+resource <span style="color:#e6db74">&#34;null_resource&#34;</span> <span style="color:#e6db74">&#34;generate-sshkey&#34;</span> <span style="color:#f92672">{</span>
+    provisioner <span style="color:#e6db74">&#34;local-exec&#34;</span> <span style="color:#f92672">{</span>
+        command <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;yes y | ssh-keygen -b 4096 -t rsa -C &#39;terraform-vsphere-kubernetes&#39; -N &#39;&#39; -f </span><span style="color:#e6db74">${</span>var.virtual_machine_kubernetes_controller.[<span style="color:#e6db74">&#34;private_key&#34;</span>]<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+<span style="color:#f92672">[</span>root@terraform terraform-vsphere-kubernetes<span style="color:#f92672">]</span>#</code></pre></div>
+
+<h3 id="5-create-kubernetes-controller-tf-to-contain-our-terraform-code-for-creating-the-kubernetes-controller-virtual-machine">5. Create <code>kubernetes_controller.tf</code> to contain our terraform code for creating the kubernetes_controller virtual machine.</h3>
 
 <p>Next we will create <code>kubernetes_controller.tf</code> to contain the terraform code that will create the virtual machine resource:</p>
 
@@ -526,15 +538,15 @@ resource <span style="color:#e6db74">&#34;vsphere_virtual_machine&#34;</span> <s
 <p>There are several things in this <code>.tf</code> that are different from the the previous post:</p>
 
 <ul>
-<li>variables are now using the var.<variable_name>.[&rdquo;<property>&rdquo;] format. As I mentioned earlier this makes our variables.tf file more logical in how it is organized</li>
-<li>the <code>vsphere_virtual_machine.kubernetes_controller</code> resource that is being deployed has a <code>customize</code> block that describes guest customization that need to be applied to the deploye virtual machine. This allows us to specify that IP address, netmask, gateway, DNS server and hostname of the deployed virtual machine.</li>
-<li>the <code>vsphere_virtual_machine.kubernetes_controller</code> resource has provisioner blocks that allow us to copy files and remotely run commands on the deployed virtual machine.</li>
+<li>variables are now using the var.<variable_name>.[&lsquo;property_name&rsquo;] format. As I mentioned earlier this makes our variables.tf file more logical in how it is organized</li>
+<li>the <code>vsphere_virtual_machine.kubernetes_controller</code> resource that is being deployed has a <code>customize</code> block that describes guest customization that need to be applied to the deployed virtual machine. This allows us to specify that IP address, netmask, gateway, DNS server and hostname of the deployed virtual machine.</li>
+<li>the <code>vsphere_virtual_machine.kubernetes_controller</code> resource has provisioner blocks that will copy files and remotely run commands on the deployed virtual machine.</li>
 </ul>
 
 <p>The provisioner blocks that perform the configuration of the deployed virtual machine are the following:</p>
 
 <ul>
-<li>the <code>file</code> provisioner is used to copy the ssh public key to <code>/tmp/authorized_keys</code> on the deployed virtual machine. I want to point out that the connection block will be using the <code>password</code> parameter to use the default password setup in the template to connect.</li>
+<li>the first provisioner is a <code>file</code> provisioner used to copy the ssh public key to <code>/tmp/authorized_keys</code> to the deployed virtual machine. I want to point out that the connection block will be using the <code>password</code> parameter to use the default password setup in the template to connect.</li>
 </ul>
 
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">  provisioner <span style="color:#e6db74">&#34;file&#34;</span> <span style="color:#f92672">{</span>
@@ -549,7 +561,7 @@ resource <span style="color:#e6db74">&#34;vsphere_virtual_machine&#34;</span> <s
   <span style="color:#f92672">}</span></code></pre></div>
 
 <ul>
-<li>the <code>remote-exec</code> provisioner will run the command listed in the inline block on the deployed virtual machine. The commands will move the <code>/tmp/authorized_keys</code> file that was copied in the previous step to <code>/root/.ssh/</code> and change the permissions. This block will finally disable password ssh authentication in <code>/etc/ssh/sshd_config</code> and restart the sshd service so the changes take affect:</li>
+<li>the second provisioner is a <code>remote-exec</code> provisioner that will run the command listed in the inline block on the deployed virtual machine. The commands will move the <code>/tmp/authorized_keys</code> file that was copied in the previous step to <code>/root/.ssh/</code> and change the permissions. This block will finally disable password ssh authentication in <code>/etc/ssh/sshd_config</code> and restart the sshd service so the changes take affect:</li>
 </ul>
 
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">  provisioner <span style="color:#e6db74">&#34;remote-exec&#34;</span> <span style="color:#f92672">{</span>
@@ -569,7 +581,7 @@ resource <span style="color:#e6db74">&#34;vsphere_virtual_machine&#34;</span> <s
   <span style="color:#f92672">}</span></code></pre></div>
 
 <ul>
-<li>The next <code>file</code> provisioner block will copy all files located in the local <code>scripts/</code> directory to <code>/tmp/</code> on the deployed virtual machine. Notice that the connection block is no longer using the <code>password</code> option, but is now using <code>private_key</code> to connect using the ssh key that will be generated.</li>
+<li>The third provisioner is a <code>file</code> provisioner block that will copy all files located in the local <code>scripts/</code> directory to <code>/tmp/</code> on the deployed virtual machine. Notice that the connection block is no longer using the <code>password</code> option, but is now using <code>private_key</code> to connect using the ssh key that will be generated.</li>
 </ul>
 
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">  provisioner <span style="color:#e6db74">&#34;file&#34;</span> <span style="color:#f92672">{</span>
@@ -584,7 +596,7 @@ resource <span style="color:#e6db74">&#34;vsphere_virtual_machine&#34;</span> <s
   <span style="color:#f92672">}</span></code></pre></div>
 
 <ul>
-<li>the last <code>remote-exec</code> block will make all the <code>.sh</code> files in <code>/tmp/</code> executable, run the listed <code>.sh</code> files and finally output a line from <code>/tmp/kubeadm_init_output.txt</code> that is denerated when running the <code>/tmp/kubeadm_init.sh</code> script:</li>
+<li>the last provisioner is a <code>remote-exec</code> provisioner that will make all the <code>.sh</code> files in <code>/tmp/</code> executable, run the listed <code>.sh</code> files and finally output a line from <code>/tmp/kubeadm_init_output.txt</code> that is generated when running the <code>/tmp/kubeadm_init.sh</code> script:</li>
 </ul>
 
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">  provisioner <span style="color:#e6db74">&#34;remote-exec&#34;</span> <span style="color:#f92672">{</span>
@@ -603,17 +615,17 @@ resource <span style="color:#e6db74">&#34;vsphere_virtual_machine&#34;</span> <s
     <span style="color:#f92672">}</span>
   <span style="color:#f92672">}</span></code></pre></div>
 
-<h3 id="5-create-the-scripts-directory-and-the-files-that-will-be-repotely-run-to-configure-the-virtual-machine-as-needed">5. Create the `scripts directory and the files that will be repotely run to configure the virtual machine as needed</h3>
+<h3 id="6-create-the-scripts-directory-and-the-files-that-will-be-remotely-run-to-configure-the-deployed-virtual-machine">6. Create the <code>scripts</code> directory and the files that will be remotely run to configure the deployed virtual machine.</h3>
 
 <ul>
-<li>We now need to create the scripts that the last <code>remote-exec</code> provisioner will be running on the deployed virtual machine. First create the scripts directory:</li>
+<li>We now need to create the scripts that will be run remotely on the deployed virtual machine. First create the scripts directory:</li>
 </ul>
 
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@terraform terraform-vsphere-kubernetes<span style="color:#f92672">]</span><span style="color:#75715e"># mkdir scripts</span>
 <span style="color:#f92672">[</span>root@terraform terraform-vsphere-kubernetes<span style="color:#f92672">]</span>#</code></pre></div>
 
 <ul>
-<li>Secondly we need to create the <code>system_setup.sh</code> that will disable swap, disable the firewall and disable SELINUX</li>
+<li>The first script will be the <code>system_setup.sh</code> that will disable swap, disable the firewall and disable SELINUX</li>
 </ul>
 
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@terraform terraform-vsphere-kubernetes<span style="color:#f92672">]</span><span style="color:#75715e"># cat scripts/system_setup.sh</span>
@@ -709,7 +721,7 @@ sysctl --system
 <span style="color:#f92672">[</span>root@terraform terraform-vsphere-kubernetes<span style="color:#f92672">]</span>#</code></pre></div>
 
 <ul>
-<li>the last script we will run is <code>kubeadm_init.sh</code> which will run the kubeadmin command to initialized a kubernetes controller on the deployed virtual machine:</li>
+<li>the last script we will run is <code>kubeadm_init.sh</code> which will run the kubeadmin command to initialize a kubernetes controller on the deployed virtual machine. This script will also install flannel which is used for network communication with in the kubernetes cluster.</li>
 </ul>
 
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@terraform terraform-vsphere-kubernetes<span style="color:#f92672">]</span><span style="color:#75715e"># cat scripts/kubeadm_init.sh</span>
@@ -731,7 +743,7 @@ kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documen
 
 <span style="color:#f92672">[</span>root@terraform terraform-vsphere-kubernetes<span style="color:#f92672">]</span>#</code></pre></div>
 
-<h3 id="6-create-output-tf-containing-the-information-we-want-terraform-to-return-after-a-run-completes">6. Create <code>output.tf</code> containing the information we want terraform to return after a run completes.</h3>
+<h3 id="7-create-output-tf-containing-the-information-we-want-terraform-to-return-after-a-run-completes">7. Create <code>output.tf</code> containing the information we want terraform to return after a run completes.</h3>
 
 <p>In the output.tf you can specify what information terraform should display after the run completes.</p>
 
@@ -746,18 +758,6 @@ output <span style="color:#e6db74">&#34;vm-moref&#34;</span> <span style="color:
 <span style="color:#f92672">[</span>root@terraform terraform-vsphere-kubernetes<span style="color:#f92672">]</span>#</code></pre></div>
 
 <p>In this example, just like in the previous post,  terraform will return the ip address and moref of the virtual machine created.</p>
-
-<h3 id="7-create-ssh-key-tf-to-contain-our-terraform-code-for-creating-a-ssh-key-for-connecting-to-the-deployed-virtual-machine">7. Create <code>ssh-key.tf</code> to contain our terraform code for creating a ssh key for connecting to the deployed virtual machine.</h3>
-
-<p>The following is the terraform code that I used to create a ssh key. It is using the <code>local-exec</code> provisioner to run command on the machine that is running the terraform code.</p>
-
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@terraform terraform-vsphere-kubernetes<span style="color:#f92672">]</span><span style="color:#75715e"># cat ssh-key.tf</span>
-resource <span style="color:#e6db74">&#34;null_resource&#34;</span> <span style="color:#e6db74">&#34;generate-sshkey&#34;</span> <span style="color:#f92672">{</span>
-    provisioner <span style="color:#e6db74">&#34;local-exec&#34;</span> <span style="color:#f92672">{</span>
-        command <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;yes y | ssh-keygen -b 4096 -t rsa -C &#39;terraform-vsphere-kubernetes&#39; -N &#39;&#39; -f </span><span style="color:#e6db74">${</span>var.virtual_machine_kubernetes_controller.[<span style="color:#e6db74">&#34;private_key&#34;</span>]<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-<span style="color:#f92672">[</span>root@terraform terraform-vsphere-kubernetes<span style="color:#f92672">]</span>#</code></pre></div>
 
 <h3 id="8-run-terraform-init-to-initialize-terraform-and-downloaded-the-provisioners">8. Run <code>terraform init</code> to initialize terraform and downloaded the provisioners.</h3>
 
@@ -920,7 +920,7 @@ Note: You didn<span style="color:#e6db74">&#39;t specify an &#34;-out&#34; param
 
 <h3 id="10-run-terraform-apply-to-create-the-described-resources">10. Run <code>terraform apply</code> to create the described resources.</h3>
 
-<p>Running <code>terraform apply --auto-approve</code> will have terraform create the resource described in <code>main.tf</code>:</p>
+<p>Running <code>terraform apply --auto-approve</code> will have terraform create the resources described in both <code>kubernetes_controller.tf</code> and <code>ssh-key.tf</code>:</p>
 
 <p><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@terraform terraform-vsphere-kubernetes<span style="color:#f92672">]</span><span style="color:#75715e"># terraform apply --auto-approve</span>
 data.vsphere_datacenter.template_datacenter: Refreshing state...
@@ -1064,9 +1064,9 @@ vsphere_virtual_machine.kubernetes_controller <span style="color:#f92672">(</spa
 vsphere_virtual_machine.kubernetes_controller <span style="color:#f92672">(</span>remote-exec<span style="color:#f92672">)</span>:   Checking Host Key: false
 vsphere_virtual_machine.kubernetes_controller <span style="color:#f92672">(</span>remote-exec<span style="color:#f92672">)</span>: Connected!
 vsphere_virtual_machine.kubernetes_controller <span style="color:#f92672">(</span>remote-exec<span style="color:#f92672">)</span>: Redirecting to /bin/systemctl restart sshd.service</code></pre></div>
-The first <code>remote-exec</code> block has just moved the ssh public key to the proper location, disabled ssh password authentioned and the restarted sshd service.
+The first <code>remote-exec</code> block has just moved the ssh public key to the proper location, disabled ssh password authentication and the restarted the sshd service.
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">vsphere_virtual_machine.kubernetes_controller: Provisioning with <span style="color:#e6db74">&#39;file&#39;</span>...</code></pre></div>
-The <code>./scripts/</code> files have now been copied to the deploy virtual machine. Next the <code>scripts\install_docker.sh</code> script will run remotely to install the necessary packages.
+The <code>./scripts/</code> files have now been copied to the deploy virtual machine. Next the <code>scripts\install_docker.sh</code> script will run remotely to install the necessary packages to install docker.
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">vsphere_virtual_machine.kubernetes_controller: Provisioning with <span style="color:#e6db74">&#39;remote-exec&#39;</span>...
 vsphere_virtual_machine.kubernetes_controller <span style="color:#f92672">(</span>remote-exec<span style="color:#f92672">)</span>: Connecting to remote host via SSH...
 vsphere_virtual_machine.kubernetes_controller <span style="color:#f92672">(</span>remote-exec<span style="color:#f92672">)</span>:   Host: <span style="color:#ae81ff">192</span>.168.100.100
@@ -1572,7 +1572,7 @@ vsphere_virtual_machine.kubernetes_controller <span style="color:#f92672">(</spa
 vsphere_virtual_machine.kubernetes_controller <span style="color:#f92672">(</span>remote-exec<span style="color:#f92672">)</span>: net.bridge.bridge-nf-call-ip6tables <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
 vsphere_virtual_machine.kubernetes_controller <span style="color:#f92672">(</span>remote-exec<span style="color:#f92672">)</span>: net.bridge.bridge-nf-call-iptables <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
 vsphere_virtual_machine.kubernetes_controller <span style="color:#f92672">(</span>remote-exec<span style="color:#f92672">)</span>: * Applying /etc/sysctl.conf ...</code></pre></div>
-Finally the <code>./script/kubeadm_init.sh</code> script will be remotely run that will pull down the kubernetes docker images, perform a <code>kubeadm init</code> in stand up the kubernetes controller and configure the flannel network componants:
+Finally the <code>./script/kubeadm_init.sh</code> script will be remotely run that will pull down the kubernetes docker images, perform a <code>kubeadm init</code> to stand up the kubernetes controller and configure the flannel network componants:
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">vsphere_virtual_machine.kubernetes_controller <span style="color:#f92672">(</span>remote-exec<span style="color:#f92672">)</span>: --&gt; pull kubeadm images &lt;--
 vsphere_virtual_machine.kubernetes_controller <span style="color:#f92672">(</span>remote-exec<span style="color:#f92672">)</span>: <span style="color:#f92672">[</span>config/images<span style="color:#f92672">]</span> Pulled k8s.gcr.io/kube-apiserver:v1.13.1
 vsphere_virtual_machine.kubernetes_controller: Still creating... <span style="color:#f92672">(</span>3m20s elapsed<span style="color:#f92672">)</span>
@@ -1611,15 +1611,15 @@ ip <span style="color:#f92672">=</span> <span style="color:#f92672">[</span>
 vm-moref <span style="color:#f92672">=</span> vm-1131
 <span style="color:#f92672">[</span>root@terraform terraform-vsphere-kubernetes<span style="color:#f92672">]</span>#</code></pre></div></p>
 
-<p>The bottom of the <code>terraform appy</code> displays the IP address and moref of the vm that was specified in the <code>output.tf</code> file. I also want to point out the output returned in the last <code>remote-exec</code> block:</p>
+<p>The bottom of the <code>terraform apply</code> displays the IP address and moref of the vm that was specified in the <code>output.tf</code> file. I also want to point out the output returned at the bottom of the last <code>remote-exec</code> block:</p>
 
 <p>kubeadm join 192.168.100.100:6443 &ndash;token 4xr954.lv1sp4plkapb0eza &ndash;discovery-token-ca-cert-hash sha256:0d972b6d7e08ebef346a8cf14ea4bcf88b9341351d7ec4d488defdbb4761e5e8</p>
 
-<p>This is the <code>kubeadm join</code> command that can be run on any kubernetes node to join them to the kubernetes controller we initialized.</p>
+<p>This is the <code>kubeadm join</code> command can be run on any kubernetes node to join them to the kubernetes cluster that was initialized with <code>kubeadm init</code>. We will not be taking this any farther in this post, but we will use this command output in future posts to join deployed kubernetes nodes to the cluster that was just created.</p>
 
 <h3 id="11-validate-kubectl-is-working-by-connecting-to-the-deployed-virtual-machine">11. Validate <code>kubectl</code> is working by connecting to the deployed virtual machine.</h3>
 
-<p>You can no longer ssh to the deployed virtual machine using the password from the template, but you can use the ssh key generated to connect without a password like in the following example:</p>
+<p>Since ssh password authentication has been disabled, you will no longer be able to ssh to the deployed virtual machine using the password from the template. Instead you must now use the ssh key generated to connect without a password like in the following example:</p>
 
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@terraform terraform-vsphere-kubernetes<span style="color:#f92672">]</span><span style="color:#75715e"># ssh root@192.168.100.100 -i /root/.ssh/id_rsa-terraform-vsphere-kubernetes</span>
 The authenticity of host <span style="color:#e6db74">&#39;192.168.100.100 (192.168.100.100)&#39;</span> can<span style="color:#e6db74">&#39;t be established.
