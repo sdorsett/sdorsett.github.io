@@ -7,10 +7,21 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2018. All rights reserved.</copyright>
-    <lastBuildDate>Wed, 26 Dec 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 28 Dec 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://sdorsett.github.io/tags/vsphere/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Using an external data source with terraform</title>
+      <link>https://sdorsett.github.io/post/2018-12-28-using-an-external-data-source-with-terraform/</link>
+      <pubDate>Fri, 28 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/post/2018-12-28-using-an-external-data-source-with-terraform/</guid>
+      <description>This is the fifth in a series of posts that will walk you through using terraform to deploy and configure virtual machines on vsphere. In this post you will get introduced to using an external data source with terraform.
+1. Clone the https://github.com/sdorsett/terraform-vsphere-kubernetes repository and switch to the &amp;lsquo;2018-12-26-post&amp;rsquo; branch.. We will start by cloning down the https://github.com/sdorsett/terraform-vsphere-kubernetes repository:
+[root@terraform ~]# git clone https://github.com/sdorsett/terraform-vsphere-kubernetes.git Cloning into &amp;#39;terraform-vsphere-kubernetes&amp;#39;... remote: Enumerating objects: 13, done.</description>
+    </item>
     
     <item>
       <title>Using local-exec and remote-exec provisioners with terraform</title>

@@ -7,7 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2018. All rights reserved.</copyright>
-    <lastBuildDate>Wed, 26 Dec 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 28 Dec 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://sdorsett.github.io/topics/index.xml" rel="self" type="application/rss+xml" />
     
@@ -15,7 +15,7 @@
     <item>
       <title>Learning Terraform by Deploying to Vsphere</title>
       <link>https://sdorsett.github.io/topics/learning-terraform-by-deploying-to-vsphere/</link>
-      <pubDate>Wed, 26 Dec 2018 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 28 Dec 2018 00:00:00 +0000</pubDate>
       
       <guid>https://sdorsett.github.io/topics/learning-terraform-by-deploying-to-vsphere/</guid>
       <description></description>

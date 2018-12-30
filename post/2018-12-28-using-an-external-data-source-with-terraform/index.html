@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.52" />
+
+  <title>Using an external data source with terraform &middot; Things I find interesting</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://sdorsett.github.io/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://sdorsett.github.io/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="https://sdorsett.github.io/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+ 
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="https://sdorsett.github.ioimg/favicon.ico" type="image/x-icon" />
+
+  
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="https://sdorsett.github.io/"> </a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/post/"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/topics/"><i class='fa fa-folder fa-fw'></i>Topics</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/tags/"><i class='fa fa-tags fa-fw'></i>Tags</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://github.com/sdorsett/interesting-links"><i class='fa fa-folder fa-fw'></i>Favorites</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://sdorsett.github.io/about/">About</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://twitter.com/standorsett" target="_blank"><i class="fa fa-twitter-square fa-fw"></i>Twitter</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://linkedin.com/in/stan-dorsett-53a8827" target="_blank"><i class="fa fa-linkedin-square fa-fw"></i>LinkedIn</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/sdorsett" target="_blank"><i class="fa fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small>&copy; 2018. All rights reserved.</small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Using an external data source with terraform</h1>
+  <h2></h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>28 Dec 2018, 00:00</time>
+  </div>
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-folder fa-fw"></i>
+    
+      <a class="post-taxonomy-topic" href="https://sdorsett.github.iotopics/learning-terraform-by-deploying-to-vsphere">learning-terraform-by-deploying-to-vsphere</a>
+    
+  </div>
+  
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://sdorsett.github.iotags/terraform">terraform</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://sdorsett.github.iotags/vsphere">vsphere</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://sdorsett.github.iotags/kubernetes">kubernetes</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  
+
+<p>This is the fifth in a series of posts that will walk you through using terraform to deploy and configure virtual machines on vsphere. In this post you will get introduced to using an external data source with terraform.</p>
+
+<hr />
+
+<h3 id="1-clone-the-https-github-com-sdorsett-terraform-vsphere-kubernetes-repository-and-switch-to-the-2018-12-26-post-branch">1. Clone the <code>https://github.com/sdorsett/terraform-vsphere-kubernetes</code> repository and switch to the &lsquo;2018-12-26-post&rsquo; branch..</h3>
+
+<p>We will start by cloning down the <code>https://github.com/sdorsett/terraform-vsphere-kubernetes</code> repository:</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@terraform ~<span style="color:#f92672">]</span><span style="color:#75715e"># git clone https://github.com/sdorsett/terraform-vsphere-kubernetes.git</span>
+Cloning into <span style="color:#e6db74">&#39;terraform-vsphere-kubernetes&#39;</span>...
+remote: Enumerating objects: <span style="color:#ae81ff">13</span>, <span style="color:#66d9ef">done</span>.
+remote: Counting objects: <span style="color:#ae81ff">100</span>% <span style="color:#f92672">(</span><span style="color:#ae81ff">13</span>/13<span style="color:#f92672">)</span>, <span style="color:#66d9ef">done</span>.
+remote: Compressing objects: <span style="color:#ae81ff">100</span>% <span style="color:#f92672">(</span><span style="color:#ae81ff">13</span>/13<span style="color:#f92672">)</span>, <span style="color:#66d9ef">done</span>.
+remote: Total <span style="color:#ae81ff">13</span> <span style="color:#f92672">(</span>delta <span style="color:#ae81ff">0</span><span style="color:#f92672">)</span>, reused <span style="color:#ae81ff">13</span> <span style="color:#f92672">(</span>delta <span style="color:#ae81ff">0</span><span style="color:#f92672">)</span>, pack-reused <span style="color:#ae81ff">0</span>
+Unpacking objects: <span style="color:#ae81ff">100</span>% <span style="color:#f92672">(</span><span style="color:#ae81ff">13</span>/13<span style="color:#f92672">)</span>, <span style="color:#66d9ef">done</span>.
+<span style="color:#f92672">[</span>root@terraform ~<span style="color:#f92672">]</span><span style="color:#75715e"># cd terraform-vsphere-kubernetes</span>
+<span style="color:#f92672">[</span>root@terraform terraform-vsphere-kubernetes<span style="color:#f92672">]</span>#</code></pre></div>
+
+<p>Checkout the <code>'2018-12-26-post'</code> branch which is where we left off at the end of the last post:</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@terraform terraform-vsphere-kubernetes<span style="color:#f92672">]</span><span style="color:#75715e"># git checkout origin/2018-12-26-post</span>
+Note: checking out <span style="color:#e6db74">&#39;origin/2018-12-26-post&#39;</span>.
+
+You are in <span style="color:#e6db74">&#39;detached HEAD&#39;</span> state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by performing another checkout.
+
+If you want to create a new branch to retain commits you create, you may
+<span style="color:#66d9ef">do</span> so <span style="color:#f92672">(</span>now or later<span style="color:#f92672">)</span> by using -b with the checkout command again. Example:
+
+  git checkout -b new_branch_name
+
+HEAD is now at d072955... Initial commit
+<span style="color:#f92672">[</span>root@terraform terraform-vsphere-kubernetes<span style="color:#f92672">]</span>#</code></pre></div>
+
+<h3 id="2-update-ssh-key-tf-to-add-a-local-exec-block-for-removing-any-old-host-entries-from-the-known-hosts-file">2. Update <code>ssh-key.tf</code> to add a <code>local-exec</code> block for removing any old host entries from the <code>known_hosts</code> file</h3>
+
+<p>In the last post we used ssh to connect to the deployed virtual machine and ran &lsquo;kubeadm get nodes&rsquo; to check the status of the kubernetes cluster. When we did this an entry was created in the &lsquo;known_hosts&rsquo; file with the ssh thumbprint of the deployed server. This ssh thumbprint will be incorrect after we destroyed and re-deployed the virtual machine using terraform.</p>
+
+<p>In order to prevent errors when using ssh to connect after destroying and re-deploying the virtual machine, it would be good to add a second <code>local-exec</code> provisioner to &lsquo;ssh-key.tf&rsquo; to clean up any old &lsquo;known_hosts&rsquo; entries using the <code>'ssh-keygen -R'</code> command:</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@terraform terraform-vsphere-kubernetes<span style="color:#f92672">]</span><span style="color:#75715e"># cat ssh-key.tf</span>
+resource <span style="color:#e6db74">&#34;null_resource&#34;</span> <span style="color:#e6db74">&#34;generate-sshkey&#34;</span> <span style="color:#f92672">{</span>
+    provisioner <span style="color:#e6db74">&#34;local-exec&#34;</span> <span style="color:#f92672">{</span>
+        command <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;yes y | ssh-keygen -b 4096 -t rsa -C &#39;terraform-vsphere-kubernetes&#39; -N &#39;&#39; -f </span><span style="color:#e6db74">${</span>var.virtual_machine_kubernetes_controller.[<span style="color:#e6db74">&#34;private_key&#34;</span>]<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+
+resource <span style="color:#e6db74">&#34;null_resource&#34;</span> <span style="color:#e6db74">&#34;ssh-keygen-delete&#34;</span> <span style="color:#f92672">{</span>
+    provisioner <span style="color:#e6db74">&#34;local-exec&#34;</span> <span style="color:#f92672">{</span>
+        command <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;ssh-keygen -R </span><span style="color:#e6db74">${</span>var.virtual_machine_kubernetes_controller.[<span style="color:#e6db74">&#34;ip_address&#34;</span>]<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+<span style="color:#f92672">[</span>root@terraform terraform-vsphere-kubernetes<span style="color:#f92672">]</span>#</code></pre></div>
+
+<h3 id="3-update-kubernetes-controller-tf-by-adding-an-external-data-source-at-the-bottom-of-the-file">3. Update &lsquo;kubernetes_controller.tf&rsquo; by adding an external data source at the bottom of the file.</h3>
+
+<p>The terraform documentation describes <code>data.external</code> as the following:</p>
+
+<p>&lsquo;The external data source allows an external program implementing a specific protocol to act as a data source, exposing arbitrary data for use elsewhere in the Terraform configuration.&rsquo;</p>
+
+<p>At the end of the previous post I mentioned a specific line in the output of the <code>'kubeadm init'</code> command that would allow us to join kubernetes nodes to the cluster that was created. In order to know the proper parameters to pass in with the <code>'kubeadm join'</code> command, we will use a <code>data.external</code> provider to collect the needed information.</p>
+
+<p>The below output shows the <code>data.external</code> that I added to the <code>'kubernetes_controller.tf'</code> file:</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@terraform terraform-vsphere-kubernetes<span style="color:#f92672">]</span><span style="color:#75715e"># cat kubernetes_controller.tf</span>
+provider <span style="color:#e6db74">&#34;vsphere&#34;</span> <span style="color:#f92672">{</span>
+  user           <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>var.vsphere_connection.[<span style="color:#e6db74">&#34;vsphere_user&#34;</span>]<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+  password       <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>var.vsphere_connection.[<span style="color:#e6db74">&#34;vsphere_password&#34;</span>]<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+  vsphere_server <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>var.vsphere_connection.[<span style="color:#e6db74">&#34;vsphere_server&#34;</span>]<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+  allow_unverified_ssl <span style="color:#f92672">=</span> true
+<span style="color:#f92672">}</span>
+
+...<span style="color:#f92672">[</span>Lots more lines of terraform code<span style="color:#f92672">]</span>...
+
+  provisioner <span style="color:#e6db74">&#34;remote-exec&#34;</span> <span style="color:#f92672">{</span>
+    inline <span style="color:#f92672">=</span> <span style="color:#f92672">[</span>
+      <span style="color:#e6db74">&#34;chmod +x /tmp/*sh&#34;</span>,
+      <span style="color:#e6db74">&#34;sudo /tmp/system_setup.sh&#34;</span>,
+      <span style="color:#e6db74">&#34;sudo /tmp/install_docker.sh&#34;</span>,
+      <span style="color:#e6db74">&#34;sudo /tmp/install_kubernetes_packages.sh&#34;</span>,
+      <span style="color:#e6db74">&#34;sudo /tmp/kubeadm_init.sh&#34;</span>,
+      <span style="color:#e6db74">&#34;tail -n2 /tmp/kubeadm_init_output.txt | head -n 1&#34;</span>,
+    <span style="color:#f92672">]</span>
+    connection <span style="color:#f92672">{</span>
+      type          <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>var.virtual_machine_template.[<span style="color:#e6db74">&#34;connection_type&#34;</span>]<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+      user          <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>var.virtual_machine_template.[<span style="color:#e6db74">&#34;connection_user&#34;</span>]<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+      private_key   <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>file(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>var.virtual_machine_kubernetes_controller.[<span style="color:#e6db74">&#34;private_key&#34;</span>]<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+    <span style="color:#f92672">}</span>
+  <span style="color:#f92672">}</span>
+
+<span style="color:#f92672">}</span>
+
+data <span style="color:#e6db74">&#34;external&#34;</span> <span style="color:#e6db74">&#34;kubeadm-init-info&#34;</span> <span style="color:#f92672">{</span>
+  program <span style="color:#f92672">=</span> <span style="color:#f92672">[</span><span style="color:#e6db74">&#34;/usr/bin/bash&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>path.module<span style="color:#e6db74">}</span><span style="color:#e6db74">/scripts/kubeadm_init_info.sh&#34;</span><span style="color:#f92672">]</span>
+  query <span style="color:#f92672">=</span> <span style="color:#f92672">{</span>
+    ip_address  <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>vsphere_virtual_machine.kubernetes_controller.0.default_ip_address<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+    private_key <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>var.virtual_machine_kubernetes_controller.[<span style="color:#e6db74">&#34;private_key&#34;</span>]<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+  <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span></code></pre></div>
+
+<p>I would like to point out that the <code>data.external</code> block is passing in the ip address from the deployed virtual machine and the ssh private key path into the external data source using the query parameter.
+I also want to point out that the <code>data.external</code> block is running a script specified in the &lsquo;program&rsquo; parameter. When the <code>data.external</code> block is call it will run the program specified on the machine running the terraform code.</p>
+
+<h3 id="4-add-a-new-kubeadm-init-info-sh-script-to-the-script-directory-that-the-data-external-block-will-run">4. Add a new &lsquo;kubeadm_init_info.sh&rsquo; script to the script directory that the <code>data.external</code> block will run.</h3>
+
+<p>Next we will create the <code>'scripts/kubeadm_init_info.sh'</code> script that contains the logic for getting the kubernetes token and certhash that was generated when running &lsquo;kubeadm init.&rsquo; These two pieces of information will be needed when it comes time to add new kuberenetes nodes.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@terraform terraform-vsphere-kubernetes<span style="color:#f92672">]</span><span style="color:#75715e"># cat scripts/kubeadm_init_info.sh</span>
+<span style="color:#75715e">#! /bin/bash
+</span><span style="color:#75715e"></span>
+eval <span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span>jq -r <span style="color:#e6db74">&#39;@sh &#34;IP_ADDRESS=\(.ip_address) PRIVATE_KEY=\(.private_key)&#34;&#39;</span><span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span>
+
+token<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>/usr/bin/ssh root@$IP_ADDRESS -o <span style="color:#e6db74">&#34;IdentityFile </span>$PRIVATE_KEY<span style="color:#e6db74">&#34;</span> -o <span style="color:#e6db74">&#39;StrictHostKeyChecking no&#39;</span> -o <span style="color:#e6db74">&#39;UserKnownHostsFile /dev/null&#39;</span> <span style="color:#e6db74">&#34;kubeadm token list | grep -v DESCRIPTION | awk &#39;{print \$1}&#39;&#34;</span><span style="color:#66d9ef">)</span>
+certhash<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>/usr/bin/ssh root@$IP_ADDRESS -o <span style="color:#e6db74">&#34;IdentityFile </span>$PRIVATE_KEY<span style="color:#e6db74">&#34;</span> -o <span style="color:#e6db74">&#39;StrictHostKeyChecking no&#39;</span> -o <span style="color:#e6db74">&#39;UserKnownHostsFile /dev/null&#39;</span> <span style="color:#e6db74">&#34;openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outform der 2&gt;/dev/null | openssl dgst -sha256 -hex | sed &#39;s/^.* //&#39;&#34;</span><span style="color:#66d9ef">)</span>
+jq -n --arg token <span style="color:#e6db74">&#34;</span>$token<span style="color:#e6db74">&#34;</span> --arg certhash <span style="color:#e6db74">&#34;</span>$certhash<span style="color:#e6db74">&#34;</span> <span style="color:#e6db74">&#39;{&#34;token&#34;:$token, &#34;certhash&#34;:$certhash}&#39;</span>
+<span style="color:#f92672">[</span>root@terraform terraform-vsphere-kubernetes<span style="color:#f92672">]</span>#</code></pre></div>
+
+<p>Remember the terraform documentation described that <code>data.external</code> woud need to impliment &lsquo;a specific protocol to act as a data source.&rsquo; This statment means that all input parameters will be passed into the data.external program as a json object. All output returned by the data.external program will also be expected to be returned as a valid json object.</p>
+
+<p>In order to make this easier the <a href="https://www.terraform.io/docs/providers/external/data_source.html#processing-json-in-shell-scripts">terraform <code>data.external</code> documentation</a> shows how to use <code>jq</code> to parse the input parameter and form the output json body.</p>
+
+<p>Below is a line breakdown of the script that will be used to retrive the kubernetes token and certhash :</p>
+
+<ul>
+<li>The eval line of the <code>scripts/kubeadm_init_info.sh</code> script makes use of <code>jq</code> to parse the input variables (ip_address and private_key) and assign them to local shell variables (IP_ADDRESS and PRIVATE_KEY). The terraform documentation mentions that &lsquo;jq will ensure that the values are properly quoted and escaped for consumption by the shell.&rsquo;</li>
+<li>The <code>token</code> variable is set to contain the output of a ssh session connecting to the <code>ip_address</code> parameter using the <code>private_key</code> to parse <code>'kubeadm token list'</code> output for the token.</li>
+<li>The <code>certhash</code> variable is set to contain the output of ssh session connecting to the <code>ip_address</code> parameter using the <code>private_key</code> to convert <code>'/etc/kubernetes/pki/ca.crt'</code> to the needed format.</li>
+<li>Finally <code>jq</code> is used to format the <code>token</code> and <code>certhash</code> variables in a json body that is returned by the script.</li>
+</ul>
+
+<h3 id="5-install-jq-on-the-machine-running-terraform-so-that-the-scripts-kubeadm-init-info-sh-script-can-leverage-it">5. Install <code>jq</code> on the machine running terraform so that the <code>scripts/kubeadm_init_info.sh</code> script can leverage it.</h3>
+
+<p>The <code>'kubeadm_init_info.sh'</code> script needs the <code>jq</code> program, so we need to make sure it is installed on the machine running the terraform code:</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@kubernetes-controller ~<span style="color:#f92672">]</span><span style="color:#75715e"># yum install epel-release -y</span>
+Loaded plugins: fastestmirror
+Loading mirror speeds from cached hostfile
+ * base: mirror.dal10.us.leaseweb.net
+ * extras: mirror.dal10.us.leaseweb.net
+ * updates: mirror.dal10.us.leaseweb.net
+Resolving Dependencies
+--&gt; Running transaction check
+---&gt; Package epel-release.noarch <span style="color:#ae81ff">0</span>:7-11 will be installed
+--&gt; Finished Dependency Resolution
+
+Dependencies Resolved
+
+<span style="color:#f92672">=====================================================================================================================================================================================</span>
+ Package                                         Arch                                      Version                                   Repository                                 Size
+<span style="color:#f92672">=====================================================================================================================================================================================</span>
+Installing:
+ epel-release                                    noarch                                    <span style="color:#ae81ff">7</span>-11                                      extras                                     <span style="color:#ae81ff">15</span> k
+
+Transaction Summary
+<span style="color:#f92672">=====================================================================================================================================================================================</span>
+Install  <span style="color:#ae81ff">1</span> Package
+
+Total download size: <span style="color:#ae81ff">15</span> k
+Installed size: <span style="color:#ae81ff">24</span> k
+Downloading packages:
+epel-release-7-11.noarch.rpm                                                                                                                                  |  <span style="color:#ae81ff">15</span> kB  <span style="color:#ae81ff">00</span>:00:00
+Running transaction check
+Running transaction test
+Transaction test succeeded
+Running transaction
+  Installing : epel-release-7-11.noarch                                                                                                                                          <span style="color:#ae81ff">1</span>/1
+  Verifying  : epel-release-7-11.noarch                                                                                                                                          <span style="color:#ae81ff">1</span>/1
+
+Installed:
+  epel-release.noarch <span style="color:#ae81ff">0</span>:7-11
+
+Complete!
+<span style="color:#f92672">[</span>root@kubernetes-controller ~<span style="color:#f92672">]</span><span style="color:#75715e"># yum install jq -y</span>
+Loaded plugins: fastestmirror
+Loading mirror speeds from cached hostfile
+epel/x86_64/metalink                                                                                                                                          |  <span style="color:#ae81ff">19</span> kB  <span style="color:#ae81ff">00</span>:00:00
+ * base: mirror.dal10.us.leaseweb.net
+ * epel: mirror.compevo.com
+ * extras: mirror.dal10.us.leaseweb.net
+ * updates: mirror.dal10.us.leaseweb.net
+epel                                                                                                                                                          | <span style="color:#ae81ff">3</span>.2 kB  <span style="color:#ae81ff">00</span>:00:00
+<span style="color:#f92672">(</span><span style="color:#ae81ff">1</span>/3<span style="color:#f92672">)</span>: epel/x86_64/group_gz                                                                                                                                   |  <span style="color:#ae81ff">88</span> kB  <span style="color:#ae81ff">00</span>:00:00
+<span style="color:#f92672">(</span><span style="color:#ae81ff">2</span>/3<span style="color:#f92672">)</span>: epel/x86_64/updateinfo                                                                                                                                 | <span style="color:#ae81ff">944</span> kB  <span style="color:#ae81ff">00</span>:00:00
+<span style="color:#f92672">(</span><span style="color:#ae81ff">3</span>/3<span style="color:#f92672">)</span>: epel/x86_64/primary                                                                                                                                    | <span style="color:#ae81ff">3</span>.6 MB  <span style="color:#ae81ff">00</span>:00:00
+epel                                                                                                                                                                     <span style="color:#ae81ff">12776</span>/12776
+Resolving Dependencies
+--&gt; Running transaction check
+---&gt; Package jq.x86_64 <span style="color:#ae81ff">0</span>:1.5-1.el7 will be installed
+--&gt; Processing Dependency: libonig.so.2<span style="color:#f92672">()(</span>64bit<span style="color:#f92672">)</span> <span style="color:#66d9ef">for</span> package: jq-1.5-1.el7.x86_64
+--&gt; Running transaction check
+---&gt; Package oniguruma.x86_64 <span style="color:#ae81ff">0</span>:5.9.5-3.el7 will be installed
+--&gt; Finished Dependency Resolution
+
+Dependencies Resolved
+
+<span style="color:#f92672">=====================================================================================================================================================================================</span>
+ Package                                      Arch                                      Version                                        Repository                               Size
+<span style="color:#f92672">=====================================================================================================================================================================================</span>
+Installing:
+ jq                                           x86_64                                    <span style="color:#ae81ff">1</span>.5-1.el7                                      epel                                    <span style="color:#ae81ff">153</span> k
+Installing <span style="color:#66d9ef">for</span> dependencies:
+ oniguruma                                    x86_64                                    <span style="color:#ae81ff">5</span>.9.5-3.el7                                    epel                                    <span style="color:#ae81ff">129</span> k
+
+Transaction Summary
+<span style="color:#f92672">=====================================================================================================================================================================================</span>
+Install  <span style="color:#ae81ff">1</span> Package <span style="color:#f92672">(</span>+1 Dependent package<span style="color:#f92672">)</span>
+
+Total download size: <span style="color:#ae81ff">282</span> k
+Installed size: <span style="color:#ae81ff">906</span> k
+Downloading packages:
+warning: /var/cache/yum/x86_64/7/epel/packages/jq-1.5-1.el7.x86_64.rpm: Header V3 RSA/SHA256 Signature, key ID 352c64e5: NOKEY
+Public key <span style="color:#66d9ef">for</span> jq-1.5-1.el7.x86_64.rpm is not installed
+<span style="color:#f92672">(</span><span style="color:#ae81ff">1</span>/2<span style="color:#f92672">)</span>: jq-1.5-1.el7.x86_64.rpm                                                                                                                                | <span style="color:#ae81ff">153</span> kB  <span style="color:#ae81ff">00</span>:00:00
+<span style="color:#f92672">(</span><span style="color:#ae81ff">2</span>/2<span style="color:#f92672">)</span>: oniguruma-5.9.5-3.el7.x86_64.rpm                                                                                                                       | <span style="color:#ae81ff">129</span> kB  <span style="color:#ae81ff">00</span>:00:00
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Total                                                                                                                                                <span style="color:#ae81ff">1</span>.3 MB/s | <span style="color:#ae81ff">282</span> kB  <span style="color:#ae81ff">00</span>:00:00
+Retrieving key from file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
+Importing GPG key 0x352C64E5:
+ Userid     : <span style="color:#e6db74">&#34;Fedora EPEL (7) &lt;epel@fedoraproject.org&gt;&#34;</span>
+ Fingerprint: 91e9 7d7c 4a5e 96f1 7f3e 888f 6a2f aea2 352c 64e5
+ Package    : epel-release-7-11.noarch <span style="color:#f92672">(</span>@extras<span style="color:#f92672">)</span>
+ From       : /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
+Running transaction check
+Running transaction test
+Transaction test succeeded
+Running transaction
+  Installing : oniguruma-5.9.5-3.el7.x86_64                                                                                                                                      <span style="color:#ae81ff">1</span>/2
+  Installing : jq-1.5-1.el7.x86_64                                                                                                                                               <span style="color:#ae81ff">2</span>/2
+  Verifying  : oniguruma-5.9.5-3.el7.x86_64                                                                                                                                      <span style="color:#ae81ff">1</span>/2
+  Verifying  : jq-1.5-1.el7.x86_64                                                                                                                                               <span style="color:#ae81ff">2</span>/2
+
+Installed:
+  jq.x86_64 <span style="color:#ae81ff">0</span>:1.5-1.el7
+
+Dependency Installed:
+  oniguruma.x86_64 <span style="color:#ae81ff">0</span>:5.9.5-3.el7
+
+Complete!
+<span style="color:#f92672">[</span>root@kubernetes-controller ~<span style="color:#f92672">]</span>#</code></pre></div>
+
+<h3 id="6-modify-output-tf-to-add-the-data-external-results-to-the-output">6. Modify <code>output.tf</code> to add the <code>data.external</code> results to the output.</h3>
+
+<p>Add the <code>output &quot;kubeadm-init-info&quot;</code> block to the bottom of the <code>output.tf</code> file:</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@terraform terraform-vsphere-kubernetes<span style="color:#f92672">]</span><span style="color:#75715e"># cat output.tf</span>
+output <span style="color:#e6db74">&#34;ip&#34;</span> <span style="color:#f92672">{</span>
+   value <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>vsphere_virtual_machine.kubernetes_controller.*.default_ip_address<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+<span style="color:#f92672">}</span>
+output <span style="color:#e6db74">&#34;vm-moref&#34;</span> <span style="color:#f92672">{</span>
+   value <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>vsphere_virtual_machine.kubernetes_controller.moid<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+<span style="color:#f92672">}</span>
+output <span style="color:#e6db74">&#34;kubeadm-init-info&#34;</span> <span style="color:#f92672">{</span>
+   value <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>data.external.kubeadm-init-info.result<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+<span style="color:#f92672">}</span>
+
+<span style="color:#f92672">[</span>root@terraform terraform-vsphere-kubernetes<span style="color:#f92672">]</span>#</code></pre></div>
+
+<h3 id="7-run-terraform-init-to-initialize-terraform-and-downloaded-the-provisioners">7. Run <code>terraform init</code> to initialize terraform and downloaded the provisioners.</h3>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@terraform terraform-vsphere-kubernetes<span style="color:#f92672">]</span><span style="color:#75715e"># terraform init</span>
+
+Initializing provider plugins...
+- Checking <span style="color:#66d9ef">for</span> available provider plugins on https://releases.hashicorp.com...
+- Downloading plugin <span style="color:#66d9ef">for</span> provider <span style="color:#e6db74">&#34;vsphere&#34;</span> <span style="color:#f92672">(</span><span style="color:#ae81ff">1</span>.9.0<span style="color:#f92672">)</span>...
+- Downloading plugin <span style="color:#66d9ef">for</span> provider <span style="color:#e6db74">&#34;external&#34;</span> <span style="color:#f92672">(</span><span style="color:#ae81ff">1</span>.0.0<span style="color:#f92672">)</span>...
+- Downloading plugin <span style="color:#66d9ef">for</span> provider <span style="color:#e6db74">&#34;null&#34;</span> <span style="color:#f92672">(</span><span style="color:#ae81ff">1</span>.0.0<span style="color:#f92672">)</span>...
+
+The following providers <span style="color:#66d9ef">do</span> not have any version constraints in configuration,
+so the latest version was installed.
+
+To prevent automatic upgrades to new major versions that may contain breaking
+changes, it is recommended to add version <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;...&#34;</span> constraints to the
+corresponding provider blocks in configuration, with the constraint strings
+suggested below.
+
+* provider.external: version <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;~&gt; 1.0&#34;</span>
+* provider.null: version <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;~&gt; 1.0&#34;</span>
+* provider.vsphere: version <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;~&gt; 1.9&#34;</span>
+
+Terraform has been successfully initialized!
+
+You may now begin working with Terraform. Try running <span style="color:#e6db74">&#34;terraform plan&#34;</span> to see
+any changes that are required <span style="color:#66d9ef">for</span> your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration <span style="color:#66d9ef">for</span> Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to <span style="color:#66d9ef">do</span> so <span style="color:#66d9ef">if</span> necessary.
+<span style="color:#f92672">[</span>root@terraform terraform-vsphere-kubernetes<span style="color:#f92672">]</span>#</code></pre></div>
+
+<h3 id="8-run-terraform-plan-to-have-terraform-show-what-will-get-created">8. Run <code>terraform plan</code> to have terraform show what will get created.</h3>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@terraform terraform-vsphere-kubernetes<span style="color:#f92672">]</span><span style="color:#75715e"># terraform plan</span>
+Refreshing Terraform state in-memory prior to plan...
+The refreshed state will be used to calculate this plan, but will not be
+persisted to local or remote state storage.
+
+data.vsphere_datacenter.template_datacenter: Refreshing state...
+data.vsphere_network.vm_network: Refreshing state...
+data.vsphere_datastore.vm_datastore: Refreshing state...
+data.vsphere_resource_pool.vm_resource_pool: Refreshing state...
+data.vsphere_virtual_machine.template: Refreshing state...
+
+------------------------------------------------------------------------
+
+An execution plan has been generated and is shown below.
+Resource actions are indicated with the following symbols:
+  + create
+ &lt;<span style="color:#f92672">=</span> read <span style="color:#f92672">(</span>data resources<span style="color:#f92672">)</span>
+
+Terraform will perform the following actions:
+
+ &lt;<span style="color:#f92672">=</span> data.external.kubeadm-init-info
+      id:                                                   &lt;computed&gt;
+      program.#:                                            <span style="color:#e6db74">&#34;2&#34;</span>
+      program.0:                                            <span style="color:#e6db74">&#34;/usr/bin/bash&#34;</span>
+      program.1:                                            <span style="color:#e6db74">&#34;/root/terraform-vsphere-kubernetes/scripts/kubeadm_init_info.sh&#34;</span>
+      query.%:                                              &lt;computed&gt;
+      result.%:                                             &lt;computed&gt;
+
+  + null_resource.generate-sshkey
+      id:                                                   &lt;computed&gt;
+
+  + null_resource.ssh-keygen-delete
+      id:                                                   &lt;computed&gt;
+
+  + vsphere_virtual_machine.kubernetes_controller
+      id:                                                   &lt;computed&gt;
+      boot_retry_delay:                                     <span style="color:#e6db74">&#34;10000&#34;</span>
+      change_version:                                       &lt;computed&gt;
+      clone.#:                                              <span style="color:#e6db74">&#34;1&#34;</span>
+      clone.0.customize.#:                                  <span style="color:#e6db74">&#34;1&#34;</span>
+      clone.0.customize.0.dns_server_list.#:                <span style="color:#e6db74">&#34;1&#34;</span>
+      clone.0.customize.0.dns_server_list.0:                <span style="color:#e6db74">&#34;192.168.100.1&#34;</span>
+      clone.0.customize.0.dns_suffix_list.#:                <span style="color:#e6db74">&#34;1&#34;</span>
+      clone.0.customize.0.dns_suffix_list.0:                <span style="color:#e6db74">&#34;kubernetes.local&#34;</span>
+      clone.0.customize.0.ipv4_gateway:                     <span style="color:#e6db74">&#34;192.168.100.1&#34;</span>
+      clone.0.customize.0.linux_options.#:                  <span style="color:#e6db74">&#34;1&#34;</span>
+      clone.0.customize.0.linux_options.0.domain:           <span style="color:#e6db74">&#34;kubernetes.local&#34;</span>
+      clone.0.customize.0.linux_options.0.host_name:        <span style="color:#e6db74">&#34;kubernetes-controller&#34;</span>
+      clone.0.customize.0.linux_options.0.hw_clock_utc:     <span style="color:#e6db74">&#34;true&#34;</span>
+      clone.0.customize.0.network_interface.#:              <span style="color:#e6db74">&#34;1&#34;</span>
+      clone.0.customize.0.network_interface.0.ipv4_address: <span style="color:#e6db74">&#34;192.168.100.100&#34;</span>
+      clone.0.customize.0.network_interface.0.ipv4_netmask: <span style="color:#e6db74">&#34;24&#34;</span>
+      clone.0.customize.0.timeout:                          <span style="color:#e6db74">&#34;10&#34;</span>
+      clone.0.template_uuid:                                <span style="color:#e6db74">&#34;4221e272-e449-97e0-39f4-ab580bebc473&#34;</span>
+      clone.0.timeout:                                      <span style="color:#e6db74">&#34;30&#34;</span>
+      cpu_limit:                                            <span style="color:#e6db74">&#34;-1&#34;</span>
+      cpu_share_count:                                      &lt;computed&gt;
+      cpu_share_level:                                      <span style="color:#e6db74">&#34;normal&#34;</span>
+      datastore_id:                                         <span style="color:#e6db74">&#34;datastore-15&#34;</span>
+      default_ip_address:                                   &lt;computed&gt;
+      disk.#:                                               <span style="color:#e6db74">&#34;1&#34;</span>
+      disk.0.attach:                                        <span style="color:#e6db74">&#34;false&#34;</span>
+      disk.0.datastore_id:                                  <span style="color:#e6db74">&#34;&lt;computed&gt;&#34;</span>
+      disk.0.device_address:                                &lt;computed&gt;
+      disk.0.disk_mode:                                     <span style="color:#e6db74">&#34;persistent&#34;</span>
+      disk.0.disk_sharing:                                  <span style="color:#e6db74">&#34;sharingNone&#34;</span>
+      disk.0.eagerly_scrub:                                 <span style="color:#e6db74">&#34;false&#34;</span>
+      disk.0.io_limit:                                      <span style="color:#e6db74">&#34;-1&#34;</span>
+      disk.0.io_reservation:                                <span style="color:#e6db74">&#34;0&#34;</span>
+      disk.0.io_share_count:                                <span style="color:#e6db74">&#34;0&#34;</span>
+      disk.0.io_share_level:                                <span style="color:#e6db74">&#34;normal&#34;</span>
+      disk.0.keep_on_remove:                                <span style="color:#e6db74">&#34;false&#34;</span>
+      disk.0.key:                                           <span style="color:#e6db74">&#34;0&#34;</span>
+      disk.0.label:                                         <span style="color:#e6db74">&#34;disk0&#34;</span>
+      disk.0.path:                                          &lt;computed&gt;
+      disk.0.size:                                          <span style="color:#e6db74">&#34;8&#34;</span>
+      disk.0.thin_provisioned:                              <span style="color:#e6db74">&#34;true&#34;</span>
+      disk.0.unit_number:                                   <span style="color:#e6db74">&#34;0&#34;</span>
+      disk.0.uuid:                                          &lt;computed&gt;
+      disk.0.write_through:                                 <span style="color:#e6db74">&#34;false&#34;</span>
+      ept_rvi_mode:                                         <span style="color:#e6db74">&#34;automatic&#34;</span>
+      firmware:                                             <span style="color:#e6db74">&#34;bios&#34;</span>
+      force_power_off:                                      <span style="color:#e6db74">&#34;true&#34;</span>
+      guest_id:                                             <span style="color:#e6db74">&#34;rhel7_64Guest&#34;</span>
+      guest_ip_addresses.#:                                 &lt;computed&gt;
+      host_system_id:                                       &lt;computed&gt;
+      hv_mode:                                              <span style="color:#e6db74">&#34;hvAuto&#34;</span>
+      imported:                                             &lt;computed&gt;
+      latency_sensitivity:                                  <span style="color:#e6db74">&#34;normal&#34;</span>
+      memory:                                               <span style="color:#e6db74">&#34;4096&#34;</span>
+      memory_limit:                                         <span style="color:#e6db74">&#34;-1&#34;</span>
+      memory_share_count:                                   &lt;computed&gt;
+      memory_share_level:                                   <span style="color:#e6db74">&#34;normal&#34;</span>
+      migrate_wait_timeout:                                 <span style="color:#e6db74">&#34;30&#34;</span>
+      moid:                                                 &lt;computed&gt;
+      name:                                                 <span style="color:#e6db74">&#34;kubernetes-controller&#34;</span>
+      network_interface.#:                                  <span style="color:#e6db74">&#34;1&#34;</span>
+      network_interface.0.adapter_type:                     <span style="color:#e6db74">&#34;vmxnet3&#34;</span>
+      network_interface.0.bandwidth_limit:                  <span style="color:#e6db74">&#34;-1&#34;</span>
+      network_interface.0.bandwidth_reservation:            <span style="color:#e6db74">&#34;0&#34;</span>
+      network_interface.0.bandwidth_share_count:            &lt;computed&gt;
+      network_interface.0.bandwidth_share_level:            <span style="color:#e6db74">&#34;normal&#34;</span>
+      network_interface.0.device_address:                   &lt;computed&gt;
+      network_interface.0.key:                              &lt;computed&gt;
+      network_interface.0.mac_address:                      &lt;computed&gt;
+      network_interface.0.network_id:                       <span style="color:#e6db74">&#34;network-24&#34;</span>
+      num_cores_per_socket:                                 <span style="color:#e6db74">&#34;1&#34;</span>
+      num_cpus:                                             <span style="color:#e6db74">&#34;2&#34;</span>
+      reboot_required:                                      &lt;computed&gt;
+      resource_pool_id:                                     <span style="color:#e6db74">&#34;resgroup-8&#34;</span>
+      run_tools_scripts_after_power_on:                     <span style="color:#e6db74">&#34;true&#34;</span>
+      run_tools_scripts_after_resume:                       <span style="color:#e6db74">&#34;true&#34;</span>
+      run_tools_scripts_before_guest_shutdown:              <span style="color:#e6db74">&#34;true&#34;</span>
+      run_tools_scripts_before_guest_standby:               <span style="color:#e6db74">&#34;true&#34;</span>
+      scsi_bus_sharing:                                     <span style="color:#e6db74">&#34;noSharing&#34;</span>
+      scsi_controller_count:                                <span style="color:#e6db74">&#34;1&#34;</span>
+      scsi_type:                                            <span style="color:#e6db74">&#34;lsilogic&#34;</span>
+      shutdown_wait_timeout:                                <span style="color:#e6db74">&#34;3&#34;</span>
+      swap_placement_policy:                                <span style="color:#e6db74">&#34;inherit&#34;</span>
+      uuid:                                                 &lt;computed&gt;
+      vmware_tools_status:                                  &lt;computed&gt;
+      vmx_path:                                             &lt;computed&gt;
+      wait_for_guest_net_routable:                          <span style="color:#e6db74">&#34;true&#34;</span>
+      wait_for_guest_net_timeout:                           <span style="color:#e6db74">&#34;5&#34;</span>
+
+
+Plan: <span style="color:#ae81ff">3</span> to add, <span style="color:#ae81ff">0</span> to change, <span style="color:#ae81ff">0</span> to destroy.
+
+------------------------------------------------------------------------
+
+Note: You didn<span style="color:#e6db74">&#39;t specify an &#34;-out&#34; parameter to save this plan, so Terraform
+</span><span style="color:#e6db74">can&#39;</span>t guarantee that exactly these actions will be performed <span style="color:#66d9ef">if</span>
+<span style="color:#e6db74">&#34;terraform apply&#34;</span> is subsequently run.
+
+<span style="color:#f92672">[</span>root@terraform terraform-vsphere-kubernetes<span style="color:#f92672">]</span>#</code></pre></div>
+
+<p>Notice at the beginning of the output that the <code>terraform plan</code> now includes the <code>null_resource.ssh-keygen-delete</code> provisioner and <code>data.external.kubeadm-init-info</code> data source that was added in this post.</p>
+
+<h3 id="9-run-terraform-apply-to-create-the-described-resources">9. Run <code>terraform apply</code> to create the described resources.</h3>
+
+<p>Running <code>terraform apply --auto-approve</code> will have terraform create the resources described in <code>ssh-key.tf</code> and <code>kubernetes_controller.tf</code>. This time we will jump to the end of the output and spare you most of the output generated</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@terraform terraform-vsphere-kubernetes<span style="color:#f92672">]</span><span style="color:#75715e"># terraform apply --auto-approve</span>
+data.vsphere_datacenter.template_datacenter: Refreshing state...
+data.vsphere_datastore.vm_datastore: Refreshing state...
+data.vsphere_virtual_machine.template: Refreshing state...
+data.vsphere_network.vm_network: Refreshing state...
+data.vsphere_resource_pool.vm_resource_pool: Refreshing state...
+null_resource.generate-sshkey: Creating...
+null_resource.ssh-keygen-delete: Creating...
+null_resource.generate-sshkey: Provisioning with <span style="color:#e6db74">&#39;local-exec&#39;</span>...
+null_resource.ssh-keygen-delete: Provisioning with <span style="color:#e6db74">&#39;local-exec&#39;</span>...
+null_resource.generate-sshkey <span style="color:#f92672">(</span>local-exec<span style="color:#f92672">)</span>: Executing: <span style="color:#f92672">[</span><span style="color:#e6db74">&#34;/bin/sh&#34;</span> <span style="color:#e6db74">&#34;-c&#34;</span> <span style="color:#e6db74">&#34;yes y | ssh-keygen -b 4096 -t rsa -C &#39;terraform-vsphere-kubernetes&#39; -N &#39;&#39; -f /root/.ssh/id_rsa-terraform-vsphere-kubernetes&#34;</span><span style="color:#f92672">]</span>
+null_resource.ssh-keygen-delete <span style="color:#f92672">(</span>local-exec<span style="color:#f92672">)</span>: Executing: <span style="color:#f92672">[</span><span style="color:#e6db74">&#34;/bin/sh&#34;</span> <span style="color:#e6db74">&#34;-c&#34;</span> <span style="color:#e6db74">&#34;ssh-keygen -R 192.168.100.100&#34;</span><span style="color:#f92672">]</span>
+null_resource.ssh-keygen-delete <span style="color:#f92672">(</span>local-exec<span style="color:#f92672">)</span>: Host <span style="color:#ae81ff">192</span>.168.100.100 not found in /root/.ssh/known_hosts
+null_resource.ssh-keygen-delete: Creation complete after 0s <span style="color:#f92672">(</span>ID: <span style="color:#ae81ff">5087424040697272589</span><span style="color:#f92672">)</span>
+vsphere_virtual_machine.kubernetes_controller: Creating...
+  boot_retry_delay:                                     <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;10000&#34;</span>
+  change_version:                                       <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;&lt;computed&gt;&#34;</span>
+  clone.#:                                              <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;1&#34;</span>
+  clone.0.customize.#:                                  <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;1&#34;</span>
+  clone.0.customize.0.dns_server_list.#:                <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#e6db74">&#34;1&#34;</span>
+
+...<span style="color:#f92672">[</span>lots more log lines here<span style="color:#f92672">]</span>...
+
+vsphere_virtual_machine.kubernetes_controller <span style="color:#f92672">(</span>remote-exec<span style="color:#f92672">)</span>: daemonset.extensions/kube-flannel-ds-amd64 created
+vsphere_virtual_machine.kubernetes_controller <span style="color:#f92672">(</span>remote-exec<span style="color:#f92672">)</span>: daemonset.extensions/kube-flannel-ds-arm64 created
+vsphere_virtual_machine.kubernetes_controller <span style="color:#f92672">(</span>remote-exec<span style="color:#f92672">)</span>: daemonset.extensions/kube-flannel-ds-arm created
+vsphere_virtual_machine.kubernetes_controller <span style="color:#f92672">(</span>remote-exec<span style="color:#f92672">)</span>: daemonset.extensions/kube-flannel-ds-ppc64le created
+vsphere_virtual_machine.kubernetes_controller <span style="color:#f92672">(</span>remote-exec<span style="color:#f92672">)</span>: daemonset.extensions/kube-flannel-ds-s390x created
+vsphere_virtual_machine.kubernetes_controller <span style="color:#f92672">(</span>remote-exec<span style="color:#f92672">)</span>:   kubeadm join <span style="color:#ae81ff">192</span>.168.100.100:6443 --token j8tg5z.gwojyd1xfkyltkqd --discovery-token-ca-cert-hash sha256:c43350a00d11aa3001403cce9dd0be2d7cf0abea9dab32bd84be99fa9d7a55e8
+vsphere_virtual_machine.kubernetes_controller: Creation complete after 4m10s <span style="color:#f92672">(</span>ID: 4221aee3-ddf0-7610-525d-aeaefec89097<span style="color:#f92672">)</span>
+data.external.kubeadm-init-info: Refreshing state...
+
+Apply complete! Resources: <span style="color:#ae81ff">3</span> added, <span style="color:#ae81ff">0</span> changed, <span style="color:#ae81ff">0</span> destroyed.
+
+Outputs:
+
+ip <span style="color:#f92672">=</span> <span style="color:#f92672">[</span>
+    <span style="color:#ae81ff">192</span>.168.100.100
+<span style="color:#f92672">]</span>
+kubeadm-init-info <span style="color:#f92672">=</span> <span style="color:#f92672">{</span>
+  certhash <span style="color:#f92672">=</span> c43350a00d11aa3001403cce9dd0be2d7cf0abea9dab32bd84be99fa9d7a55e8
+  token <span style="color:#f92672">=</span> j8tg5z.gwojyd1xfkyltkqd
+<span style="color:#f92672">}</span>
+vm-moref <span style="color:#f92672">=</span> vm-1135
+<span style="color:#f92672">[</span>root@terraform terraform-vsphere-kubernetes<span style="color:#f92672">]</span>#</code></pre></div>
+
+<p>The bottom of the <code>terraform appy</code> also now displays the <code>kubeadm-init-info</code> certhash and token. If you look up at the <code>kubeadm join</code> line, you will notice that both of these values are passed as parameters into the <code>kubeadm join</code> command. These two pieces of information, along with the IP address of the kubernetes controller, are all that we need in order to reconstruct the <code>kubeadm join</code> command to be run on kubernetes nodes to join the cluster.</p>
+
+<h3 id="10-run-terraform-destroy-to-delete-the-resources-that-were-previously-created">10. Run <code>terraform destroy</code> to delete the resources that were previously created.</h3>
+
+<p>Once you are ready to destroy the virtual machine terraform created, you can simply run <code>terraform destroy --force</code> to have terraform destroy it:</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@terraform terraform-vsphere-kubernetes<span style="color:#f92672">]</span><span style="color:#75715e"># terraform destroy --force</span>
+null_resource.ssh-keygen-delete: Refreshing state... <span style="color:#f92672">(</span>ID: <span style="color:#ae81ff">5087424040697272589</span><span style="color:#f92672">)</span>
+null_resource.generate-sshkey: Refreshing state... <span style="color:#f92672">(</span>ID: <span style="color:#ae81ff">6665704479624866294</span><span style="color:#f92672">)</span>
+data.vsphere_datacenter.template_datacenter: Refreshing state...
+data.vsphere_virtual_machine.template: Refreshing state...
+data.vsphere_resource_pool.vm_resource_pool: Refreshing state...
+data.vsphere_network.vm_network: Refreshing state...
+data.vsphere_datastore.vm_datastore: Refreshing state...
+vsphere_virtual_machine.kubernetes_controller: Refreshing state... <span style="color:#f92672">(</span>ID: 4221aee3-ddf0-7610-525d-aeaefec89097<span style="color:#f92672">)</span>
+data.external.kubeadm-init-info: Refreshing state...
+null_resource.ssh-keygen-delete: Destroying... <span style="color:#f92672">(</span>ID: <span style="color:#ae81ff">5087424040697272589</span><span style="color:#f92672">)</span>
+null_resource.generate-sshkey: Destroying... <span style="color:#f92672">(</span>ID: <span style="color:#ae81ff">6665704479624866294</span><span style="color:#f92672">)</span>
+null_resource.generate-sshkey: Destruction complete after 0s
+null_resource.ssh-keygen-delete: Destruction complete after 0s
+vsphere_virtual_machine.kubernetes_controller: Destroying... <span style="color:#f92672">(</span>ID: 4221aee3-ddf0-7610-525d-aeaefec89097<span style="color:#f92672">)</span>
+vsphere_virtual_machine.kubernetes_controller: Still destroying... <span style="color:#f92672">(</span>ID: 4221aee3-ddf0-7610-525d-aeaefec89097, 10s elapsed<span style="color:#f92672">)</span>
+vsphere_virtual_machine.kubernetes_controller: Still destroying... <span style="color:#f92672">(</span>ID: 4221aee3-ddf0-7610-525d-aeaefec89097, 20s elapsed<span style="color:#f92672">)</span>
+vsphere_virtual_machine.kubernetes_controller: Still destroying... <span style="color:#f92672">(</span>ID: 4221aee3-ddf0-7610-525d-aeaefec89097, 30s elapsed<span style="color:#f92672">)</span>
+vsphere_virtual_machine.kubernetes_controller: Still destroying... <span style="color:#f92672">(</span>ID: 4221aee3-ddf0-7610-525d-aeaefec89097, 40s elapsed<span style="color:#f92672">)</span>
+vsphere_virtual_machine.kubernetes_controller: Destruction complete after 43s
+
+Destroy complete! Resources: <span style="color:#ae81ff">3</span> destroyed.
+<span style="color:#f92672">[</span>root@terraform terraform-vsphere-kubernetes<span style="color:#f92672">]</span>#</code></pre></div>
+
+<h4 id="i-hope-this-post-has-been-useful-in-demonstrating-how-to-use-data-external-sources-to-retrieve-and-re-use-information-from-deployed-resources-the-files-that-were-using-in-this-post-can-be-found-in-a-href-https-github-com-sdorsett-terraform-vsphere-kubernetes-tree-2018-12-28-post-this-github-repository-a">I hope this post has been useful in demonstrating how to use <code>data.external</code> sources to retrieve and re-use information from deployed resources. The files that were using in this post can be found in <a href="https://github.com/sdorsett/terraform-vsphere-kubernetes/tree/2018-12-28-post">this github repository</a>.</h4>
+
+<hr />
+
+<h4 id="please-provide-any-feedback-or-suggestions-to-my-twitter-account-located-on-the-about-page">Please provide any feedback or suggestions to my twitter account located on the about page.</h4>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="https://sdorsett.github.io/post/2018-12-26-using-local-exec-and-remote-exec-provisioners-with-terraform/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="https://sdorsett.github.io/post/2018-12-26-using-local-exec-and-remote-exec-provisioners-with-terraform/">Using local-exec and remote-exec provisioners with terraform</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+  </div>
+</div>
+
+
+
+  
+
+</div>
+
+</div>
+</div>
+<script src="https://sdorsett.github.iojs/ui.js"></script>
+<script src="https://sdorsett.github.iojs/menus.js"></script>
+
+
+
+
+
+
+</body>
+</html>
+
