@@ -7,7 +7,7 @@
   <meta name="description" content="">
   <meta name="generator" content="Hugo 0.52" />
 
-  <title>Learning terraform by deploying to vsphere &middot; Things I find interesting</title>
+  <title>Things I find interesting</title>
 
   
   
@@ -39,6 +39,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
  
+  
+  <link rel="alternate" type="application/rss+xml" title="Things I find interesting" href="https://sdorsett.github.io/index.xml" />
   
 
   
@@ -115,6 +117,10 @@
   <div class="pure-menu social">
   <ul class="pure-menu-list">
 
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://sdorsett.github.io/index.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+    </li>
     
 
     
@@ -222,16 +228,21 @@
 
 
 <div class="header">
-  <h1>Learning terraform by deploying to vsphere</h1>
-  <h2></h2>
+  <h1>Things I find interesting</h1>
+  <h2>Automating all the things</h2>
 </div>
-<div class="content">
 
-  <div class="post-meta">
+<div class="content">
+  
+    <article>
+  <header>
+    <h2><a href="https://sdorsett.github.io/post/2014-04-16-vagrant-explained/">Vagrant Explained</a></h2>
+
+    <div class="post-meta">
 
   <div>
     <i class="fa fa-calendar fa-fw"></i>
-    <time>22 Dec 2018, 00:00</time>
+    <time>02 Apr 2014, 00:00</time>
   </div>
 
   
@@ -242,7 +253,7 @@
   <div>
     <i class="fa fa-folder fa-fw"></i>
     
-      <a class="post-taxonomy-topic" href="https://sdorsett.github.iotopics/learning-terraform-by-deploying-to-vsphere">learning-terraform-by-deploying-to-vsphere</a>
+      <a class="post-taxonomy-topic" href="https://sdorsett.github.iotopics/using-vagrant">using-vagrant</a>
     
   </div>
   
@@ -254,9 +265,7 @@
   <div>
     <i class="fa fa-tags fa-fw"></i>
     
-      <a class="post-taxonomy-tag" href="https://sdorsett.github.iotags/terraform">terraform</a>&nbsp;&#47;
-    
-      <a class="post-taxonomy-tag" href="https://sdorsett.github.iotags/vsphere">vsphere</a>
+      <a class="post-taxonomy-tag" href="https://sdorsett.github.iotags/vagrant">vagrant</a>
     
   </div>
   
@@ -264,68 +273,36 @@
 
 </div>
 
-  
+  </header>
 
-<p>This post is the beginning of a series of posts that will walt through how to use terraform to deploy and configure virtual machines on vsphere. During this series of posts I will try to show how to do this deployment in a generic way in order to keep the terraform code as free as possible of the details of the environment being deployed into.</p>
-
-<p>This series assumes you have the following:</p>
-
-<ul>
-<li>a vsphere instance that you have permissions to create virtual machines on. Terraform can create and configure resources on ESXi, but this series will require vsphere since we will be cloning virtual machines from a base template.</li>
-<li>terraform is installed on your workstation, laptop or a virtual machine that can access the vsphere instance</li>
-<li>a github account for deploying terraform code to (optional)</li>
-</ul>
-
-<p>The posts in this series of blogs that have been released are:</p>
-
-<ul>
-<li><a href="../2018-12-23-using-environment-variables-with-terraform">Using environment variables with terraform</a></li>
-<li><a href="../2018-12-24-using-terraform-to-clone-a-virtual-machine-on-vsphere">Using terraform to clone a virtual machine on vSphere</a></li>
-<li><a href="../2018-12-24-using-gitignore-to-keep-terraform-secrets-secret">Using .gitignore to keep terraform secrets secret</a></li>
-<li><a href="../2018-12-26-using-local-exec-and-remote-exec-provisioners-with-terraform">Using local-exec and remote-exec provisioners with terraform</a></li>
-<li><a href="../2018-12-28-using-an-external-data-source-with-terraform">Using an exteral data source with terraform</a></li>
-<li><a href="../2018-12-30-adding-kubernetes-nodes-and-exploring-terraform-interpolation-syntax">Adding kubernetes nodes and exploring terraform interpolation syntax</a></li>
-</ul>
-
-<hr />
-
-<h4 id="please-provide-any-feedback-or-suggestions-to-my-twitter-account-located-on-the-about-page">Please provide any feedback or suggestions to my twitter account located on the about page.</h4>
-
+  <p>
+  Vagrant, according to the documentation, provides a &ldquo;disposable environment and consistent workflow for developing and testing infrastructure management scripts. You can quickly test things like shell scripts, Chef cookbooks, Puppet modules, and more using local virtualization such as VirtualBox or VMware. Then, with the same configuration, you can test these scripts on remote clouds such as AWS or RackSpace with the same workflow.&rdquo;
+I&rsquo;ve been wanting to dedicate more time to working with Puppet and needed a better way to quickly test my manifests on a fresh system.
+  </p>
 
   
-<div class="prev-next-post pure-g">
-  <div class="pure-u-1-24" style="text-align: left;">
-    
-    <a href="https://sdorsett.github.io/post/2018-08-21-using-terraform-to-deploy-to-ovh-public-cloud/"><i class="fa fa-chevron-left"></i></a>
-    
-  </div>
-  <div class="pure-u-10-24">
-    
-    <nav class="prev">
-      <a href="https://sdorsett.github.io/post/2018-08-21-using-terraform-to-deploy-to-ovh-public-cloud/">Using Terraform to deploy an OVH public cloud server.</a>
-    </nav>
-    
-  </div>
-  <div class="pure-u-2-24">
-    &nbsp;
-  </div>
-  <div class="pure-u-10-24">
-    
-    <nav class="next">
-      <a href="https://sdorsett.github.io/post/2018-12-23-using-environment-variables-with-terraform/">Using environment variables with terraform</a>
-    </nav>
-    
-  </div>
-  <div class="pure-u-1-24" style="text-align: right;">
-    
-    <a href="https://sdorsett.github.io/post/2018-12-23-using-environment-variables-with-terraform/"><i class="fa fa-chevron-right"></i></a>
-    
-  </div>
-</div>
-
-
+  <footer>
+    <a href="https://sdorsett.github.io/post/2014-04-16-vagrant-explained/">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
 
   
+
+  
+
+
+<nav class="pagination" role="pagination">
+  
+  <a href="https://sdorsett.github.io/page/3/"><i class="fa fa-chevron-left"></i></a>
+  
+  <span>&nbsp;4 / 4&nbsp;</span>
+  
+  <i class="fa fa-chevron-right"></i>
+  
+</nav>
+
+
 
 </div>
 

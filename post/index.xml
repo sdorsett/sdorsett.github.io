@@ -7,10 +7,20 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2018. All rights reserved.</copyright>
-    <lastBuildDate>Fri, 28 Dec 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 30 Dec 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://sdorsett.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Adding kubernetes nodes and exploring terraform interpolation syntax</title>
+      <link>https://sdorsett.github.io/post/2018-12-30-adding-kubernetes-nodes-and-exploring-terraform-interpolation-syntax/</link>
+      <pubDate>Sun, 30 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://sdorsett.github.io/post/2018-12-30-adding-kubernetes-nodes-and-exploring-terraform-interpolation-syntax/</guid>
+      <description>This is the sixth in a series of posts that will walk you through using terraform to deploy and configure virtual machines on vsphere. In this post I will build on the kubernetes cluster that was built in the previous post by add kubernetes nodes to it. We will also use terraform interpolation to combine variables and resource output.
+1. Clone the https://github.com/sdorsett/terraform-vsphere-kubernetes repository and switch to the &amp;lsquo;2018-12-28-post&amp;rsquo; branch.</description>
+    </item>
     
     <item>
       <title>Using an external data source with terraform</title>
