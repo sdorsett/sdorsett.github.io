@@ -31,7 +31,7 @@ Thanks for reading!</description>
       
       <guid>https://sdorsett.github.io/post/2018-12-30-adding-kubernetes-nodes-and-exploring-terraform-interpolation-syntax/</guid>
       <description>This is the sixth in a series of posts that will walk you through using terraform to deploy and configure virtual machines on vsphere. In this post I will build on the kubernetes cluster that was built in the previous post by add kubernetes nodes to it. We will also use terraform interpolation to combine variables and resource output.
-1. Clone the https://github.com/sdorsett/terraform-vsphere-kubernetes repository and switch to the &amp;lsquo;2018-12-28-post&amp;rsquo; branch.</description>
+1. Clone the &#39;https://github.com/sdorsett/terraform-vsphere-kubernetes&#39; repository and switch to the &#39;2018-12-28-post&#39; branch.</description>
     </item>
     
     <item>

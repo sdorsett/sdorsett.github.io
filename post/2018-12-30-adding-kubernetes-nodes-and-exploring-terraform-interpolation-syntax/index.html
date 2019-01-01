@@ -272,7 +272,7 @@
 
 <hr />
 
-<h3 id="1-clone-the-https-github-com-sdorsett-terraform-vsphere-kubernetes-repository-and-switch-to-the-2018-12-28-post-branch">1. Clone the <code>https://github.com/sdorsett/terraform-vsphere-kubernetes</code> repository and switch to the &lsquo;2018-12-28-post&rsquo; branch..</h3>
+<h3 id="1-clone-the-https-github-com-sdorsett-terraform-vsphere-kubernetes-repository-and-switch-to-the-2018-12-28-post-branch">1. Clone the <code>'https://github.com/sdorsett/terraform-vsphere-kubernetes'</code> repository and switch to the <code>'2018-12-28-post'</code> branch..</h3>
 
 <p>We will start by cloning down the <code>https://github.com/sdorsett/terraform-vsphere-kubernetes</code> repository:</p>
 
@@ -303,17 +303,17 @@ If you want to create a new branch to retain commits you create, you may
 HEAD is now at 489b7b7... added updated files <span style="color:#66d9ef">for</span> <span style="color:#ae81ff">2018</span>-12-28 post
 <span style="color:#f92672">[</span>root@terraform terraform-vsphere-kubernetes<span style="color:#f92672">]</span>#</code></pre></div>
 
-<h3 id="2-update-variables-tf-to-add-a-new-variable-block-for-the-variables-we-will-need-to-descirbe-the-kubernetes-node-virtual-machines">2. Update <code>variables.tf</code> to add a new variable block for the variables we will need to descirbe the kubernetes node virtual machines.</h3>
+<h3 id="2-update-variables-tf-to-add-a-new-block-for-the-variables-we-will-need-to-describe-the-kubernetes-node-virtual-machines">2. Update <code>'variables.tf'</code> to add a new block for the variables we will need to describe the kubernetes node virtual machines.</h3>
 
 <p>The variables needed for the kubernetes nodes will be similar to what we used for the kubernetes controller, but there will be need to have the following new ones:</p>
 
 <ul>
-<li>count - this variable will specify the number of kubernetes nodes to deploy</li>
-<li>ip_address_network - this variables will specify the IP address range in CIDR notation that the kubernetes nodes will be deployed to</li>
-<li>starting_hostnum - this variable will specify the host number, within the ip_address_network that the first kubernetes node will use. The following kubernetes nodes will increment up from this host number.</li>
+<li><code>count</code> - this variable will specify the number of kubernetes nodes to deploy</li>
+<li><code>ip_address_network</code> - this variable will specify the IP address range in CIDR notation that the kubernetes nodes will be deployed to</li>
+<li><code>starting_hostnum</code> - this variable will specify the host number, with in the ip_address_network that the first kubernetes node will use. The following kubernetes nodes will increment up from this host number.</li>
 </ul>
 
-<p>The ip_address and netmask variables are no longer needed since these pieces of information can be derived from the two new variables.</p>
+<p>The <code>ip_address</code> and <code>netmask</code> variables are not needed since these pieces of information can be derived from the two new variables.</p>
 
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@terraform terraform-vsphere-kubernetes<span style="color:#f92672">]</span><span style="color:#75715e"># cat variables.tf</span>
 
@@ -350,7 +350,7 @@ variable <span style="color:#e6db74">&#34;virtual_machine_kubernetes_node&#34;</
 <span style="color:#f92672">}</span>
 <span style="color:#f92672">[</span>root@terraform terraform-vsphere-kubernetes<span style="color:#f92672">]</span>#</code></pre></div>
 
-<h3 id="3-update-terraform-tfvar-and-set-the-values-for-the-virtual-machine-kubernetes-nodes-variables">3. Update &lsquo;terraform.tfvar&rsquo; and set the values for the virtual_machine_kubernetes_nodes variables</h3>
+<h3 id="3-update-terraform-tfvar-and-set-the-values-for-the-virtual-machine-kubernetes-nodes-variables">3. Update <code>'terraform.tfvar'</code> and set the values for the <code>'virtual_machine_kubernetes_nodes'</code> variables</h3>
 
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@terraform terraform-vsphere-kubernetes<span style="color:#f92672">]</span><span style="color:#75715e"># cat terraform.tfvars</span>
 vsphere_connection <span style="color:#f92672">=</span> <span style="color:#f92672">{</span>
@@ -386,9 +386,9 @@ virtual_machine_kubernetes_node <span style="color:#f92672">=</span> <span style
 <span style="color:#f92672">}</span>
 <span style="color:#f92672">[</span>root@terraform terraform-vsphere-kubernetes<span style="color:#f92672">]</span>#</code></pre></div>
 
-<p>I think it is a good idea to set the count to <code>'1'</code> while testing, to minimize the deployment time. Once you are confident one kubernetes node is deploying properly, you can then increase the count to the actual number you are wanting to have deployed.</p>
+<p>I think it is a good idea to set the count to <code>'1'</code> while testing to minimize the deployment time. Once you are confident one kubernetes node is deploying properly, you can then increase the count to the actual number you are wanting to have deployed.</p>
 
-<h3 id="4-add-kubernetes-nodes-tf-that-will-describe-how-to-kubernetes-nodes-will-be-deployed-and-configured">4. Add &lsquo;kubernetes_nodes.tf&rsquo; that will describe how to kubernetes nodes will be deployed and configured.</h3>
+<h3 id="4-add-kubernetes-nodes-tf-that-will-describe-how-the-kubernetes-nodes-will-be-deployed-and-configured">4. Add &lsquo;kubernetes_nodes.tf&rsquo; that will describe how the kubernetes nodes will be deployed and configured.</h3>
 
 <p>Much of the terraform code for deploying the kubernetes nodes can be copied from the kubernetes controller code.</p>
 
@@ -521,17 +521,21 @@ resource <span style="color:#e6db74">&#34;null_resource&#34;</span> <span style=
 <span style="color:#f92672">}</span>
 <span style="color:#f92672">[</span>root@terraform terraform-vsphere-kubernetes<span style="color:#f92672">]</span>#</code></pre></div>
 
-<p>There are differences in the <code>'vsphere_virtual_machine.kubernetes_nodes'</code> resource that were not in the <code>'vsphere_virtual_machine.kubernetes_controller'</code> resource:</p>
+<p>There are several differences of note between the <code>'vsphere_virtual_machine.kubernetes_nodes'</code> resource and the <code>'vsphere_virtual_machine.kubernetes_controller'</code> resource:</p>
 
 <ul>
-<li>count = &ldquo;${var.virtual_machine_kubernetes_node.[&ldquo;count&rdquo;]}&rdquo; - the number of kubernetes node virtual machines we want to have deployed. The <code>'count.index'</code> starts with 0 and will repeat the number of time specified by <code>'count.'</code></li>
-<li>name = &ldquo;${format(&rdquo;${var.virtual_machine_kubernetes_node.[&ldquo;prefix&rdquo;]}-%03d&rdquo;, count.index + 1)}&rdquo; - the format command sets the name of the virtual machine by starting with the <code>'prefix'</code> followed by <code>'-'</code> and finally the <code>'count.index'</code> specified as a 3 digit integer.</li>
+<li>count = &ldquo;${var.virtual_machine_kubernetes_node.[&ldquo;count&rdquo;]}&rdquo;<br>
+This describes the number of kubernetes node virtual machines we want to have deployed. The <code>'count.index'</code> starts with 0 and will repeat the number of time specified by <code>'count.'</code></li>
+<li>name = &ldquo;${format(&rdquo;${var.virtual_machine_kubernetes_node.[&ldquo;prefix&rdquo;]}-%03d&rdquo;, count.index + 1)}&rdquo;<br>
+The format command sets the name of the virtual machine by starting with the <code>'prefix'</code> followed by <code>'-'</code> and finally the <code>'count.index'</code> specified as a 3 digit integer.</li>
 <li>hostname = &ldquo;${format(&rdquo;${var.virtual_machine_kubernetes_node.[&ldquo;prefix&rdquo;]}-%03d&rdquo;, count.index + 1)}&rdquo; - the same as <code>'name'</code></li>
-<li>ipv4_address = &ldquo;${cidrhost( var.virtual_machine_kubernetes_node.[&ldquo;ip_address_network&rdquo;], var.virtual_machine_kubernetes_node.[&ldquo;starting_hostnum&rdquo;]+count.index )}&rdquo; - <code>'cidrhost'</code> takes an IP address range in CIDR notation and creates an IP address with the given host number.</li>
-<li>ipv4_netmask = &ldquo;${element( split(&rdquo;/&ldquo;, var.virtual_machine_kubernetes_node.[&ldquo;ip_address_network&rdquo;]), 1)}&rdquo; - <code>'split'</code> will create  list of strings, splitting <code>'var.virtual_machine_kubernetes_node.[&quot;ip_address_network&quot;]'</code> on the <code>'/'</code> character. <code>'element'</code> will take an element from a list, in this case taking the <code>'1'</code> element (which is the second since numbering starts with <code>'0'</code>.).</li>
+<li>ipv4_address = &ldquo;${cidrhost( var.virtual_machine_kubernetes_node.[&ldquo;ip_address_network&rdquo;], var.virtual_machine_kubernetes_node.[&ldquo;starting_hostnum&rdquo;]+count.index )}&rdquo;<br>
+<code>'cidrhost'</code> takes an IP address range in CIDR notation and creates an IP address with the given host number.</li>
+<li>ipv4_netmask = &ldquo;${element( split(&rdquo;/&ldquo;, var.virtual_machine_kubernetes_node.[&ldquo;ip_address_network&rdquo;]), 1)}&rdquo;<br>
+<code>'split'</code> will create  list of strings, splitting <code>'var.virtual_machine_kubernetes_node.[&quot;ip_address_network&quot;]'</code> on the <code>'/'</code> character. <code>'element'</code> will take an element from a list, in this case taking the <code>'1'</code> element (which is the second since numbering starts with <code>'0'</code>.).</li>
 </ul>
 
-<p>The other difference from the <code>'vsphere_virtual_machine.kubernetes_controller'</code> resource is the <code>'null_resource.kubeadm_join'</code> resource:</p>
+<p>Another difference from the <code>'vsphere_virtual_machine.kubernetes_controller'</code> resource is the <code>'null_resource.kubeadm_join'</code> resource:</p>
 
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">resource <span style="color:#e6db74">&#34;null_resource&#34;</span> <span style="color:#e6db74">&#34;kubeadm_join&#34;</span> <span style="color:#f92672">{</span>
   count            <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>var.virtual_machine_kubernetes_node.[<span style="color:#e6db74">&#34;count&#34;</span>]<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
@@ -548,9 +552,9 @@ resource <span style="color:#e6db74">&#34;null_resource&#34;</span> <span style=
   <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span></code></pre></div>
 
-<p>In the <code>'null_resource.kubeadm_join'</code> the IP address of the current kubernetes_node is determined by using <code>'element'</code> to select the <code>'count.index'</code> element from the list returned by <code>'vsphere_virtual_machine.kubernetes_nodes.*.default_ip_address'</code>. Als the <code>'remote-exec'</code> command is using the <code>'token'</code> and <code>'certhash'</code> properties returned from the external data resource that was created in the previous post.</p>
+<p>In the <code>'null_resource.kubeadm_join'</code> the connection host parameter is connecting to the IP address of the current kubernetes_node. This is determined by using <code>'element'</code> to select the <code>'count.index'</code> element from the list returned by <code>'vsphere_virtual_machine.kubernetes_nodes.*.default_ip_address'</code>. The <code>'remote-exec'</code> command is using the <code>'token'</code> and <code>'certhash'</code> properties returned from the external data resource that was created in the previous post.</p>
 
-<h3 id="5-update-the-output-tf-file-to-display-the-ip-addresses-of-the-node-virtual-machines-that-were-deployed">5. Update the <code>'output.tf'</code> file to display the IP addresses of the node virtual machines that were deployed.</h3>
+<h3 id="5-update-the-output-tf-file-to-display-the-ip-addresses-and-moregs-of-the-node-virtual-machines-that-were-deployed">5. Update the <code>'output.tf'</code> file to display the IP addresses and moregs of the node virtual machines that were deployed.</h3>
 
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@terraform terraform-vsphere-kubernetes<span style="color:#f92672">]</span><span style="color:#75715e"># cat output.tf</span>
 output <span style="color:#e6db74">&#34;controller_ip&#34;</span> <span style="color:#f92672">{</span>
@@ -571,7 +575,7 @@ output <span style="color:#e6db74">&#34;kubeadm-init-info&#34;</span> <span styl
 
 <span style="color:#f92672">[</span>root@terraform terraform-vsphere-kubernetes<span style="color:#f92672">]</span>#</code></pre></div>
 
-<h3 id="6-run-terraform-init-to-initialize-terraform-and-downloaded-the-provisioners">6. Run <code>terraform init</code> to initialize terraform and downloaded the provisioners.</h3>
+<h3 id="6-run-terraform-init-to-initialize-terraform-and-downloaded-the-provisioners">6. Run <code>'terraform init'</code> to initialize terraform and downloaded the provisioners.</h3>
 
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@terraform terraform-vsphere-kubernetes<span style="color:#f92672">]</span><span style="color:#75715e"># terraform init</span>
 
@@ -600,7 +604,7 @@ rerun this command to reinitialize your working directory. If you forget, other
 commands will detect it and remind you to <span style="color:#66d9ef">do</span> so <span style="color:#66d9ef">if</span> necessary.
 <span style="color:#f92672">[</span>root@terraform terraform-vsphere-kubernetes<span style="color:#f92672">]</span>#</code></pre></div>
 
-<h3 id="7-run-terraform-plan-to-have-terraform-show-what-will-get-created">7. Run <code>terraform plan</code> to have terraform show what will get created.</h3>
+<h3 id="7-run-terraform-plan-to-have-terraform-show-what-will-get-created">7. Run <code>'terraform plan'</code> to have terraform show what will get created.</h3>
 
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@terraform terraform-vsphere-kubernetes<span style="color:#f92672">]</span><span style="color:#75715e"># terraform plan</span>
 Refreshing Terraform state in-memory prior to plan...
@@ -932,7 +936,7 @@ node_vm-morefs <span style="color:#f92672">=</span> <span style="color:#f92672">
 <span style="color:#f92672">]</span>
 <span style="color:#f92672">[</span>root@terraform terraform-vsphere-kubernetes<span style="color:#f92672">]</span>#</code></pre></div>
 
-<p>The bottom of the <code>terraform appy</code> now displays the <code>'node_ips'</code> and <code>'node_vm-morefs'</code>. If you look up in the output to the <code>null_resource.kubeadm_join (remote-exec):</code> lines, you will notice that  <code>'This node has joined the cluster'</code></p>
+<p>The bottom of the <code>'terraform appy'</code> now displays the <code>'node_ips'</code> and <code>'node_vm-morefs'</code>. If you look up in the output to the <code>null_resource.kubeadm_join (remote-exec):</code> lines, you will notice that  <code>'This node has joined the cluster'</code> which suggests that the <code>'kubeadm join'</code> command completed successfully.</p>
 
 <h3 id="9-validate-that-the-node-has-successfully-joined-to-cluster-by-running-kubectl-get-nodes-on-the-kubernetes-controller-virtual-machine">9. Validate that the node has successfully joined to cluster by running <code>'kubectl get nodes</code>&rsquo; on the kubernetes controller virtual machine:</h3>
 
@@ -943,9 +947,9 @@ kubernetes-controller   Ready    master   12m   v1.13.1
 kubernetes-node-001     Ready    &lt;none&gt;   12m   v1.13.1
 <span style="color:#f92672">[</span>root@terraform terraform-vsphere-kubernetes<span style="color:#f92672">]</span>#</code></pre></div>
 
-<h3 id="10-run-terraform-destroy-to-delete-the-resources-that-were-previously-created">10. Run <code>terraform destroy</code> to delete the resources that were previously created.</h3>
+<h3 id="10-run-terraform-destroy-to-delete-the-resources-that-were-previously-created">10. Run <code>'terraform destroy'</code> to delete the resources that were previously created.</h3>
 
-<p>Once you are ready to destroy the virtual machine terraform created, you can simply run <code>terraform destroy --force</code> to have terraform destroy it:</p>
+<p>We should not validate that we can deploy more than one kubernetes node. In order to to that we should destroy the virtual machines terraform created so they can be redeployed with 3 kubernetes nodes.</p>
 
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@terraform terraform-vsphere-kubernetes<span style="color:#f92672">]</span><span style="color:#75715e"># terraform destroy --force</span>
 null_resource.generate-sshkey: Refreshing state... <span style="color:#f92672">(</span>ID: <span style="color:#ae81ff">1602706465654826282</span><span style="color:#f92672">)</span>
@@ -981,9 +985,9 @@ vsphere_virtual_machine.kubernetes_nodes: Destruction complete after 39s
 Destroy complete! Resources: <span style="color:#ae81ff">5</span> destroyed.
 <span style="color:#f92672">[</span>root@terraform terraform-vsphere-kubernetes<span style="color:#f92672">]</span>#</code></pre></div>
 
-<h3 id="11-update-vim-terraform-tfvars-to-specify-a-kubernetes-nodes-count-of-3-and-re-run-terraform-apply">11. Update <code>'vim terraform.tfvars'</code> to specify a kubernetes_nodes count of 3 and re-run <code>'terraform apply</code>&lsquo;</h3>
+<h3 id="11-update-terraform-tfvars-to-specify-a-count-of-3-and-re-run-terraform-apply">11. Update <code>'terraform.tfvars'</code> to specify a count of 3 and re-run <code>'terraform apply</code>&lsquo;</h3>
 
-<p>Modify <code>'virtual_machine_kubernetes_node[&quot;count&quot;]'</code> to be &ldquo;3&rdquo;:</p>
+<p>Modify the <code>'count'</code> value in the<code>'virtual_machine_kubernetes_node'</code> block to be &ldquo;3&rdquo;:</p>
 
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@terraform terraform-vsphere-kubernetes<span style="color:#f92672">]</span><span style="color:#75715e"># tail -n 11 terraform.tfvars</span>
 virtual_machine_kubernetes_node <span style="color:#f92672">=</span> <span style="color:#f92672">{</span>
@@ -999,7 +1003,7 @@ virtual_machine_kubernetes_node <span style="color:#f92672">=</span> <span style
 <span style="color:#f92672">}</span>
 <span style="color:#f92672">[</span>root@terraform terraform-vsphere-kubernetes<span style="color:#f92672">]</span>#</code></pre></div>
 
-<p>Re-run <code>'terraform apply --auto-approve'</code> to deploy the desribed resources:</p>
+<p>Re-run <code>'terraform apply --auto-approve'</code> to deploy the updated resources:</p>
 
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@terraform terraform-vsphere-kubernetes<span style="color:#f92672">]</span><span style="color:#75715e"># terraform apply --auto-approve</span>
 data.vsphere_datacenter.template_datacenter: Refreshing state...
@@ -1022,6 +1026,7 @@ null_resource.ssh-keygen-delete: Creation complete after 0s <span style="color:#
 ...
 
 ...
+
 Apply complete! Resources: <span style="color:#ae81ff">9</span> added, <span style="color:#ae81ff">0</span> changed, <span style="color:#ae81ff">0</span> destroyed.
 
 Outputs:
@@ -1057,7 +1062,7 @@ kubernetes-node-002     Ready    &lt;none&gt;   118s    v1.13.1
 kubernetes-node-003     Ready    &lt;none&gt;   118s    v1.13.1
 <span style="color:#f92672">[</span>root@terraform terraform-vsphere-kubernetes<span style="color:#f92672">]</span>#</code></pre></div>
 
-<h4 id="i-hope-this-post-has-been-useful-in-demonstrating-how-to-use-count-to-create-multiple-instances-of-the-same-resource-and-interpolation-to-transform-variables-and-lists-the-files-that-were-using-in-this-post-can-be-found-in-a-href-https-github-com-sdorsett-terraform-vsphere-kubernetes-tree-2018-12-30-post-this-github-repository-a">I hope this post has been useful in demonstrating how to use <code>'count'</code> to create multiple instances of the same resource and interpolation to transform variables and lists. The files that were using in this post can be found in <a href="https://github.com/sdorsett/terraform-vsphere-kubernetes/tree/2018-12-30-post">this github repository</a>.</h4>
+<h4 id="i-hope-this-post-has-been-useful-in-demonstrating-how-to-use-count-to-create-multiple-instances-of-a-resource-and-interpolation-to-transform-variables-and-lists-the-files-that-were-using-in-this-post-can-be-found-in-a-href-https-github-com-sdorsett-terraform-vsphere-kubernetes-tree-2018-12-30-post-this-github-repository-a">I hope this post has been useful in demonstrating how to use <code>'count'</code> to create multiple instances of a resource and interpolation to transform variables and lists. The files that were using in this post can be found in <a href="https://github.com/sdorsett/terraform-vsphere-kubernetes/tree/2018-12-30-post">this github repository</a>.</h4>
 
 <hr />
 
