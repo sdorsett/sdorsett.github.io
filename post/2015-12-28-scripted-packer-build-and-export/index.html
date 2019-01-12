@@ -21,13 +21,13 @@
   <!--<![endif]-->
 
   <!--[if lte IE 8]>
-  <link rel="stylesheet" href="https://sdorsett.github.io/css/side-menu-old-ie.css">
+  <link rel="stylesheet" href="/css/side-menu-old-ie.css">
   <![endif]-->
   <!--[if gt IE 8]><!-->
-  <link rel="stylesheet" href="https://sdorsett.github.io/css/side-menu.css">
+  <link rel="stylesheet" href="/css/side-menu.css">
   <!--<![endif]-->
 
-  <link rel="stylesheet" href="https://sdorsett.github.io/css/blackburn.css">
+  <link rel="stylesheet" href="/css/blackburn.css">
 
   
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -67,7 +67,7 @@
 <div id="menu">
 
   
-  <a class="pure-menu-heading brand" href="https://sdorsett.github.io/"> </a>
+  <a class="pure-menu-heading brand" href="/"> </a>
 
 
   <div class="pure-menu">
@@ -75,25 +75,25 @@
       
       
         <li class="pure-menu-item">
-          <a class="pure-menu-link" href="https://sdorsett.github.io/"><i class='fa fa-home fa-fw'></i>Home</a>
+          <a class="pure-menu-link" href="/"><i class='fa fa-home fa-fw'></i>Home</a>
       
         </li>
       
       
         <li class="pure-menu-item">
-          <a class="pure-menu-link" href="https://sdorsett.github.io/post/"><i class='fa fa-list fa-fw'></i>Posts</a>
+          <a class="pure-menu-link" href="/post/"><i class='fa fa-list fa-fw'></i>Posts</a>
       
         </li>
       
       
         <li class="pure-menu-item">
-          <a class="pure-menu-link" href="https://sdorsett.github.io/topics/"><i class='fa fa-folder fa-fw'></i>Topics</a>
+          <a class="pure-menu-link" href="/topics/"><i class='fa fa-folder fa-fw'></i>Topics</a>
       
         </li>
       
       
         <li class="pure-menu-item">
-          <a class="pure-menu-link" href="https://sdorsett.github.io/tags/"><i class='fa fa-tags fa-fw'></i>Tags</a>
+          <a class="pure-menu-link" href="/tags/"><i class='fa fa-tags fa-fw'></i>Tags</a>
       
         </li>
       
@@ -105,7 +105,7 @@
       
       
         <li class="pure-menu-item">
-          <a class="pure-menu-link" href="https://sdorsett.github.io/about/">About</a>
+          <a class="pure-menu-link" href="/about/">About</a>
       
         </li>
       
@@ -383,7 +383,7 @@ PACKER_REMOTE_DATASTORE<span style="color:#f92672">=</span>datastore1</code></pr
 
 <h3 id="5-we-need-to-delete-the-existing-packer-generated-virtual-machines-from-the-esxi-virtual-machine-embedded-host-client-since-the-packer-build-will-halt-if-the-virtual-machine-it-is-trying-to-build-already-exists">5. We need to delete the existing Packer generated virtual machines from the ESXi virtual machine embedded host client, since the Packer build will halt if the virtual machine it is trying to build already exists:</h3>
 
-<p><img src="https://sdorsett.github.io/static/01-delete-virtual-machine.png" alt="screenshot" /></p>
+<p><img src="/static/01-delete-virtual-machine.png" alt="screenshot" /></p>
 
 <h3 id="6-with-the-generic-packer-build-script-and-environmental-variables-in-place-we-can-test-our-script-out-first-off-we-need-to-ensure-the-execution-bit-is-set-on-our-generic-packer-build-script">6. With the generic Packer build script and environmental variables in place we can test our script out. First off we need to ensure the execution bit is set on our generic Packer build script:</h3>
 
@@ -415,7 +415,7 @@ centos67 output will be in this color.
 
 <p>Checking the embedded host client we can see that the CentOS 6.7 operating system is being installed.</p>
 
-<p><img src="https://sdorsett.github.io/static/02-centos67-os-install.png" alt="screenshot" /></p>
+<p><img src="/static/02-centos67-os-install.png" alt="screenshot" /></p>
 
 <p>Once the Packer build completes you will see the following output:</p>
 
@@ -495,7 +495,7 @@ drwxr-xr-x <span style="color:#ae81ff">3</span> root root <span style="color:#ae
 
 <p>We can also open a browser and see the .box files the script generated.</p>
 
-<p><img src="https://sdorsett.github.io/static/01-browse-vagrant-box-files.png" alt="screenshot" /></p>
+<p><img src="/static/01-browse-vagrant-box-files.png" alt="screenshot" /></p>
 
 <p>###If you would like to not have to manually create the build script covered in this post, you can clone down <a href="https://github.com/sdorsett/packer-templates/tree/adding-build-script">this github repository</a> by running the following command:</p>
 

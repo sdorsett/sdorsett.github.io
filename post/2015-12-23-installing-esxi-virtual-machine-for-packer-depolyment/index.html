@@ -21,13 +21,13 @@
   <!--<![endif]-->
 
   <!--[if lte IE 8]>
-  <link rel="stylesheet" href="https://sdorsett.github.io/css/side-menu-old-ie.css">
+  <link rel="stylesheet" href="/css/side-menu-old-ie.css">
   <![endif]-->
   <!--[if gt IE 8]><!-->
-  <link rel="stylesheet" href="https://sdorsett.github.io/css/side-menu.css">
+  <link rel="stylesheet" href="/css/side-menu.css">
   <!--<![endif]-->
 
-  <link rel="stylesheet" href="https://sdorsett.github.io/css/blackburn.css">
+  <link rel="stylesheet" href="/css/blackburn.css">
 
   
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -67,7 +67,7 @@
 <div id="menu">
 
   
-  <a class="pure-menu-heading brand" href="https://sdorsett.github.io/"> </a>
+  <a class="pure-menu-heading brand" href="/"> </a>
 
 
   <div class="pure-menu">
@@ -75,25 +75,25 @@
       
       
         <li class="pure-menu-item">
-          <a class="pure-menu-link" href="https://sdorsett.github.io/"><i class='fa fa-home fa-fw'></i>Home</a>
+          <a class="pure-menu-link" href="/"><i class='fa fa-home fa-fw'></i>Home</a>
       
         </li>
       
       
         <li class="pure-menu-item">
-          <a class="pure-menu-link" href="https://sdorsett.github.io/post/"><i class='fa fa-list fa-fw'></i>Posts</a>
+          <a class="pure-menu-link" href="/post/"><i class='fa fa-list fa-fw'></i>Posts</a>
       
         </li>
       
       
         <li class="pure-menu-item">
-          <a class="pure-menu-link" href="https://sdorsett.github.io/topics/"><i class='fa fa-folder fa-fw'></i>Topics</a>
+          <a class="pure-menu-link" href="/topics/"><i class='fa fa-folder fa-fw'></i>Topics</a>
       
         </li>
       
       
         <li class="pure-menu-item">
-          <a class="pure-menu-link" href="https://sdorsett.github.io/tags/"><i class='fa fa-tags fa-fw'></i>Tags</a>
+          <a class="pure-menu-link" href="/tags/"><i class='fa fa-tags fa-fw'></i>Tags</a>
       
         </li>
       
@@ -105,7 +105,7 @@
       
       
         <li class="pure-menu-item">
-          <a class="pure-menu-link" href="https://sdorsett.github.io/about/">About</a>
+          <a class="pure-menu-link" href="/about/">About</a>
       
         </li>
       
@@ -283,31 +283,31 @@
 
 <p>We first need to create a new virtual machine inside of which we will install the ESXi 6.0 hypervisor.</p>
 
-<p><img src="https://sdorsett.github.io/static/01-new-virtual-machine.jpg" alt="screenshot" /></p>
+<p><img src="/static/01-new-virtual-machine.jpg" alt="screenshot" /></p>
 
 <h3 id="2-step-through-the-new-virtual-machine-wizard">2. Step through the new virtual machine wizard:</h3>
 
-<p><img src="https://sdorsett.github.io/static/02-create-new-virtual-machine.jpg" alt="screenshot" /></p>
+<p><img src="/static/02-create-new-virtual-machine.jpg" alt="screenshot" /></p>
 
 <p>Name the virtual machine what you would like and click next. I named mine &ldquo;packer-esxi&rdquo;.</p>
 
-<p><img src="https://sdorsett.github.io/static/03-virtual-machine-name.jpg" alt="screenshot" /></p>
+<p><img src="/static/03-virtual-machine-name.jpg" alt="screenshot" /></p>
 
 <p>Select the vCenter cluster or resource pool the virtual machine will reside in and click next.</p>
 
-<p><img src="https://sdorsett.github.io/static/04-select-compute-resource.jpg" alt="screenshot" /></p>
+<p><img src="/static/04-select-compute-resource.jpg" alt="screenshot" /></p>
 
 <p>Select the datastore you want the ESXi virtual machine to be created on and click next. I&rsquo;m using a local datastore on one of my physical ESXi hosts, to prevent Packer from using storage shared across the entire cluster.</p>
 
-<p><img src="https://sdorsett.github.io/static/05-select-storage.jpg" alt="screenshot" /></p>
+<p><img src="/static/05-select-storage.jpg" alt="screenshot" /></p>
 
 <p>Select the compatibility (virtual hardware level) for the virtual machine and click next. I kept with the default of version 11.</p>
 
-<p><img src="https://sdorsett.github.io/static/06-select-compatibility.jpg" alt="screenshot" /></p>
+<p><img src="/static/06-select-compatibility.jpg" alt="screenshot" /></p>
 
 <p>Select the guest operating system. vSphere 6.0 or newer will allow you to select ESXi 6.0 as you guest OS. Click next. This is where things will be different if you are using vSphere 5.0 and the c# client since you will only have ESXi 5.0 listed as an option.</p>
 
-<p><img src="https://sdorsett.github.io/static/07-select-guest-os.jpg" alt="screenshot" /></p>
+<p><img src="/static/07-select-guest-os.jpg" alt="screenshot" /></p>
 
 <p>Customize to virtual hardware to have the necessary resources. I had created my ESXi vurtual machine with:</p>
 
@@ -317,61 +317,61 @@
 <li>100GB virtual hard drive</li>
 </ul>
 
-<p><img src="https://sdorsett.github.io/static/08-customize-hardware.jpg" alt="screenshot" /></p>
+<p><img src="/static/08-customize-hardware.jpg" alt="screenshot" /></p>
 
 <p>Make sure you expand CPU and enable &ldquo;Hardware virtualization.&rdquo; The ESXi installer will fail if this is not enabled.</p>
 
-<p><img src="https://sdorsett.github.io/static/09-customize-hardware.jpg" alt="screenshot" /></p>
+<p><img src="/static/09-customize-hardware.jpg" alt="screenshot" /></p>
 
 <p>Click finish to create the virtual machine.</p>
 
-<p><img src="https://sdorsett.github.io/static/10-ready-to-complete.jpg" alt="screenshot" /></p>
+<p><img src="/static/10-ready-to-complete.jpg" alt="screenshot" /></p>
 
 <h3 id="3-enable-promiscuous-mode-on-virtual-portgroup-being-used-by-esxi-virtual-machine">3. Enable promiscuous mode on virtual portgroup being used by ESXi virtual machine</h3>
 
 <p>You will need to ensure the portgroup (virtual network) you are connecting the ESXi virtual machine to has promiscuous mode enabled. Enabling promiscuous mode is required for the ESXi virtual machine to pass traffic to the child virtual machines running on it.</p>
 
-<p><img src="https://sdorsett.github.io/static/29-enable-protgroup-promiscuous-mode.png" alt="screenshot" /></p>
+<p><img src="/static/29-enable-protgroup-promiscuous-mode.png" alt="screenshot" /></p>
 
 <h3 id="4-connect-the-virtual-cdrom-of-the-esxi-virtual-machine-to-the-esxi-6-0-installer-iso-and-power-it-on">4. Connect the virtual CDROM of the ESXi virtual machine to the ESXi 6.0 installer .iso and power it on.</h3>
 
-<p><img src="https://sdorsett.github.io/static/11-start-esxi-vm.jpg" alt="screenshot" /></p>
+<p><img src="/static/11-start-esxi-vm.jpg" alt="screenshot" /></p>
 
 <h3 id="5-connect-to-the-console-of-the-esxi-virtual-machine-and-step-through-the-installer">5. Connect to the console of the ESXi virtual machine and step through the installer</h3>
 
 <p>Press enter to begin</p>
 
-<p><img src="https://sdorsett.github.io/static/12-esxi-installer.jpg" alt="screenshot" /></p>
+<p><img src="/static/12-esxi-installer.jpg" alt="screenshot" /></p>
 
 <p>Press F11 to accept the EULA</p>
 
-<p><img src="https://sdorsett.github.io/static/13-esxi-installer.jpg" alt="screenshot" /></p>
+<p><img src="/static/13-esxi-installer.jpg" alt="screenshot" /></p>
 
 <p>Select the 100GB virtual hard drive we created with the virtual machine</p>
 
-<p><img src="https://sdorsett.github.io/static/14-esxi-installer.jpg" alt="screenshot" /></p>
+<p><img src="/static/14-esxi-installer.jpg" alt="screenshot" /></p>
 
 <p>Select your keyboard layout and press enter</p>
 
-<p><img src="https://sdorsett.github.io/static/15-esxi-installer.jpg" alt="screenshot" /></p>
+<p><img src="/static/15-esxi-installer.jpg" alt="screenshot" /></p>
 
 <p>Enter the root password twice and press enter</p>
 
-<p><img src="https://sdorsett.github.io/static/16-esxi-installer.jpg" alt="screenshot" /></p>
+<p><img src="/static/16-esxi-installer.jpg" alt="screenshot" /></p>
 
-<p><img src="https://sdorsett.github.io/static/17-esxi-installer.jpg" alt="screenshot" /></p>
+<p><img src="/static/17-esxi-installer.jpg" alt="screenshot" /></p>
 
 <p>Press F11 to begin the install process</p>
 
-<p><img src="https://sdorsett.github.io/static/18-esxi-installer.jpg" alt="screenshot" /></p>
+<p><img src="/static/18-esxi-installer.jpg" alt="screenshot" /></p>
 
 <p>Disconnect the .iso file from the virtual CDROM before rebooting the virtual machine</p>
 
-<p><img src="https://sdorsett.github.io/static/19-esxi-installer.jpg" alt="screenshot" /></p>
+<p><img src="/static/19-esxi-installer.jpg" alt="screenshot" /></p>
 
-<p><img src="https://sdorsett.github.io/static/20-esxi-installer.jpg" alt="screenshot" /></p>
+<p><img src="/static/20-esxi-installer.jpg" alt="screenshot" /></p>
 
-<p><img src="https://sdorsett.github.io/static/21-esxi-post-install.jpg" alt="screenshot" /></p>
+<p><img src="/static/21-esxi-post-install.jpg" alt="screenshot" /></p>
 
 <h3 id="6-press-f2-to-log-into-esxi-and-make-the-following-changes">6. Press F2 to log into ESXi and make the following changes:</h3>
 
@@ -381,17 +381,17 @@
 <li>Enable ssh</li>
 </ul>
 
-<p><img src="https://sdorsett.github.io/static/22-set-ip-address.jpg" alt="screenshot" /></p>
+<p><img src="/static/22-set-ip-address.jpg" alt="screenshot" /></p>
 
-<p><img src="https://sdorsett.github.io/static/23-apply-network-config.jpg" alt="screenshot" /></p>
+<p><img src="/static/23-apply-network-config.jpg" alt="screenshot" /></p>
 
-<p><img src="https://sdorsett.github.io/static/24-enable-ssh.jpg" alt="screenshot" /></p>
+<p><img src="/static/24-enable-ssh.jpg" alt="screenshot" /></p>
 
 <h3 id="7-on-your-local-machine-download-the-embedded-host-client-vib">7. On your local machine download the embedded host client .vib</h3>
 
 <p>The embedded host client is a VMware fling that allows you to manage an ESXi host from a browser, without needing the #c client or vCenter. You can download the embedded host client .vib from <a href="https://labs.vmware.com/flings/esxi-embedded-host-client">this link</a>.</p>
 
-<p><img src="https://sdorsett.github.io/static/25-download-embedded-host-client.jpg" alt="screenshot" /></p>
+<p><img src="/static/25-download-embedded-host-client.jpg" alt="screenshot" /></p>
 
 <h3 id="8-scp-the-downloaded-vib-to-the-esxi-virtual-machine">8. SCP the downloaded .vib to the ESXi virtual machine</h3>
 
@@ -434,7 +434,7 @@ Installation Result
 
 <p>The <a href="https://www.packer.io/docs/builders/vmware-iso.html">Packer VMware .iso builder documentation</a> lists the following esxcli command as needing to be run on the ESXi virtual machine:</p>
 
-<p><img src="https://sdorsett.github.io/static/28-enable-guest-ip-hack.jpg" alt="screenshot" /></p>
+<p><img src="/static/28-enable-guest-ip-hack.jpg" alt="screenshot" /></p>
 
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@packer-esxi:/tmp<span style="color:#f92672">]</span> esxcli system settings advanced set -o /Net/GuestIPHack -i <span style="color:#ae81ff">1</span>
 <span style="color:#f92672">[</span>root@packer-esxi:/tmp<span style="color:#f92672">]</span> exit
@@ -446,11 +446,11 @@ sdorsett-mbp:~ sdorsett$</code></pre></div>
 <p>Open a browser on your local machine and go to https://[ESXi-virtual-machine-ip-address]/ui<br />
 Accept any certificate warnings and log in using root as the username and the password you entered while installing ESXi.</p>
 
-<p><img src="https://sdorsett.github.io/static/26-embedded-host-client.jpg" alt="screenshot" /></p>
+<p><img src="/static/26-embedded-host-client.jpg" alt="screenshot" /></p>
 
 <p>Under Storage | Datastores we can see a datastore name &ldquo;datastore1&rdquo; was automatically created using the extra space of the virtual hard drive.</p>
 
-<p><img src="https://sdorsett.github.io/static/27-embedded-host-client.jpg" alt="screenshot" /></p>
+<p><img src="/static/27-embedded-host-client.jpg" alt="screenshot" /></p>
 
 <h4 id="that-all-for-this-post-covering-how-to-create-a-esxi-virtual-machine-that-we-will-use-to-create-packer-images">That all for this post covering how to create a ESXi virtual machine that we will use to create Packer images.</h4>
 

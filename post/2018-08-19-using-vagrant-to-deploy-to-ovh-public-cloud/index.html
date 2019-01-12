@@ -21,13 +21,13 @@
   <!--<![endif]-->
 
   <!--[if lte IE 8]>
-  <link rel="stylesheet" href="https://sdorsett.github.io/css/side-menu-old-ie.css">
+  <link rel="stylesheet" href="/css/side-menu-old-ie.css">
   <![endif]-->
   <!--[if gt IE 8]><!-->
-  <link rel="stylesheet" href="https://sdorsett.github.io/css/side-menu.css">
+  <link rel="stylesheet" href="/css/side-menu.css">
   <!--<![endif]-->
 
-  <link rel="stylesheet" href="https://sdorsett.github.io/css/blackburn.css">
+  <link rel="stylesheet" href="/css/blackburn.css">
 
   
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -67,7 +67,7 @@
 <div id="menu">
 
   
-  <a class="pure-menu-heading brand" href="https://sdorsett.github.io/"> </a>
+  <a class="pure-menu-heading brand" href="/"> </a>
 
 
   <div class="pure-menu">
@@ -75,25 +75,25 @@
       
       
         <li class="pure-menu-item">
-          <a class="pure-menu-link" href="https://sdorsett.github.io/"><i class='fa fa-home fa-fw'></i>Home</a>
+          <a class="pure-menu-link" href="/"><i class='fa fa-home fa-fw'></i>Home</a>
       
         </li>
       
       
         <li class="pure-menu-item">
-          <a class="pure-menu-link" href="https://sdorsett.github.io/post/"><i class='fa fa-list fa-fw'></i>Posts</a>
+          <a class="pure-menu-link" href="/post/"><i class='fa fa-list fa-fw'></i>Posts</a>
       
         </li>
       
       
         <li class="pure-menu-item">
-          <a class="pure-menu-link" href="https://sdorsett.github.io/topics/"><i class='fa fa-folder fa-fw'></i>Topics</a>
+          <a class="pure-menu-link" href="/topics/"><i class='fa fa-folder fa-fw'></i>Topics</a>
       
         </li>
       
       
         <li class="pure-menu-item">
-          <a class="pure-menu-link" href="https://sdorsett.github.io/tags/"><i class='fa fa-tags fa-fw'></i>Tags</a>
+          <a class="pure-menu-link" href="/tags/"><i class='fa fa-tags fa-fw'></i>Tags</a>
       
         </li>
       
@@ -105,7 +105,7 @@
       
       
         <li class="pure-menu-item">
-          <a class="pure-menu-link" href="https://sdorsett.github.io/about/">About</a>
+          <a class="pure-menu-link" href="/about/">About</a>
       
         </li>
       
@@ -361,11 +361,11 @@ MacBook-Pro:ovh_public_cloud_centos_7 standorsett$</code></pre></div>
 
 <p>The Vagrant Openstack provider can be used us query the Openstack API for available resources. I knew I wanted to use a Centos image so I ran <code>vagrant openstack image-list | egrep '(--|Name|Centos)'</code> to return images that contained the name Centos:</p>
 
-<p><img src="https://sdorsett.github.io/static/08192018-01-vagrant-openstack-image-list.png" alt="screenshot" /></p>
+<p><img src="/static/08192018-01-vagrant-openstack-image-list.png" alt="screenshot" /></p>
 
 <p>I also knew I wanted to use a sandbox image, which all start with s1 in the name, so I ran <code>vagrant openstack flavor-list | egrep '(--|Name|s1)'</code> to return all s1 images:</p>
 
-<p><img src="https://sdorsett.github.io/static/08192018-02-vagrant-openstack-flavor-list.png" alt="screenshot" /></p>
+<p><img src="/static/08192018-02-vagrant-openstack-flavor-list.png" alt="screenshot" /></p>
 
 <h3 id="6-update-your-vagrantfile-to-reflect-the-image-and-flavor-name-that-you-want-to-use">6. Update your Vagrantfile to reflect the image and flavor name that you want to use.</h3>
 
@@ -483,7 +483,7 @@ MacBook-Pro:ovh_public_cloud_centos_7 standorsett$</code></pre></div>
 
 <p>There is an <a href="https://github.com/ggiamarchi/vagrant-openstack-provider/pull/359">open pull request</a> for the Vagrant openstack provider to allow a user to specify if the provider should connect to an IPV4 or IPV6 address. Until that pull request is merge I would suggest making <a href="https://github.com/sghribi/vagrant-openstack-provider/commit/040c7168066bad36a9c9995418f3189d5a85a125">these suggested changes</a> to <code>~/.vagrant.d/gems/2.4.4/gems/vagrant-openstack-provider-0.13.0/lib/vagrant-openstack-provider/utils.rb</code></p>
 
-<p><img src="https://sdorsett.github.io/static/08192018-04-edit-util-rb-file.png" alt="screenshot" /></p>
+<p><img src="/static/08192018-04-edit-util-rb-file.png" alt="screenshot" /></p>
 
 <p>After modifying the utils.rb file try running <code>vagrant ssh-config</code> again to make sure the command is returning an IPV4 address.</p>
 
